@@ -1337,7 +1337,7 @@ h2 {
 }
 
 @media (max-width: 560px) {
-  .site-container {
+  .container {
     width: min(100% - 32px, 1420px);
   }
   .site-header .button-small {

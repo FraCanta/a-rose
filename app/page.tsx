@@ -198,6 +198,9 @@ export default function Home() {
                 {label}
               </Link>
             ))}
+            <Link className="button button-heart" href="#dona">
+              Sostieni la ricerca <Icon name="heart" />
+            </Link>
           </nav>
 
           <details className="mobile-menu">
@@ -223,11 +226,11 @@ export default function Home() {
       <main id="contenuto">
         <section className="hero w-full" id="top">
           <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-2">
-            <div className="hero-copy-content flex flex-col justify-center px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+36px)]">
+            <div className=" flex flex-col justify-center px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+36px)]">
               <p className="eyebrow">
                 <span /> Ricerca, formazione, divulgazione
               </p>
-              <h1 className="text-2xl">
+              <h1 className="text-[44px] xs:text-5xl md:text-6xl 2xl:text-[76px]">
                 Ci si cura meglio,
                 <br />
                 dove si fa <em>buona ricerca.</em>
