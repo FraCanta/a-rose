@@ -5,3 +5,15 @@
   outline: 3px solid #ef9bae;
   outline-offset: 4px;
 }
+
+html {
+  scrollbar-width: none; /* Firefox */
+}
+
+body {
+  -ms-overflow-style: none; /* vecchio Edge / IE */
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

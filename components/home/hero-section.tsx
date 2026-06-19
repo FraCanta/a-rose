@@ -2,14 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "./eyebrow";
 import { Icon } from "./icons";
-import { button, outlineButton } from "./styles";
+import { outlineButton } from "./styles";
+import { Entrance } from "@/components/ui/entrance";
 
 export function HeroSection() {
   return (
     <section className="overflow-hidden border-b border-line bg-paper">
       <div className="grid min-h-[calc(100svh-84px)] w-full grid-cols-1 lg:grid-cols-2 max-sm:min-h-[calc(100svh-84px)]">
         {" "}
-        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+10px)]">
+        <Entrance
+          className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+10px)]"
+          delay={0.08}
+          direction="up"
+        >
           <Eyebrow>Ricerca, formazione, divulgazione</Eyebrow>
           <h1 className="m-0 max-w-[760px] font-serif text-[clamp(40px,8vw,40px)] xs:text-[clamp(46px,8vw,46px)] lg:text-[clamp(64px,8vw,46px)] 2xl:text-[clamp(46px,8vw,76px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink">
             Ci si cura meglio,
@@ -50,20 +55,26 @@ export function HeroSection() {
               </Link>
             </span>
           </div>
-        </div>
-        <div className="relative min-h-[440px] w-full overflow-hidden sm:min-h-[520px] lg:min-h-[650px]">
+        </Entrance>
+        <Entrance
+          className="relative min-h-[440px] w-full overflow-hidden sm:min-h-[520px] lg:min-h-[650px]"
+          delay={0.04}
+          direction="fade"
+          scaleFrom={1.025}
+        >
           <Image
             className="object-cover object-[56%_center]"
             src="/images/hero_image.jpg"
             alt="Ricercatrice oncologica al lavoro con un microscopio"
             fill
-            priority
+            preload
+            sizes="(max-width: 1023px) 100vw, 50vw"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#fffdf9_0%,rgba(255,253,249,0.82)_9%,rgba(255,253,249,0.18)_34%,transparent_55%)] max-md:bg-[linear-gradient(180deg,#fffdf9_0%,rgba(255,253,249,0.35)_18%,transparent_42%)]"
             aria-hidden="true"
           />
-        </div>
+        </Entrance>
       </div>
     </section>
   );

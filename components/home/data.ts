@@ -72,12 +72,14 @@ export const team = [
     qualification: "Professore Ordinario di Patologia Generale",
     role: "Presidente dell’associazione e coordinatrice dei progetti di ricerca.",
     image: "/images/team/carlotta-giorgi.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Giorgi.jpg",
   },
   {
     name: "Prof. Paolo Pinton",
     qualification: "Professore Ordinario di Patologia Generale",
     role: "Supervisore scientifico e responsabile della ricerca traslazionale.",
     image: "/images/team/paolo-pinton.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Pinton.jpg",
   },
   {
     name: "Dott. Francesco Fiorica",
@@ -85,12 +87,14 @@ export const team = [
       "Radio-Oncologo, Direttore UOC Radioterapia e Medicina Nucleare, Direttore Dipartimento di Oncologia Clinica, Oncologo Nutrizionista",
     role: "Consulente clinico e responsabile del collegamento tra ricerca e pazienti.",
     image: "/images/team/francesco-fiorica.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Fiorica.jpg",
   },
   {
     name: "Prof. Gabriele Anania",
     qualification: "Chirurgo Oncologico, Dirigente Medico Chirurgia Generale",
     role: "Consulente clinico e responsabile del collegamento tra ricerca e pazienti.",
     image: "/images/team/gabriele-anania.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Anania.jpg",
   },
 ] as const;
 

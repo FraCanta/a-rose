@@ -1,11 +1,11 @@
 import { Eyebrow } from "./eyebrow";
+import { ImpactCounter } from "./impact-counter";
 import { container, heading, section } from "./styles";
 
 const stats = [
-  ["+700", "persone", "raggiunte"],
-  ["+200", "partecipanti", "coinvolti"],
-  ["+50", "eventi e", "iniziative"],
-  ["+X", "progetti", "sostenuti"],
+  { icon: "book", label: "Pubblicazioni", value: 700 },
+  { icon: "search", label: "Progetti approvati", value: 200 },
+  { icon: "calendar", label: "Eventi presenziati", value: 50 },
 ] as const;
 
 export function ImpactSection() {
@@ -26,21 +26,9 @@ export function ImpactSection() {
             nel valore della ricerca.
           </p>
         </div>
-        <div className="mt-20 grid border-t border-line md:grid-cols-4 max-md:grid-cols-2 max-sm:mt-14">
-          {stats.map(([value, line1, line2]) => (
-            <div
-              className="flex items-end gap-4 border-line px-6 pb-1 pt-11 md:border-r md:last:border-r-0 max-md:border-r max-md:[&:nth-child(2n)]:border-r-0 max-md:[&:nth-child(n+3)]:border-t max-sm:grid max-sm:gap-2 max-sm:px-4 max-sm:py-8"
-              key={value}
-            >
-              <strong className="font-serif text-[clamp(47px,5vw,68px)] font-normal leading-none text-wine">
-                {value}
-              </strong>
-              <span className="text-[11px] font-bold uppercase leading-snug text-muted">
-                {line1}
-                <br />
-                {line2}
-              </span>
-            </div>
+        <div className="mt-20 grid divide-y divide-line border-y border-line md:grid-cols-3 md:divide-x md:divide-y-0 max-sm:mt-14">
+          {stats.map((stat) => (
+            <ImpactCounter key={stat.label} {...stat} />
           ))}
         </div>
       </div>

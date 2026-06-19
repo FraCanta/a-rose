@@ -9,21 +9,22 @@ import { NewsSection } from "@/components/home/news-section";
 import { PartnersSection } from "@/components/home/partners-section";
 import { ResearchSection } from "@/components/home/research-section";
 import { TeamSection } from "@/components/home/team-section";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export default function Page() {
   return (
     <main id="contenuto">
       <HeroSection />
-      <MissionSection />
-      <PartnersSection />
-      <ResearchSection />
-      <DonationSection />
-      <ImpactSection />
-      <TeamSection />
-      <EventsSection />
-      <NewsSection />
-      <ContactSection />
-      <FinalCta />
+      <ScrollReveal><MissionSection /></ScrollReveal>
+      <ScrollReveal><PartnersSection /></ScrollReveal>
+      <ScrollReveal><ResearchSection /></ScrollReveal>
+      <ScrollReveal><DonationSection /></ScrollReveal>
+      <ScrollReveal><ImpactSection /></ScrollReveal>
+      <ScrollReveal><TeamSection /></ScrollReveal>
+      <ScrollReveal><EventsSection /></ScrollReveal>
+      <ScrollReveal><NewsSection /></ScrollReveal>
+      <ScrollReveal><ContactSection /></ScrollReveal>
+      <ScrollReveal><FinalCta /></ScrollReveal>
     </main>
   );
 }

@@ -1,11 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getLatestPosts } from "@/lib/wordpress";
 import { articles } from "./data";
 import { Eyebrow } from "./eyebrow";
 import { Icon } from "./icons";
 import { container, heading, section, textLink } from "./styles";
 
-export function NewsSection() {
+export async function NewsSection() {
+  const latestPosts = await getLatestPosts(3);
+  const visibleArticles = latestPosts.length
+    ? latestPosts.map((post, index) => ({
+        ...post,
+        alt: post.imageAlt,
+        image: post.image ?? articles[index]?.image ?? "/images/ricerca-dettaglio.jpg",
+        text: post.excerpt,
+      }))
+    : articles.map((article, index) => ({
+        ...article,
+        date: null,
+        href: "https://a-roseodv.org/",
+        id: `fallback-${index}`,
+      }));
+
   return (
     <section className={section} id="news">
       <div className={container}>
@@ -18,19 +34,19 @@ export function NewsSection() {
               <em className="font-normal text-rose">una forma di cura</em>
             </h2>
           </div>
-          <Link className={textLink} href="#contatti">
+          <Link className={textLink} href="https://a-roseodv.org/" target="_blank" rel="noreferrer">
             Tutti gli approfondimenti <Icon className="size-4" name="arrow" />
           </Link>
         </div>
         <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article, index) => (
+          {visibleArticles.map((article, index) => (
             <article
-              className={`group bg-paper transition hover:-translate-y-2 hover:shadow-soft ${
-                index === articles.length - 1
+              className={`group flex h-full flex-col bg-paper transition hover:-translate-y-2 hover:shadow-soft ${
+                index === visibleArticles.length - 1
                   ? "max-md:max-w-[calc(50%-14px)] max-sm:max-w-none md:max-lg:col-span-2"
                   : ""
               }`}
-              key={article.title}
+              key={article.id}
             >
               <div className="relative h-[235px] overflow-hidden bg-[#d9979c]">
                 <Image
@@ -44,17 +60,35 @@ export function NewsSection() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
-              <div className="p-8">
-                <span className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-rose">
-                  {article.category}
-                </span>
-                <h3 className="my-3 font-serif text-[25px] font-normal leading-tight">
+              <div className="flex flex-1 flex-col p-8">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-rose">
+                    {article.category}
+                  </span>
+                  {article.date ? (
+                    <time
+                      className="border-l border-line pl-3 text-[11px] font-medium normal-case tracking-normal text-muted"
+                      dateTime={article.date}
+                    >
+                      {new Intl.DateTimeFormat("it-IT", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                      }).format(new Date(article.date))}
+                    </time>
+                  ) : null}
+                </div>
+                <h3 className="my-3 line-clamp-2 min-h-[2.5em] font-serif text-[25px] font-normal leading-tight">
                   {article.title}
                 </h3>
-                <p className="text-[13px] leading-relaxed text-muted">{article.text}</p>
+                <p className="line-clamp-3 min-h-[4.875em] text-[13px] leading-relaxed text-muted">
+                  {article.text}
+                </p>
                 <Link
-                  className={`${textLink} mt-3 text-xs`}
-                  href="#contatti"
+                  className={`${textLink} mt-auto pt-5 text-xs`}
+                  href={article.href}
+                  target="_blank"
+                  rel="noreferrer"
                   aria-label={`Leggi l'articolo: ${article.title}`}
                 >
                   Leggi l’articolo <Icon className="size-4" name="arrow" />

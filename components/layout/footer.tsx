@@ -39,9 +39,9 @@ export function Footer() {
             <Image
               src="/brand/arose_logo_negativo.png"
               alt="A-ROSE ODV"
-              width={900}
-              height={300}
-              unoptimized
+              width={1395}
+              height={546}
+              sizes="205px"
             />
           </Link>
           <p className="mt-6 font-serif text-[17px] leading-normal text-white/55">
