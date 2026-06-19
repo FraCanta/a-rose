@@ -26,7 +26,7 @@ export function FinalCta() {
         <Eyebrow light centered>
           Ogni passo conta
         </Eyebrow>
-        <h2 className="mb-9 font-serif text-[clamp(43px,4.3vw,64px)] font-normal leading-[1.05] tracking-[-0.035em]">
+        <h2 className="mb-9 font-serif text-[clamp(36px,4.3vw,40px)] font-normal leading-[1.05] tracking-[-0.035em]">
           Insieme possiamo avvicinare
           <br className="max-sm:hidden" />
           <em className="font-normal text-[#efabb6]"> la ricerca alla cura.</em>
