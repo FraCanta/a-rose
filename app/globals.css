@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../tailwind.config.mjs";
 
 :root {
   --ivory: #f8f4ee;
@@ -46,7 +47,7 @@ svg {
   width: 1.2em;
   height: 1.2em;
 }
-.container {
+.site-container {
   width: min(1420px, calc(100% - 72px));
   margin-inline: auto;
 }
@@ -1336,7 +1337,7 @@ h2 {
 }
 
 @media (max-width: 560px) {
-  .container {
+  .site-container {
     width: min(100% - 32px, 1420px);
   }
   .site-header .button-small {

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { SVGProps } from "react";
+import Link from "next/link";
 
 type IconName =
   | "arrow"
@@ -167,11 +168,15 @@ export default function Home() {
       <a className="skip-link" href="#contenuto">
         Vai al contenuto
       </a>
-      <header className="site-header">
-        <div className="container header-inner">
-          <a className="brand" href="#top" aria-label="A-ROSE ODV, homepage">
+      <header className="sticky top-0 z-50 border-b border-wine/10 bg-white">
+        <div className="mx-auto flex min-h-24 w-full max-w-site items-center gap-10 px-9 max-sm:min-h-[84px] max-sm:px-4">
+          <Link
+            className="flex shrink-0 items-center"
+            href="#top"
+            aria-label="A-ROSE ODV, homepage"
+          >
             <Image
-              className="brand-logo"
+              className="block h-auto w-44 max-sm:w-32"
               src="/brand/logo2_arose_positivo.png"
               alt="A-ROSE ODV"
               width={900}
@@ -179,17 +184,22 @@ export default function Home() {
               priority
               unoptimized
             />
-          </a>
-          <nav className="desktop-nav" aria-label="Navigazione principale">
+          </Link>
+          <nav
+            className="ml-auto hidden items-center justify-center gap-6 text-[13px] font-bold lg:flex xl:gap-9"
+            aria-label="Navigazione principale"
+          >
             {navigation.map(([label, href]) => (
-              <a key={href} href={href}>
+              <Link
+                key={href}
+                className="whitespace-nowrap transition-colors hover:text-wine"
+                href={href}
+              >
                 {label}
-              </a>
+              </Link>
             ))}
           </nav>
-          <a className="button button-small button-heart" href="#dona">
-            Sostieni la ricerca <Icon name="heart" />
-          </a>
+
           <details className="mobile-menu">
             <summary aria-label="Apri il menu">
               <span />
@@ -198,13 +208,13 @@ export default function Home() {
             </summary>
             <nav aria-label="Navigazione mobile">
               {navigation.map(([label, href]) => (
-                <a key={href} href={href}>
+                <Link key={href} href={href}>
                   {label}
-                </a>
+                </Link>
               ))}
-              <a className="button button-heart" href="#dona">
+              <Link className="button button-heart" href="#dona">
                 Sostieni la ricerca <Icon name="heart" />
-              </a>
+              </Link>
             </nav>
           </details>
         </div>
@@ -217,7 +227,7 @@ export default function Home() {
               <p className="eyebrow">
                 <span /> Ricerca, formazione, divulgazione
               </p>
-              <h1>
+              <h1 className="text-2xl">
                 Ci si cura meglio,
                 <br />
                 dove si fa <em>buona ricerca.</em>
@@ -228,12 +238,12 @@ export default function Home() {
                 ricerca e cura siano sempre più vicine.
               </p>
               <div className="button-row">
-                <a className="button button-heart" href="#dona">
+                <Link className="button button-heart" href="#dona">
                   Sostieni la ricerca <Icon name="heart" />
-                </a>
-                <a className="text-link" href="#ricerca">
+                </Link>
+                <Link className="text-link" href="#ricerca">
                   Scopri i progetti <Icon name="arrow" />
-                </a>
+                </Link>
               </div>
               <div className="trust-note">
                 <span className="trust-icon">
@@ -242,9 +252,9 @@ export default function Home() {
                 <span>
                   <strong>Trasparenza, impegno e risultati concreti.</strong>
                   <br />
-                  <a href="#trasparenza">
+                  <Link href="#trasparenza">
                     Scopri come utilizziamo le donazioni <Icon name="arrow" />
-                  </a>
+                  </Link>
                 </span>
               </div>
             </div>
@@ -266,7 +276,7 @@ export default function Home() {
         </section>
 
         <section className="mission section" id="missione">
-          <div className="container">
+          <div className="site-container">
             <div className="section-intro split-intro">
               <div>
                 <p className="eyebrow">
@@ -296,12 +306,12 @@ export default function Home() {
                   </div>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
-                  <a
+                  <Link
                     href="#contatti"
                     aria-label={`Approfondisci: ${item.title}`}
                   >
                     <Icon name="arrow" />
-                  </a>
+                  </Link>
                 </article>
               ))}
             </div>
@@ -309,7 +319,7 @@ export default function Home() {
         </section>
 
         <section className="partners" aria-labelledby="partner-title">
-          <div className="container partners-inner">
+          <div className="site-container partners-inner">
             <p id="partner-title">In rete con chi crede nella ricerca</p>
             <div className="partner-list" aria-label="Partner di A-ROSE ODV">
               <div className="partner-logo partner-logo-emblem">
@@ -357,7 +367,7 @@ export default function Home() {
         </section>
 
         <section className="research section" id="ricerca">
-          <div className="container research-grid">
+          <div className="site-container research-grid">
             <div className="research-art">
               <Image
                 className="research-photo-main"
@@ -397,7 +407,7 @@ export default function Home() {
         </section>
 
         <section className="donation section" id="dona">
-          <div className="container donation-grid">
+          <div className="site-container donation-grid">
             <div className="donation-copy">
               <p className="eyebrow">
                 <span /> Sostieni il cambiamento
@@ -475,7 +485,7 @@ export default function Home() {
         </section>
 
         <section className="impact section" id="impatto">
-          <div className="container">
+          <div className="site-container">
             <div className="impact-heading">
               <div>
                 <p className="eyebrow light">
@@ -529,8 +539,8 @@ export default function Home() {
         </section>
 
         <section className="team section" id="team">
-          <div className="container">
-            <div className="centered">
+          <div className="site-container">
+            <div className="section-intro centered">
               <p className="eyebrow">
                 <span /> La nostra squadra
               </p>
@@ -571,7 +581,7 @@ export default function Home() {
         </section>
 
         <section className="events section" id="eventi">
-          <div className="container events-grid">
+          <div className="site-container events-grid">
             <div className="event-feature">
               <div className="event-visual">
                 <Image
@@ -615,7 +625,7 @@ export default function Home() {
         </section>
 
         <section className="news section" id="news">
-          <div className="container">
+          <div className="site-container">
             <div className="news-heading">
               <div>
                 <p className="eyebrow">
@@ -661,7 +671,7 @@ export default function Home() {
         </section>
 
         <section className="contact section" id="contatti">
-          <div className="container contact-grid">
+          <div className="site-container contact-grid">
             <div>
               <p className="eyebrow">
                 <span /> Parliamone
@@ -709,7 +719,7 @@ export default function Home() {
             <i />
             <i />
           </div>
-          <div className="container">
+          <div className="site-container">
             <p className="eyebrow light">
               <span /> Ogni passo conta
             </p>
@@ -726,7 +736,7 @@ export default function Home() {
       </main>
 
       <footer className="footer" id="trasparenza">
-        <div className="container footer-grid">
+        <div className="site-container footer-grid">
           <div className="footer-brand">
             <a
               className="footer-logo"
@@ -770,7 +780,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="container footer-bottom">
+        <div className="site-container footer-bottom">
           <p>
             © {new Date().getFullYear()} A-ROSE ODV. Tutti i diritti riservati.
           </p>
