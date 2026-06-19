@@ -22,7 +22,7 @@ export function Header() {
           onClick={closeMenu}
         >
           <Image
-            className="block h-auto w-48 object-contain max-sm:w-32"
+            className="block h-auto w-40 object-contain lg:w-48"
             src="/brand/logo2_arose_positivo.png"
             alt="A-ROSE ODV"
             width={1200}
