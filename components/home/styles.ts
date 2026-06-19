@@ -4,7 +4,7 @@ export const container =
 export const section = "py-32 max-md:py-24 max-sm:py-20";
 
 export const heading =
-  "m-0 font-serif text-[clamp(43px,4.3vw,64px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink";
+  "m-0 font-serif text-[clamp(30px,4.3vw,30px)] xs:text-[clamp(36px,4.3vw,36px)] lg:text-[clamp(43px,4.3vw,64px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink";
 
 export const button =
   "hidden lg:inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-wine bg-wine px-8 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep";

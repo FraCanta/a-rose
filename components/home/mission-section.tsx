@@ -14,13 +14,16 @@ export function MissionSection() {
             <h2 className={heading}>
               Dalla ricerca alla cura:
               <br />
-              <em className="font-normal text-rose">il nostro impegno nasce qui</em>
+              <em className="font-normal text-rose">
+                il nostro impegno nasce qui
+              </em>
             </h2>
           </div>
           <p className="m-0 text-lg leading-[1.8] text-muted max-sm:text-base">
-            Crediamo in una ricerca capace di generare nuove possibilità per i pazienti. Per questo
-            sosteniamo progetti scientifici, percorsi formativi e iniziative di prevenzione e
-            divulgazione, creando un ponte tra laboratorio, clinica e comunità.
+            Crediamo in una ricerca capace di generare nuove possibilità per i
+            pazienti. Per questo sosteniamo progetti scientifici, percorsi
+            formativi e iniziative di prevenzione e divulgazione, creando un
+            ponte tra laboratorio, clinica e comunità.
           </p>
         </div>
 
@@ -34,7 +37,9 @@ export function MissionSection() {
                 <span className={iconWrap}>
                   <Icon className="size-[22px]" name={item.icon} />
                 </span>
-                <span className="font-serif text-[13px] italic text-[#9b928b]">{item.number}</span>
+                <span className="font-serif text-[13px] italic text-[#9b928b]">
+                  {item.number}
+                </span>
               </div>
               <h3 className="mb-3 mt-7 font-serif text-[27px] font-normal leading-tight">
                 {item.title}
