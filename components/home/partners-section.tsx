@@ -4,10 +4,18 @@ import { container } from "./styles";
 
 export function PartnersSection() {
   return (
-    <section className="border-y border-line bg-paper py-12" aria-labelledby="partner-title">
-      <div className={`${container} grid items-center gap-12 md:grid-cols-[250px_1fr] max-md:gap-6`}>
-        <p id="partner-title" className="font-serif text-[17px] italic text-muted">
-          In rete con chi crede nella ricerca
+    <section
+      className="border-y border-line bg-paper py-12"
+      aria-labelledby="partner-title"
+    >
+      <div
+        className={`${container} grid items-center gap-12 md:grid-cols-[250px_1fr] max-md:gap-6`}
+      >
+        <p
+          id="partner-title"
+          className="font-serif text-[17px] italic text-muted"
+        >
+          Alcuni dei nostri partner e sostenitori
         </p>
         <div className="grid grid-cols-5 items-center gap-[clamp(24px,3vw,52px)] max-md:grid-cols-3 max-sm:grid-cols-2">
           {partners.map((partner, index) => (

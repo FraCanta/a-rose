@@ -54,7 +54,7 @@ export function HeroSection() {
         <div className="relative min-h-[440px] w-full overflow-hidden sm:min-h-[520px] lg:min-h-[650px]">
           <Image
             className="object-cover object-[56%_center]"
-            src="/images/hero-laboratorio.jpg"
+            src="/images/hero_image.jpg"
             alt="Ricercatrice oncologica al lavoro con un microscopio"
             fill
             priority
