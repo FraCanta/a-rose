@@ -14,7 +14,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-wine/10 bg-white">
-      <div className="relative z-[60] mx-auto grid min-h-24 w-full max-w-site grid-cols-[auto_1fr_auto] items-center px-4 lg:px-0 max-sm:min-h-[84px]">
+      <div className="relative z-[60] mx-auto grid min-h-24 w-full max-w-site grid-cols-[auto_1fr_auto] items-center px-4 lg:px-12 2xl:px-0 max-sm:min-h-[84px]">
         <Link
           className="flex shrink-0 items-center"
           href="/"

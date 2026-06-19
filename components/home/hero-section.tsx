@@ -6,11 +6,12 @@ import { button, outlineButton } from "./styles";
 
 export function HeroSection() {
   return (
-    <section className="overflow-hidden border-b border-line bg-paper" id="top">
-      <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-2">
-        <div className="flex flex-col justify-center px-6 py-14 sm:px-10 sm:py-16 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+36px)]">
+    <section className="overflow-hidden border-b border-line bg-paper">
+      <div className="grid min-h-[calc(100svh-84px)] w-full grid-cols-1 lg:grid-cols-2 max-sm:min-h-[calc(100svh-84px)]">
+        {" "}
+        <div className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+10px)]">
           <Eyebrow>Ricerca, formazione, divulgazione</Eyebrow>
-          <h1 className="m-0 max-w-[760px] font-serif text-[clamp(44px,8vw,44px)] xs:text-[clamp(46px,8vw,76px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink">
+          <h1 className="m-0 max-w-[760px] font-serif text-[clamp(44px,8vw,44px)] lg:text-[clamp(64px,8vw,46px)] 2xl:text-[clamp(46px,8vw,76px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink">
             Ci si cura meglio,
             <br />
             dove si fa <em className="font-normal text-rose">buona ricerca.</em>
@@ -50,7 +51,6 @@ export function HeroSection() {
             </span>
           </div>
         </div>
-
         <div className="relative min-h-[440px] w-full overflow-hidden sm:min-h-[520px] lg:min-h-[650px]">
           <Image
             className="object-cover object-[56%_center]"
