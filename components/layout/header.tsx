@@ -37,7 +37,7 @@ export function Header() {
             <Link
               key={href}
               className="relative whitespace-nowrap py-2 transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-rose after:transition-transform hover:text-wine hover:after:scale-x-100"
-              href={`/${href}`}
+              href={href}
             >
               {label}
             </Link>

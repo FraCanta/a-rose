@@ -7,8 +7,9 @@ const footerColumns = [
   {
     title: "Esplora",
     links: [
-      ["Chi siamo", "/#missione"],
+      ["Chi siamo", "/chi-siamo"],
       ["La ricerca", "/#ricerca"],
+      ["Team", "/team"],
       ["Eventi", "/#eventi"],
       ["News", "/#news"],
     ],

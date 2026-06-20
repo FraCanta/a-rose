@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "./eyebrow";
 import { Icon } from "./icons";
-import { button, container, heading, section } from "./styles";
+import { container, heading, section } from "./styles";
 
 export function ResearchSection() {
   return (
@@ -38,7 +38,10 @@ export function ResearchSection() {
             <i className="h-px w-6 bg-rose max-sm:w-3" />
             <span>Cura</span>
           </div>
-          <Link className={button} href="#contatti">
+          <Link
+            className="w-full lg:max-w-max inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-wine bg-wine px-8 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep"
+            href="#contatti"
+          >
             Scopri i progetti <Icon className="size-5" name="arrow" />
           </Link>
         </div>
