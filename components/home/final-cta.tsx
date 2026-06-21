@@ -31,7 +31,7 @@ export function FinalCta() {
           <br className="max-sm:hidden" />
           <em className="font-normal text-[#efabb6]"> la ricerca alla cura.</em>
         </h2>
-        <Link className={lightButton} href="/#dona">
+        <Link className={lightButton} href="/sostieni-la-ricerca">
           Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
         </Link>
       </div>

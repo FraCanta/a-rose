@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 export default function TeamPage() {
   return (
     <main id="contenuto">
-      <section className="overflow-hidden border-b border-line bg-paper">
-        <div className="grid min-h-[calc(100svh-96px)] w-full grid-cols-1 lg:grid-cols-2">
+      <section className="overflow-hidden ">
+        <div className="grid w-full grid-cols-1 lg:min-h-[720px] lg:grid-cols-2">
           <Entrance
             className="flex flex-col justify-center px-6 py-16 sm:px-10 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+10px)]"
             delay={0.08}
@@ -25,23 +25,26 @@ export default function TeamPage() {
           >
             <Eyebrow>Il team A-ROSE</Eyebrow>
             <h1 className="font-serif text-[clamp(48px,5.5vw,82px)] font-normal leading-[0.98] tracking-[-0.045em] text-ink">
-              Le <em className="font-normal text-rose">menti brillanti</em> dietro le nostre
+              Le <em className="font-normal text-rose">menti brillanti</em>{" "}
+              dietro le nostre
               <br />
               <em className="font-normal text-rose">ricerche</em> innovative
             </h1>
             <p className="mt-8 max-w-[720px] text-lg leading-[1.8] text-muted">
-              Ogni membro combina esperienze, competenze specializzate e un impegno profondo contro il cancro. La collaborazione interdisciplinare unisce scienza, clinica e umanità.
+              Ogni membro combina esperienze, competenze specializzate e un
+              impegno profondo contro il cancro. La collaborazione
+              interdisciplinare unisce scienza, clinica e umanità.
             </p>
           </Entrance>
 
           <Entrance
-            className="relative min-h-[460px] w-full overflow-hidden bg-ivory sm:min-h-[560px] lg:min-h-[680px]"
+            className="relative min-h-[340px] w-full overflow-hidden bg-ivory sm:min-h-[430px] lg:min-h-[720px]"
             delay={0.04}
             direction="fade"
             scaleFrom={1.025}
           >
             <Image
-              className="object-cover object-[center_42%]"
+              className="object-cover object-top"
               src="/images/A-ROSE_group.jpg"
               alt="Carlotta Giorgi, Paolo Pinton, Gabriele Anania e Francesco Fiorica"
               fill

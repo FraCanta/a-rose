@@ -18,7 +18,7 @@ export function ContactSection() {
             Scrivici per ricevere informazioni sui nostri progetti, sulle iniziative in programma,
             sulle modalità di donazione o sulle possibilità di collaborazione.
           </p>
-          <Link className={button} href="#footer-contact">
+          <Link className={`${button} !inline-flex`} href="/contatti">
             Vedi i contatti <Icon className="size-5" name="arrow" />
           </Link>
         </div>

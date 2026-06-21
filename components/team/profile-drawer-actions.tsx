@@ -5,7 +5,10 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/home/icons";
-import type { WordPressPublication } from "@/lib/wordpress";
+import type {
+  WordPressPublication,
+  WordPressPublicationSource,
+} from "@/lib/wordpress";
 
 type DrawerView = "curriculum" | "publications";
 
@@ -13,8 +16,8 @@ type ProfileDrawerActionsProps = {
   curriculumKey: string;
   curriculumUrl: string;
   name: string;
-  publicationPageUrl: string;
   publications: WordPressPublication[];
+  sources: WordPressPublicationSource[];
 };
 
 const actionClass =
@@ -24,8 +27,8 @@ export function ProfileDrawerActions({
   curriculumKey,
   curriculumUrl,
   name,
-  publicationPageUrl,
   publications,
+  sources,
 }: ProfileDrawerActionsProps) {
   const [view, setView] = useState<DrawerView | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -71,14 +74,20 @@ export function ProfileDrawerActions({
             initial={reducedMotion ? false : { x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ duration: reducedMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.45,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
             <header className="flex items-start justify-between gap-6 border-b border-line px-6 py-6 sm:px-9">
               <div>
                 <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">
                   {view === "curriculum" ? "Curriculum" : "Pubblicazioni"}
                 </p>
-                <h2 className="mt-2 font-serif text-3xl font-normal text-ink" id="profile-drawer-title">
+                <h2
+                  className="mt-2 font-serif text-3xl font-normal text-ink"
+                  id="profile-drawer-title"
+                >
                   {name}
                 </h2>
               </div>
@@ -89,7 +98,9 @@ export function ProfileDrawerActions({
                 ref={closeButtonRef}
                 onClick={() => setView(null)}
               >
-                <span className="text-2xl leading-none" aria-hidden="true">&times;</span>
+                <span className="text-2xl leading-none" aria-hidden="true">
+                  &times;
+                </span>
               </button>
             </header>
 
@@ -106,7 +117,8 @@ export function ProfileDrawerActions({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Apri il PDF in una nuova scheda <Icon className="size-4" name="arrow" />
+                  Apri il PDF in una nuova scheda{" "}
+                  <Icon className="size-4" name="arrow" />
                 </Link>
               </div>
             ) : (
@@ -116,48 +128,72 @@ export function ProfileDrawerActions({
               >
                 {publications.length > 0 ? (
                   <>
-                    <p className="mb-6 text-xs font-semibold text-muted">
-                      Fonte: PubMed, tramite le pagine editoriali A-ROSE.
-                    </p>
+                    {sources.length ? (
+                      <div className="mb-7 rounded-2xl border border-line bg-white p-4">
+                        <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
+                          Fonti bibliografiche complete
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {sources.map((source) => (
+                            <Link
+                              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-wine px-4 text-xs font-bold text-wine transition hover:bg-wine hover:text-white"
+                              href={source.href}
+                              key={source.href}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {source.label}{" "}
+                              <Icon className="size-3.5" name="arrow" />
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
                     <ol className="grid gap-4">
-                    {publications.map((publication, index) => (
-                      <li className="border-b border-line pb-5" key={`${publication.href}-${index}`}>
-                        <span className="text-[10px] font-bold text-rose">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <h3 className="mt-2 font-serif text-xl leading-snug text-ink">
-                          {publication.title}
-                        </h3>
-                        {publication.summary ? (
-                          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
-                            {publication.summary}
-                          </p>
-                        ) : null}
-                        <Link
-                          className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-wine"
-                          href={publication.href}
-                          target="_blank"
-                          rel="noreferrer"
+                      {publications.map((publication, index) => (
+                        <li
+                          className="border-b border-line pb-5"
+                          key={`${publication.href}-${index}`}
                         >
-                          Approfondisci <Icon className="size-4" name="arrow" />
-                        </Link>
-                      </li>
-                    ))}
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="text-[10px] font-bold text-rose">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            {publication.sourceLabel ? (
+                              <span className="rounded-full bg-rose-soft px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-wine">
+                                {publication.sourceLabel}
+                              </span>
+                            ) : null}
+                          </div>
+                          <h3 className="mt-2 font-serif text-xl leading-snug text-ink">
+                            {publication.title}
+                          </h3>
+                          {publication.summary ? (
+                            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
+                              {publication.summary}
+                            </p>
+                          ) : null}
+                          {publication.href ? (
+                            <Link
+                              className="mt-3 inline-flex items-center gap-2 text-xs font-bold text-wine"
+                              href={publication.href}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              Apri fonte{" "}
+                              <Icon className="size-4" name="arrow" />
+                            </Link>
+                          ) : null}
+                        </li>
+                      ))}
                     </ol>
                   </>
                 ) : (
                   <p className="text-base leading-relaxed text-muted">
-                    L&apos;elenco aggiornato è disponibile nella pagina delle pubblicazioni.
+                    L&apos;elenco aggiornato è disponibile nella pagina delle
+                    pubblicazioni.
                   </p>
                 )}
-                <Link
-                  className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-wine px-6 font-bold text-white"
-                  href={publicationPageUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Vedi tutte le pubblicazioni <Icon className="size-4" name="arrow" />
-                </Link>
               </div>
             )}
           </motion.aside>
@@ -169,10 +205,18 @@ export function ProfileDrawerActions({
   return (
     <>
       <div className="mt-8 flex flex-wrap gap-3">
-        <button className={actionClass} type="button" onClick={() => setView("curriculum")}>
+        <button
+          className={actionClass}
+          type="button"
+          onClick={() => setView("curriculum")}
+        >
           Curriculum <Icon className="size-4" name="arrow" />
         </button>
-        <button className={actionClass} type="button" onClick={() => setView("publications")}>
+        <button
+          className={actionClass}
+          type="button"
+          onClick={() => setView("publications")}
+        >
           Pubblicazioni <Icon className="size-4" name="arrow" />
         </button>
       </div>

@@ -10,7 +10,8 @@ const fallbackEvent = {
   excerpt:
     "Segui le iniziative A-ROSE dedicate a scienza, prevenzione e sostegno alla ricerca oncologica.",
   image: "/images/Arose_PicWebsite_Bambina.jpg",
-  href: "https://a-roseodv.org/eventi/",
+  href: "/eventi",
+  slug: "",
   isUpcoming: false,
   date: null,
 };
@@ -66,9 +67,7 @@ export async function EventsSection() {
             </p>
             <Link
               className="mt-6 inline-flex w-fit items-center gap-2 border-b border-white/50 pb-1 text-xs font-bold text-white transition hover:border-white"
-              href={event.href}
-              target="_blank"
-              rel="noreferrer"
+              href={"slug" in event && event.slug ? `/eventi/${event.slug}` : event.href}
             >
               Leggi l&apos;evento <Icon className="size-4" name="arrow" />
             </Link>
@@ -88,9 +87,7 @@ export async function EventsSection() {
           </p>
           <Link
             className="inline-flex min-h-[52px] w-full items-center justify-center gap-3 rounded-full border border-wine bg-wine px-8 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep lg:max-w-max"
-            href="https://a-roseodv.org/eventi/"
-            target="_blank"
-            rel="noreferrer"
+            href="/eventi"
           >
             Scopri gli eventi <Icon className="size-5" name="arrow" />
           </Link>

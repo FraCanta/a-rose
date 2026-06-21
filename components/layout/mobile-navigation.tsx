@@ -120,7 +120,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                 </p>
                 <Link
                   className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-6 font-bold text-wine transition hover:bg-rose-soft"
-                  href="/#dona"
+                  href="/sostieni-la-ricerca"
                   onClick={() => setIsOpen(false)}
                 >
                   Sostieni la ricerca{" "}

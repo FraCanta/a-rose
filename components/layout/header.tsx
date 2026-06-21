@@ -44,7 +44,7 @@ export function Header() {
           ))}
         </nav>
 
-        <Link className={`${button} hidden lg:inline-flex`} href="/#dona">
+        <Link className={`${button} hidden lg:inline-flex`} href="/sostieni-la-ricerca">
           Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
         </Link>
 

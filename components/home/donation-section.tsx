@@ -35,9 +35,8 @@ export function DonationSection() {
           </ul>
         </div>
 
-        <form
+        <div
           className="relative bg-paper p-12 shadow-elevated before:absolute before:inset-3 before:border before:border-rose-soft before:content-[''] max-sm:p-7"
-          action="#"
           aria-labelledby="donation-title"
         >
           <div className="relative mb-8 flex items-center gap-5">
@@ -83,10 +82,10 @@ export function DonationSection() {
             </div>
           </fieldset>
 
-          <button className={`${button} relative mt-5 w-full`} type="submit">
+          <Link className={`${button} relative mt-5 w-full !inline-flex`} href="/sostieni-la-ricerca">
             Dona ora <Icon className="size-[18px]" name="heart" />
-          </button>
-          <Link className={`${textLink} relative mx-auto mt-5 text-xs`} href="#trasparenza">
+          </Link>
+          <Link className={`${textLink} relative mx-auto mt-5 text-xs`} href="/come-sostenerci">
             Scopri come usiamo le donazioni <Icon className="size-4" name="arrow" />
           </Link>
           <p className="relative mt-6 flex gap-2 border-t border-line pt-5 text-[10px] leading-relaxed text-muted">
@@ -94,7 +93,7 @@ export function DonationSection() {
             Le donazioni sono tracciabili e rendicontate. Puoi consultare documenti, bilanci e
             informazioni fiscali nella sezione Trasparenza.
           </p>
-        </form>
+        </div>
       </div>
     </section>
   );

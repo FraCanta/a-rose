@@ -33,7 +33,7 @@ export function AboutObjective({ image, objective }: AboutObjectiveProps) {
           <p className="mt-8 text-[17px] leading-[1.85] text-white/72">
             {objective}
           </p>
-          <Link className={`${lightButton} mt-8`} href="/#ricerca">
+          <Link className={`${lightButton} mt-8`} href="/progetti">
             Esplora i progetti <Icon className="size-5" name="arrow" />
           </Link>
         </div>

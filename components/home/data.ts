@@ -2,12 +2,12 @@ import type { IconName } from "./icons";
 
 export const navigation = [
   ["Chi siamo", "/chi-siamo"],
-  ["Progetti", "/#ricerca"],
+  ["Progetti", "/progetti"],
   ["Team", "/team"],
-  ["Come sostenerci", "/#dona"],
-  ["Eventi", "/#eventi"],
-  ["News", "/#news"],
-  ["Contatti", "/#contatti"],
+  ["Come sostenerci", "/come-sostenerci"],
+  ["Eventi", "/eventi"],
+  ["News", "/news"],
+  ["Contatti", "/contatti"],
 ] as const;
 
 export const pillars: Array<{

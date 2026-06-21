@@ -24,7 +24,9 @@ type WordPressPostResponse = {
   id: number;
   date: string;
   link: string;
+  slug: string;
   title: WordPressRendered;
+  content?: WordPressRendered;
   excerpt: WordPressRendered;
   _embedded?: {
     "wp:featuredmedia"?: WordPressMedia[];
@@ -34,6 +36,7 @@ type WordPressPostResponse = {
 
 type WordPressPageResponse = {
   link: string;
+  title?: WordPressRendered;
   content: WordPressRendered;
 };
 
@@ -46,10 +49,20 @@ type WordPressEventResponse = {
   id: number;
   title: string;
   url: string;
+  slug: string;
   start_date: string;
+  end_date?: string;
   excerpt?: string;
   description?: string;
   image?: WordPressEventImage;
+  categories?: Array<{ name?: string }>;
+  venue?: {
+    venue?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    country?: string;
+  };
 };
 
 type WordPressEventsResponse = {
@@ -58,6 +71,7 @@ type WordPressEventsResponse = {
 
 export type WordPressPost = {
   id: number;
+  slug: string;
   title: string;
   excerpt: string;
   date: string;
@@ -67,20 +81,49 @@ export type WordPressPost = {
   href: string;
 };
 
+export type WordPressPostDetail = WordPressPost & {
+  contentHtml: string;
+};
+
+export type WordPressProject = WordPressPostDetail & {
+  kind: "Ricerca scientifica" | "Divulgazione e raccolta fondi";
+};
+
 export type WordPressEvent = {
   id: number;
+  slug: string;
   title: string;
   excerpt: string;
   date: string;
+  endDate: string | null;
   image: string | null;
   href: string;
   isUpcoming: boolean;
+  category: string;
+  venue: string | null;
+  address: string | null;
+  contentHtml: string;
+  gallery: string[];
 };
 
 export type WordPressPublication = {
   title: string;
   summary: string;
   href: string;
+  sourceLabel: string | null;
+};
+
+export type WordPressPublicationSource = {
+  label: string;
+  href: string;
+};
+
+export type WordPressSitePage = {
+  title: string;
+  text: string;
+  contentHtml: string;
+  sourceUrl: string;
+  images: string[];
 };
 
 export type AboutContent = {
@@ -211,16 +254,39 @@ function getEventImage(image?: WordPressEventImage) {
 }
 
 function mapEvent(event: WordPressEventResponse, isUpcoming: boolean): WordPressEvent {
+  const venueParts = [
+    event.venue?.address,
+    event.venue?.city,
+    event.venue?.province,
+    event.venue?.country,
+  ].filter(Boolean);
+
+  const gallery = Array.from(
+    (event.description ?? "").matchAll(
+      /https:\/\/a-roseodv\.org\/wp-content\/uploads\/[^"'\s<]+\.(?:avif|gif|jpe?g|png|webp)/gi,
+    ),
+    (match) => decodeEntities(match[0]),
+  ).filter((image, index, images) => images.indexOf(image) === index);
+
   return {
     id: event.id,
+    slug: event.slug,
     title: plainText(event.title),
     excerpt:
       plainText(event.excerpt ?? event.description ?? "") ||
       "Un'iniziativa A-ROSE dedicata a ricerca, prevenzione e comunità.",
     date: event.start_date.replace(" ", "T"),
+    endDate: event.end_date ? event.end_date.replace(" ", "T") : null,
     image: getEventImage(event.image),
     href: event.url,
     isUpcoming,
+    category: event.categories?.[0]?.name ?? "Evento",
+    venue: event.venue?.venue ?? null,
+    address: venueParts.length ? venueParts.join(", ") : null,
+    contentHtml: (event.description ?? "")
+      .replace(/<figure[\s\S]*?<\/figure>/gi, "")
+      .replace(/<img[^>]*>/gi, ""),
+    gallery,
   };
 }
 
@@ -237,6 +303,84 @@ function getFeaturedImage(media?: WordPressMedia) {
 
 function getCategory(terms?: WordPressTerm[][]) {
   return terms?.flat().find((term) => term.taxonomy === "category")?.name ?? "News";
+}
+
+function getProjectKind(title: string): WordPressProject["kind"] {
+  return /pasta della vita|liana medici pagnanelli|ottobre rosa|batteremo il cancro|grandi riso/i.test(
+    title,
+  )
+    ? "Divulgazione e raccolta fondi"
+    : "Ricerca scientifica";
+}
+
+const projectCardSummaries: Record<string, string> = {
+  "correlazione-tra-obesita-infiammazione-e-sviluppo-tumorale-in-donne-affette-da-carcinoma-dellendometrio":
+    "In collaborazione con U.O. Ginecologia ed Ostetricia. L’obiettivo è identificare un nuovo bersaglio terapeutico per sviluppare trattamenti personalizzati.",
+  "identificazione-di-un-nuovo-fattore-prognostico-nel-tumore-alla-mammella":
+    "In collaborazione con U.O. Chirurgia e Anatomia Patologica. Lo studio cerca un fattore prognostico utile a scegliere il chemioterapico più adatto per ogni donna.",
+  "identificazione-di-un-nuovo-meccanismo-di-resistenza-ai-chemioterapici-nel-tumore-al-colon":
+    "In collaborazione con U.O. Chirurgia Generale. Il progetto studia un meccanismo di resistenza da colpire con terapie farmacologiche specifiche per il singolo paziente.",
+  "analisi-degli-effetti-della-radioterapia-sullo-stato-infiammatorio":
+    "In collaborazione con U.O. Oncologia Radioterapica. Lo studio valuta gli effetti della radioterapia sull’infiammazione per sviluppare trattamenti adiuvanti mirati.",
+  "ricerca-di-nuove-prospettive-terapeutiche-per-il-mesotelioma-il-tumore-dellamianto":
+    "In collaborazione con U.O. Chirurgia Toracica, il progetto esplora nuove prospettive terapeutiche per il mesotelioma, il tumore associato all’amianto.",
+  "identificazioni-di-nuovi-assi-molecolari-come-target-per-il-tumore-al-polmone-e-il-melanoma":
+    "In collaborazione con U.O. Chirurgia Toracica e U.O. Dermatologia, lo studio ricerca nuovi assi molecolari da utilizzare come bersagli terapeutici.",
+  "ricerca-di-fattori-di-rischio-per-fenomeni-cardiovascolari-dopo-trattamenti-antitumorali":
+    "In collaborazione con U.O. Fisica Medica, il progetto ricerca fattori di rischio cardiovascolare successivi ai trattamenti antitumorali.",
+  "pasta-della-vita":
+    "La tradizione della pasta fresca incontra la ricerca: un progetto con il pastificio La Lanterna che trasforma un gesto quotidiano in un sostegno concreto.",
+  "mostra-su-liana-medici-pagnanelli":
+    "Cultura e solidarietà si incontrano: i proventi del catalogo della mostra dedicata a Liana Medici Pagnanelli sostengono la ricerca oncologica ferrarese.",
+  "ottobre-rosa-2024":
+    "Una serie di incontri nelle terre degli Estensi per parlare di salute, prevenzione e ricerca oncologica insieme a esperti e comunità.",
+  "batteremo-il-cancro-storia-di-una-ricercatrice-mamma-di-cinque-figli":
+    "Dall’esperienza della ricercatrice Carlotta Giorgi nasce una pubblicazione che sensibilizza sull’importanza della ricerca oncologica.",
+  "elementor-28444":
+    "La collaborazione con Grandi Riso ha destinato il 10% delle vendite del Carnaroli A-ROSE alla ricerca, ai contratti dei ricercatori e alle strumentazioni di laboratorio.",
+};
+
+function extractProjectsFromHtml(html: string): WordPressProject[] {
+  const headingMatches = Array.from(
+    html.matchAll(/<h2[^>]*class=["'][^"']*entry-title[^"']*["'][^>]*>([\s\S]*?)<\/h2>/gi),
+  );
+
+  return headingMatches
+    .flatMap((match, index): WordPressProject[] => {
+      const headingHtml = match[1] ?? "";
+      const link = headingHtml.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
+      if (!link) return [];
+
+      const sourceUrl = decodeEntities(link[1]);
+      const slug = new URL(sourceUrl).pathname.split("/").filter(Boolean).at(-1) ?? "";
+      const title = plainText(link[2]);
+      if (!slug || !title) return [];
+
+      const segmentStart = html.lastIndexOf('class="col-lg-4 col-md-6"', match.index);
+      const nextSegment = html.indexOf('class="col-lg-4 col-md-6"', (match.index ?? 0) + match[0].length);
+      const segment = html.slice(Math.max(0, segmentStart), nextSegment > 0 ? nextSegment : undefined);
+      const image = segment.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] ?? null;
+      const afterHeading = segment.slice(segment.indexOf(match[0]) + match[0].length);
+      const excerpt = plainText(afterHeading.match(/<p[^>]*>([\s\S]*?)<\/p>/i)?.[1] ?? "");
+
+      return [{
+        id: index + 1,
+        slug,
+        title,
+        excerpt: projectCardSummaries[slug] ?? excerpt,
+        date: "2025-01-01T00:00:00",
+        category: getProjectKind(title),
+        kind: getProjectKind(title),
+        image: image ? decodeEntities(image) : null,
+        imageAlt: `Immagine del progetto ${title}`,
+        href: sourceUrl,
+        contentHtml: "",
+      } satisfies WordPressProject];
+    })
+    .filter(
+      (project, index, projects) =>
+        projects.findIndex((item) => item.slug === project.slug) === index,
+    );
 }
 
 export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
@@ -262,6 +406,7 @@ export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
 
       return {
         id: post.id,
+        slug: post.slug,
         title: plainText(post.title.rendered),
         excerpt: plainText(post.excerpt.rendered),
         date: post.date,
@@ -274,6 +419,123 @@ export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
   } catch {
     return [];
   }
+}
+
+export async function getPosts(limit = 9): Promise<WordPressPost[]> {
+  return getLatestPosts(limit);
+}
+
+export async function getPostBySlug(slug: string): Promise<WordPressPostDetail | null> {
+  const params = new URLSearchParams({
+    _embed: "1",
+    slug,
+    per_page: "1",
+  });
+
+  try {
+    const response = await fetch(`${WORDPRESS_API_URL}?${params}`, {
+      next: { revalidate: 3600 },
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return null;
+
+    const [post] = (await response.json()) as WordPressPostResponse[];
+    if (!post) return null;
+
+    const media = post._embedded?.["wp:featuredmedia"]?.[0];
+
+    return {
+      id: post.id,
+      slug: post.slug,
+      title: plainText(post.title.rendered),
+      excerpt: plainText(post.excerpt.rendered),
+      date: post.date,
+      category: decodeEntities(getCategory(post._embedded?.["wp:term"])),
+      image: getFeaturedImage(media),
+      imageAlt:
+        plainText(media?.alt_text ?? "") ||
+        `Immagine dell'articolo ${plainText(post.title.rendered)}`,
+      href: post.link,
+      contentHtml: post.content?.rendered ?? "",
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function getProjects(): Promise<WordPressProject[]> {
+  const page = await getSitePage("progetti");
+  if (!page) return [];
+
+  const paginationPages = Array.from(
+    page.contentHtml.matchAll(/ekit-blog-posts-paged=(\d+)/gi),
+    (match) => Number.parseInt(match[1], 10),
+  ).filter((value) => Number.isFinite(value) && value > 1);
+  const lastPage = Math.min(Math.max(1, ...paginationPages), 10);
+  const archivePages = await Promise.all(
+    Array.from({ length: lastPage - 1 }, (_, index) => index + 2).map(async (pageNumber) => {
+      try {
+        const response = await fetch(
+          `${WORDPRESS_ORIGIN}/progetti/?ekit-blog-posts-paged=${pageNumber}`,
+          {
+            next: { revalidate: 3600 },
+            headers: { Accept: "text/html" },
+          },
+        );
+
+        return response.ok ? extractProjectsFromHtml(await response.text()) : [];
+      } catch {
+        return [];
+      }
+    }),
+  );
+  const projects = [
+    ...extractProjectsFromHtml(page.contentHtml),
+    ...archivePages.flat(),
+  ].filter(
+    (project, index, allProjects) =>
+      allProjects.findIndex((item) => item.slug === project.slug) === index,
+  );
+  const enrichedProjects = await Promise.all(
+    projects.map(async (project) => {
+      const post = await getPostBySlug(project.slug);
+      if (!post) return project;
+
+      return {
+        ...post,
+        category: project.kind,
+        kind: project.kind,
+        excerpt:
+          projectCardSummaries[project.slug] ||
+          post.excerpt ||
+          project.excerpt ||
+          plainText(post.contentHtml).replace(post.title, "").trim().slice(0, 260) ||
+          "Un progetto A-ROSE a sostegno della ricerca oncologica e della comunità.",
+        image: post.image ?? project.image,
+      } satisfies WordPressProject;
+    }),
+  );
+
+  return enrichedProjects;
+}
+
+export async function getProjectBySlug(slug: string): Promise<WordPressProject | null> {
+  const [post, projects] = await Promise.all([getPostBySlug(slug), getProjects()]);
+  const project = projects.find((item) => item.slug === slug);
+
+  if (post) {
+    const kind = project?.kind ?? getProjectKind(post.title);
+    return {
+      ...post,
+      category: kind,
+      kind,
+      excerpt: post.excerpt || project?.excerpt || "",
+      image: post.image ?? project?.image ?? null,
+    };
+  }
+
+  return project ?? null;
 }
 
 async function fetchEvents(params: URLSearchParams) {
@@ -309,6 +571,58 @@ export async function getFeaturedEvent(): Promise<WordPressEvent | null> {
     const latestPast = past.sort((a, b) => b.start_date.localeCompare(a.start_date))[0];
 
     return latestPast ? mapEvent(latestPast, false) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getEvents(limit = 9): Promise<WordPressEvent[]> {
+  const today = new Date().toISOString().slice(0, 10);
+
+  try {
+    const upcomingParams = new URLSearchParams({
+      per_page: String(limit),
+      start_date: `${today} 00:00:00`,
+    });
+    const upcoming = (await fetchEvents(upcomingParams)).map((event) =>
+      mapEvent(event, true),
+    );
+
+    if (upcoming.length >= limit) return upcoming.slice(0, limit);
+
+    const pastParams = new URLSearchParams({
+      per_page: String(Math.max(limit, 20)),
+      start_date: "2019-01-01 00:00:00",
+      end_date: `${today} 23:59:59`,
+    });
+    const past = (await fetchEvents(pastParams))
+      .sort((a, b) => b.start_date.localeCompare(a.start_date))
+      .map((event) => mapEvent(event, false));
+
+    return [...upcoming, ...past].slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
+export async function getEventBySlug(slug: string): Promise<WordPressEvent | null> {
+  try {
+    const eventId = Number.parseInt(slug, 10);
+
+    if (!Number.isNaN(eventId)) {
+      const response = await fetch(`${EVENTS_API_URL}/${eventId}`, {
+        next: { revalidate: 3600 },
+        headers: { Accept: "application/json" },
+      });
+
+      if (response.ok) {
+        const event = (await response.json()) as WordPressEventResponse;
+        return mapEvent(event, new Date(event.start_date) >= new Date());
+      }
+    }
+
+    const events = await getEvents(50);
+    return events.find((event) => event.slug === slug || String(event.id) === slug) ?? null;
   } catch {
     return null;
   }
@@ -425,6 +739,7 @@ export async function getPublications(
       const link = item.match(
         /<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i,
       );
+      const href = link?.[1] ?? "";
       const title = plainText(link?.[2] ?? item).replace(
         /\s+(?:CONCLUSIONS?|BACKGROUND|INTRODUCTION):.*$/i,
         "",
@@ -433,14 +748,93 @@ export async function getPublications(
       const summary = (fullText.startsWith(title)
         ? fullText.slice(title.length).trim()
         : fullText).slice(0, 600);
+      const sourceLabel = href
+        ? decodeEntities(
+            href
+              .replace(/^https?:\/\/(?:www\.)?/i, "")
+              .replace(/\/.*$/, "")
+              .replace(/^pubmed\.ncbi\.nlm\.nih\.gov$/i, "PubMed"),
+          )
+        : null;
 
       return {
         title: title || `Pubblicazione ${index + 1}`,
         summary,
-        href: link?.[1] ?? page.link,
+        href,
+        sourceLabel,
       };
     });
   } catch {
     return [];
+  }
+}
+
+export async function getPublicationSources(
+  slug: string,
+): Promise<WordPressPublicationSource[]> {
+  const params = new URLSearchParams({ slug, per_page: "1" });
+
+  try {
+    const response = await fetch(`${ABOUT_API_URL}?${params}`, {
+      next: { revalidate: 86400 },
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return [];
+
+    const [page] = (await response.json()) as WordPressPageResponse[];
+    if (!page) return [];
+
+    const sources = Array.from(
+      page.content.rendered.matchAll(
+        /<a[^>]+href=["']([^"']+)["'][^>]*>[\s\S]*?<span class=["']elementor-button-text["']>([\s\S]*?)<\/span>[\s\S]*?<\/a>/gi,
+      ),
+      (match) => ({
+        href: decodeEntities(match[1]),
+        label: plainText(match[2]),
+      }),
+    ).filter((source) =>
+      ["PubMed", "Google Scholar", "Scopus"].includes(source.label),
+    );
+
+    return sources.filter(
+      (source, index, allSources) =>
+        allSources.findIndex((item) => item.href === source.href) === index,
+    );
+  } catch {
+    return [];
+  }
+}
+
+export async function getSitePage(slug: string): Promise<WordPressSitePage | null> {
+  const params = new URLSearchParams({ slug, per_page: "1" });
+
+  try {
+    const response = await fetch(`${ABOUT_API_URL}?${params}`, {
+      next: { revalidate: 3600 },
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) return null;
+
+    const [page] = (await response.json()) as WordPressPageResponse[];
+    if (!page) return null;
+
+    const images = Array.from(
+      page.content.rendered.matchAll(
+        /https:\/\/a-roseodv\.org\/wp-content\/uploads\/[^"'\s<]+\.(?:avif|gif|jpe?g|png|webp)/gi,
+      ),
+      (match) => decodeEntities(match[0]),
+    ).filter((image, index, allImages) => allImages.indexOf(image) === index);
+
+    return {
+      title: plainText(page.title?.rendered ?? ""),
+      text: plainText(page.content.rendered),
+      contentHtml: page.content.rendered,
+      sourceUrl: page.link,
+      images,
+    };
+  } catch {
+    return null;
   }
 }

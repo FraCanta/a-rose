@@ -8,19 +8,19 @@ const footerColumns = [
     title: "Esplora",
     links: [
       ["Chi siamo", "/chi-siamo"],
-      ["La ricerca", "/#ricerca"],
+      ["La ricerca", "/progetti"],
       ["Team", "/team"],
-      ["Eventi", "/#eventi"],
-      ["News", "/#news"],
+      ["Eventi", "/eventi"],
+      ["News", "/news"],
     ],
   },
   {
     title: "Trasparenza",
     links: [
-      ["Bilanci e documenti", "/#trasparenza"],
+      ["Bilanci e documenti", "https://a-roseodv.org/trasparenza/"],
       ["5×1000", "/#trasparenza"],
-      ["Privacy", "/#trasparenza"],
-      ["Cookie policy", "/#trasparenza"],
+      ["Privacy", "https://a-roseodv.org/privacy-policy-2/"],
+      ["Cookie policy", "https://a-roseodv.org/cookie-policy/"],
     ],
   },
 ] as const;
@@ -73,11 +73,13 @@ export function Footer() {
           <h2 className="mb-3 mt-1 font-sans text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#e9a5b2]">
             Contatti
           </h2>
-          <p className="text-xs text-white/65">Email istituzionale da inserire</p>
+          <Link className="text-xs text-white/65 transition hover:text-white" href="mailto:info@a-roseodv.org">
+            info@a-roseodv.org
+          </Link>
           <p className="text-xs text-white/65">Ferrara, Italia</p>
           <Link
             className="mt-3 inline-flex w-fit items-center gap-2 border-b border-[#e9a5b2] font-bold text-[#e9a5b2]"
-            href="/#dona"
+            href="/sostieni-la-ricerca"
           >
             Sostieni A-ROSE <Icon className="size-4" name="arrow" />
           </Link>

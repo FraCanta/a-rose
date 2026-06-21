@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { container } from "@/components/home/styles";
-import { getPublications } from "@/lib/wordpress";
+import { getPublicationSources, getPublications } from "@/lib/wordpress";
 import { founders } from "./data";
 import { ProfileDrawerActions } from "./profile-drawer-actions";
 
@@ -14,6 +14,9 @@ const detailLabels = {
 export async function FounderProfiles() {
   const publicationsByFounder = await Promise.all(
     founders.map((founder) => getPublications(founder.publicationsSlug)),
+  );
+  const sourcesByFounder = await Promise.all(
+    founders.map((founder) => getPublicationSources(founder.publicationsSlug)),
   );
 
   return (
@@ -62,8 +65,8 @@ export async function FounderProfiles() {
                 curriculumKey={founder.key}
                 curriculumUrl={founder.curriculum}
                 name={founder.name}
-                publicationPageUrl={founder.publications}
                 publications={publicationsByFounder[index] ?? []}
+                sources={sourcesByFounder[index] ?? []}
               />
             </div>
           </div>

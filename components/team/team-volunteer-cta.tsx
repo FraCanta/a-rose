@@ -13,7 +13,7 @@ export function TeamVolunteerCta() {
           <br className="max-md:hidden" />
           <em className="font-normal text-rose"> la nostra missione.</em>
         </h2>
-        <Link className={`${button} mt-9 !inline-flex`} href="/#contatti">
+        <Link className={`${button} mt-9 !inline-flex`} href="/contatti">
           Diventa volontario <Icon className="size-5" name="arrow" />
         </Link>
       </div>

@@ -29,11 +29,11 @@ export function HeroSection() {
           <div className="flex flex-wrap items-center gap-2 max-sm:flex-col max-sm:items-stretch">
             <Link
               className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-wine bg-wine px-7 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep"
-              href="#dona"
+              href="/sostieni-la-ricerca"
             >
               Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
             </Link>
-            <Link className={outlineButton} href="#ricerca">
+            <Link className={outlineButton} href="/progetti">
               Scopri i progetti <Icon className="size-5" name="arrow" />
             </Link>
           </div>
@@ -48,7 +48,7 @@ export function HeroSection() {
               <br />
               <Link
                 className="inline-flex items-center gap-2 font-bold text-wine"
-                href="#trasparenza"
+                href="/come-sostenerci"
               >
                 Scopri come utilizziamo le donazioni{" "}
                 <Icon className="size-3.5" name="arrow" />

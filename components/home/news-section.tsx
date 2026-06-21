@@ -18,7 +18,7 @@ export async function NewsSection() {
     : articles.map((article, index) => ({
         ...article,
         date: null,
-        href: "https://a-roseodv.org/",
+        href: "/news",
         id: `fallback-${index}`,
       }));
 
@@ -34,7 +34,7 @@ export async function NewsSection() {
               <em className="font-normal text-rose">una forma di cura</em>
             </h2>
           </div>
-          <Link className={textLink} href="https://a-roseodv.org/" target="_blank" rel="noreferrer">
+          <Link className={textLink} href="/news">
             Tutti gli approfondimenti <Icon className="size-4" name="arrow" />
           </Link>
         </div>
@@ -86,9 +86,7 @@ export async function NewsSection() {
                 </p>
                 <Link
                   className={`${textLink} mt-auto pt-5 text-xs`}
-                  href={article.href}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={typeof article.id === "number" && "slug" in article ? `/news/${article.slug}` : article.href}
                   aria-label={`Leggi l'articolo: ${article.title}`}
                 >
                   Leggi l’articolo <Icon className="size-4" name="arrow" />

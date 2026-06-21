@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { container, heading, section } from "@/components/home/styles";
+import { MobilePartnersMarquee } from "./mobile-partners-marquee";
 
 type AboutPartnersProps = {
   partners: Array<{
@@ -20,7 +21,10 @@ export function AboutPartners({ partners }: AboutPartnersProps) {
             <br className="max-md:hidden" /> università e altre organizzazioni
           </h2>
         </div>
-        <div className="mx-auto mt-16 grid max-w-[1320px] grid-cols-2 items-center gap-x-16 gap-y-16 lg:grid-cols-3">
+        <div className="mt-12 lg:hidden">
+          <MobilePartnersMarquee partners={partners} />
+        </div>
+        <div className="mx-auto mt-16 hidden max-w-[1320px] items-center gap-x-16 gap-y-16 lg:grid lg:grid-cols-3">
           {partners.map((partner) => (
             <div
               className="flex h-32 items-center justify-center sm:h-40 lg:h-44"
