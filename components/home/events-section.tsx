@@ -9,7 +9,7 @@ const fallbackEvent = {
   title: "Incontri, divulgazione e comunità",
   excerpt:
     "Segui le iniziative A-ROSE dedicate a scienza, prevenzione e sostegno alla ricerca oncologica.",
-  image: "/images/Arose_PicWebsite_Bambina.jpg",
+  image: "/images/Arose_PicWebsite_Bambina.webp",
   href: "/eventi",
   slug: "",
   isUpcoming: false,

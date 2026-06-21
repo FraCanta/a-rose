@@ -47,21 +47,21 @@ export const articles = [
     category: "Prevenzione",
     title: "Screening oncologici: quando e perché farli",
     text: "Conoscere tempi, modalità e benefici degli screening aiuta a compiere scelte più consapevoli.",
-    image: "/images/prevenzione-dialogo.jpg",
+    image: "/images/prevenzione-dialogo.webp",
     alt: "Medica che illustra informazioni di prevenzione a una paziente",
   },
   {
     category: "Stili di vita",
     title: "Alimentazione e stile di vita nella prevenzione",
     text: "Le evidenze scientifiche e i comportamenti quotidiani che possono contribuire alla prevenzione.",
-    image: "/images/sostegno-cuore.jpg",
+    image: "/images/sostegno-cuore.webp",
     alt: "Mani che custodiscono un piccolo cuore rosa",
   },
   {
     category: "Approfondimento",
     title: "Tumori e prevenzione: cosa possiamo fare ogni giorno",
     text: "Piccole azioni, informazioni affidabili e controlli appropriati: una guida per orientarsi.",
-    image: "/images/ricerca-dettaglio.jpg",
+    image: "/images/ricerca-dettaglio.webp",
     alt: "Ricercatrice al lavoro su campioni di laboratorio",
   },
 ] as const;
@@ -72,14 +72,14 @@ export const team = [
     qualification: "Professore Ordinario di Patologia Generale",
     role: "Presidente dell’associazione e coordinatrice dei progetti di ricerca.",
     image: "/images/team/carlotta-giorgi.jpg",
-    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Giorgi.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Giorgi.webp",
   },
   {
     name: "Prof. Paolo Pinton",
     qualification: "Professore Ordinario di Patologia Generale",
     role: "Supervisore scientifico e responsabile della ricerca traslazionale.",
     image: "/images/team/paolo-pinton.jpg",
-    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Pinton.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Pinton.webp",
   },
   {
     name: "Dott. Francesco Fiorica",
@@ -87,14 +87,14 @@ export const team = [
       "Radio-Oncologo, Direttore UOC Radioterapia e Medicina Nucleare, Direttore Dipartimento di Oncologia Clinica, Oncologo Nutrizionista",
     role: "Consulente clinico e responsabile del collegamento tra ricerca e pazienti.",
     image: "/images/team/francesco-fiorica.jpg",
-    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Fiorica.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Fiorica.webp",
   },
   {
     name: "Prof. Gabriele Anania",
     qualification: "Chirurgo Oncologico, Dirigente Medico Chirurgia Generale",
     role: "Consulente clinico e responsabile del collegamento tra ricerca e pazienti.",
     image: "/images/team/gabriele-anania.jpg",
-    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Anania.jpg",
+    hoverImage: "/images/Arose_PicWebsiteT-ShirtA-Rose_Anania.webp",
   },
 ] as const;
 

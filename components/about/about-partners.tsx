@@ -36,7 +36,7 @@ export function AboutPartners({ partners }: AboutPartnersProps) {
                 alt={partner.name}
                 width={300}
                 height={100}
-                sizes="(max-width: 1023px) 50vw, 33vw"
+                sizes="(max-width: 1023px) 50vw, 40vw"
               />
             </div>
           ))}

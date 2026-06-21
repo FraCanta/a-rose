@@ -45,7 +45,7 @@ export default function TeamPage() {
           >
             <Image
               className="object-cover object-top"
-              src="/images/A-ROSE_group.jpg"
+              src="/images/A-ROSE_group.webp"
               alt="Carlotta Giorgi, Paolo Pinton, Gabriele Anania e Francesco Fiorica"
               fill
               sizes="(max-width: 1023px) 100vw, 50vw"

@@ -1,37 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageIntro } from "@/components/content/page-intro";
 import { DonationCheckout } from "@/components/donations/donation-checkout";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
-import { getSitePage } from "@/lib/wordpress";
 
 export const metadata: Metadata = {
   title: "Sostieni la ricerca | A-ROSE ODV",
   description: "Dona ad A-ROSE ODV e sostieni progetti di ricerca oncologica, formazione e prevenzione.",
 };
 
-export default async function DonatePage() {
-  const source = await getSitePage("come-sostenerci");
-
+export default function DonatePage() {
   return (
     <main id="contenuto">
-      <PageIntro
-        eyebrow="Dona ora"
-        title="Il tuo contributo"
-        accent="accelera la ricerca."
-        text="Ogni donazione sostiene attività scientifiche, borse di studio e iniziative di prevenzione. Le donazioni sono tracciabili e rendicontate."
-        image={source?.images.find((image) => image.includes("Ricerca.jpg")) ?? source?.images[1]}
-        imageAlt="Ricerca oncologica sostenuta dalle donazioni"
-      />
-
       <section className={`${section} scroll-mt-24 bg-ivory`} id="donazione">
         <div className={`${container} grid items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24`}>
           <div>
-            <Eyebrow>Una scelta concreta</Eyebrow>
-            <h2 className={heading}>Scegli come <em className="font-normal text-rose">contribuire.</em></h2>
-            <p className="mt-7 text-base leading-[1.8] text-muted">Puoi donare online oppure tramite bonifico bancario. Per destinare il contributo a un progetto specifico, indicalo nella causale.</p>
+            <Eyebrow>Sostieni la ricerca</Eyebrow>
+            <h1 className={heading}>Il tuo contributo <em className="font-normal text-rose">accelera la ricerca.</em></h1>
+            <p className="mt-7 text-base leading-[1.8] text-muted">Ogni donazione sostiene attività scientifiche, borse di studio e iniziative di prevenzione. Puoi donare online oppure tramite bonifico bancario; per destinare il contributo a un progetto specifico, indicalo nella causale.</p>
           </div>
           <div className="grid gap-6">
             <article className="border border-line bg-white p-7 shadow-soft sm:p-10">

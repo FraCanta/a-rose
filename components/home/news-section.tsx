@@ -12,7 +12,7 @@ export async function NewsSection() {
     ? latestPosts.map((post, index) => ({
         ...post,
         alt: post.imageAlt,
-        image: post.image ?? articles[index]?.image ?? "/images/ricerca-dettaglio.jpg",
+        image: post.image ?? articles[index]?.image ?? "/images/ricerca-dettaglio.webp",
         text: post.excerpt,
       }))
     : articles.map((article, index) => ({

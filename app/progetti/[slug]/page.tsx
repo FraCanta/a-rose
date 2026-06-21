@@ -5,6 +5,8 @@ import { EditorialDetail } from "@/components/editorial/editorial-detail";
 import { RelatedGrid } from "@/components/editorial/related-grid";
 import { Icon } from "@/components/home/icons";
 import { textLink } from "@/components/home/styles";
+import { outreachProjectContent } from "@/components/projects/outreach-project-data";
+import { OutreachProjectDetail } from "@/components/projects/outreach-project-detail";
 import { WordPressContent } from "@/components/ui/wordpress-content";
 import { getProjectBySlug, getProjects } from "@/lib/wordpress";
 
@@ -35,6 +37,9 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   const [project, projects] = await Promise.all([getProjectBySlug(slug), getProjects()]);
 
   if (!project) notFound();
+
+  const outreachContent = outreachProjectContent[project.slug];
+  if (outreachContent) return <OutreachProjectDetail content={outreachContent} />;
 
   const relatedProjects = projects
     .filter((item) => item.slug !== project.slug && item.kind === project.kind)

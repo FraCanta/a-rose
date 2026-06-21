@@ -13,7 +13,7 @@ export function ResearchSection() {
         <div className="relative h-[510px] overflow-hidden border border-line bg-ivory max-md:order-2 max-sm:h-[390px]">
           <Image
             className="object-cover object-center"
-            src="/images/A-Rose_PicWebsite_Fiorica.jpg"
+            src="/images/A-Rose_PicWebsite_Fiorica.webp"
             alt="Gruppo di ricercatori che analizza insieme immagini scientifiche"
             fill
             sizes="(max-width: 820px) 100vw, 50vw"

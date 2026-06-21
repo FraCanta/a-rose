@@ -6,6 +6,7 @@ import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
 import { ProjectCarousel } from "@/components/projects/project-carousel";
+import { scientificProjectDetails } from "@/components/projects/project-data";
 import type { WordPressProject } from "@/lib/wordpress";
 import { getProjects, getSitePage } from "@/lib/wordpress";
 
@@ -73,7 +74,7 @@ export default async function ProjectsPage() {
   const scientificProjects = orderProjects(
     projects.filter((project) => project.kind === "Ricerca scientifica"),
     scientificOrder,
-  );
+  ).map((project) => ({ ...project, ...scientificProjectDetails[project.slug] }));
   const outreachProjects = orderProjects(
     projects.filter((project) => project.kind === "Divulgazione e raccolta fondi"),
     outreachOrder,
@@ -215,6 +216,7 @@ export default async function ProjectsPage() {
               <ProjectCarousel
                 projects={scientificProjects}
                 label="Progetti scientifici in corso: scorri orizzontalmente per esplorarli"
+                linkCards={false}
               />
             ) : (
               <p className="border-t border-line py-10 text-muted">

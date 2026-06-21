@@ -126,10 +126,8 @@ export function ProfileDrawerActions({
                 className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain px-6 py-7 sm:px-9"
                 data-lenis-prevent
               >
-                {publications.length > 0 ? (
-                  <>
-                    {sources.length ? (
-                      <div className="mb-7 rounded-2xl border border-line bg-white p-4">
+                {sources.length ? (
+                  <div className="mb-7 rounded-2xl border border-line bg-white p-4">
                         <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
                           Fonti bibliografiche complete
                         </p>
@@ -147,8 +145,10 @@ export function ProfileDrawerActions({
                             </Link>
                           ))}
                         </div>
-                      </div>
-                    ) : null}
+                  </div>
+                ) : null}
+                {publications.length > 0 ? (
+                  <>
                     <ol className="grid gap-4">
                       {publications.map((publication, index) => (
                         <li
@@ -189,10 +189,13 @@ export function ProfileDrawerActions({
                     </ol>
                   </>
                 ) : (
-                  <p className="text-base leading-relaxed text-muted">
-                    L&apos;elenco aggiornato è disponibile nella pagina delle
-                    pubblicazioni.
-                  </p>
+                  <div className="rounded-2xl border border-line bg-ivory p-5">
+                    <p className="font-serif text-xl text-ink">Archivio bibliografico esterno</p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      WordPress non espone un elenco interno per questo profilo. Usa le fonti
+                      bibliografiche qui sopra per consultare l&apos;archivio completo e aggiornato.
+                    </p>
+                  </div>
                 )}
               </div>
             )}

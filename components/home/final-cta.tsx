@@ -9,7 +9,7 @@ export function FinalCta() {
     <section className="relative overflow-hidden bg-wine py-28 text-center text-white max-sm:py-24">
       <Image
         className="object-cover object-[center_47%] opacity-55"
-        src="/images/evento-serale.jpg"
+        src="/images/evento-serale.webp"
         alt=""
         fill
         sizes="100vw"

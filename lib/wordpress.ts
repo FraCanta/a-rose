@@ -118,6 +118,13 @@ export type WordPressPublicationSource = {
   href: string;
 };
 
+const publicationAuthors: Record<string, string> = {
+  "pubblicazioni-della-prof-ssa-carlotta-giorgi": "Carlotta Giorgi[Author]",
+  "pubblicazioni-del-prof-paolo-pinton": "Paolo Pinton[Author]",
+  "pubblicazioni-francesco-fiorica": "Francesco Fiorica[Author]",
+  "pubblicazioni-del-prof-gabriele-anania": "Gabriele Anania[Author]",
+};
+
 export type WordPressSitePage = {
   title: string;
   text: string;
@@ -713,6 +720,50 @@ export async function getAboutContent(): Promise<AboutContent> {
   }
 }
 
+async function getPubMedPublications(slug: string, limit: number) {
+  const author = publicationAuthors[slug];
+  if (!author) return [];
+
+  try {
+    const search = await fetch(
+      `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=json&sort=pub+date&retmax=${limit}&term=${encodeURIComponent(author)}`,
+      { next: { revalidate: 86400 }, headers: { Accept: "application/json" } },
+    );
+    if (!search.ok) return [];
+
+    const searchData = (await search.json()) as { esearchresult?: { idlist?: string[] } };
+    const ids = searchData.esearchresult?.idlist ?? [];
+    if (!ids.length) return [];
+
+    const summary = await fetch(
+      `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=${ids.join(",")}`,
+      { next: { revalidate: 86400 }, headers: { Accept: "application/json" } },
+    );
+    if (!summary.ok) return [];
+
+    const summaryData = (await summary.json()) as {
+      result?: Record<string, unknown> & { uids?: string[] };
+    };
+
+    return (summaryData.result?.uids ?? []).flatMap((id) => {
+      const item = summaryData.result?.[id] as
+        | { title?: string; fulljournalname?: string; pubdate?: string; authors?: Array<{ name?: string }> }
+        | undefined;
+      if (!item?.title) return [];
+
+      const authors = item.authors?.map((entry) => entry.name).filter(Boolean).join(", ");
+      return [{
+        title: decodeEntities(item.title),
+        summary: [authors, item.fulljournalname, item.pubdate].filter(Boolean).join(" · "),
+        href: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
+        sourceLabel: "PubMed",
+      } satisfies WordPressPublication];
+    });
+  } catch {
+    return [];
+  }
+}
+
 export async function getPublications(
   slug: string,
   limit = 100,
@@ -725,15 +776,17 @@ export async function getPublications(
       headers: { Accept: "application/json" },
     });
 
-    if (!response.ok) return [];
+    if (!response.ok) return getPubMedPublications(slug, limit);
 
     const [page] = (await response.json()) as WordPressPageResponse[];
-    if (!page) return [];
+    if (!page) return getPubMedPublications(slug, limit);
 
     const listItems = Array.from(
       page.content.rendered.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi),
       (match) => match[1],
     );
+
+    if (!listItems.length) return getPubMedPublications(slug, limit);
 
     return listItems.slice(0, limit).map((item, index) => {
       const link = item.match(
@@ -765,7 +818,7 @@ export async function getPublications(
       };
     });
   } catch {
-    return [];
+    return getPubMedPublications(slug, limit);
   }
 }
 

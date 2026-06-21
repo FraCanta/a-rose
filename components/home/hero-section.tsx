@@ -64,7 +64,7 @@ export function HeroSection() {
         >
           <Image
             className="object-cover object-[56%_center]"
-            src="/images/hero_image.jpg"
+            src="/images/hero_image.webp"
             alt="Ricercatrice oncologica al lavoro con un microscopio"
             fill
             preload
