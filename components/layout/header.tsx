@@ -96,7 +96,7 @@ export function Header() {
           className="inline-flex min-h-11 justify-self-end items-center gap-2 whitespace-nowrap rounded-full bg-wine px-4 text-sm font-bold text-white transition hover:bg-wine-deep 2xs:px-3 xs:px-4"
           href="/sostieni-la-ricerca"
         >
-          Dona ora <Icon className="hidden size-4 xs:block" name="heart" />
+          Dona ora <Icon className=" size-4 block" name="heart" />
         </Link>
         <MobileNavigation items={navigation} />
       </Entrance>
