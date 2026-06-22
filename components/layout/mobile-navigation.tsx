@@ -1,31 +1,33 @@
 "use client";
 
+import { Icon as IconifyIcon } from "@iconify/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/home/icons";
+import type { NavigationGroup } from "./navigation-data";
 
-type MobileNavigationProps = {
-  items: ReadonlyArray<readonly [string, string]>;
-};
+type MobileNavigationProps = { items: readonly NavigationGroup[] };
 
 export function MobileNavigation({ items }: MobileNavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const firstControlRef = useRef<HTMLButtonElement>(null);
   const reducedMotion = useReducedMotion();
+  const closeMenu = () => {
+    setIsOpen(false);
+    setExpanded(null);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
-
     const previousOverflow = document.body.style.overflow;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsOpen(false);
     };
-
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", closeOnEscape);
-    firstLinkRef.current?.focus();
-
+    firstControlRef.current?.focus();
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
@@ -33,9 +35,9 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
   }, [isOpen]);
 
   return (
-    <div className="ml-auto lg:hidden">
+    <div className="xl:hidden">
       <button
-        className="relative grid size-12 place-items-center rounded-full border border-wine/15 bg-wine text-white shadow-soft transition hover:bg-wine-deep"
+        className="relative grid size-12 place-items-center text-wine transition hover:text-wine-deep"
         type="button"
         aria-controls="menu-mobile"
         aria-expanded={isOpen}
@@ -55,80 +57,114 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
 
       <AnimatePresence>
         {isOpen ? (
-          <>
-            <motion.button
-              className="fixed inset-0 top-[84px] z-40 cursor-default bg-wine-deep/45 backdrop-blur-[2px]"
-              type="button"
-              aria-label="Chiudi il menu"
-              initial={reducedMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-            />
-            <motion.div
-              className="fixed bottom-0 right-0 top-[84px] z-50 flex w-[min(100vw,430px)] flex-col overflow-y-auto bg-paper shadow-[-24px_0_60px_rgba(74,18,36,0.18)]"
-              id="menu-mobile"
-              initial={reducedMotion ? false : { x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          <motion.div
+            className="fixed inset-x-0 bottom-0 top-[84px] z-50 flex flex-col overflow-hidden bg-paper"
+            id="menu-mobile"
+            initial={reducedMotion ? false : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <nav
+              className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-8"
+              aria-label="Navigazione mobile"
+              data-lenis-prevent
             >
-              <div className="border-b border-line px-6 py-5">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-rose">
-                  Esplora A-ROSE
-                </p>
-                <p className="mt-1.5 font-serif text-xl leading-tight text-ink">
-                  Ricerca, persone e futuro della cura.
-                </p>
-              </div>
+              {items.map((item, index) => {
+                const isExpanded = expanded === item.label;
+                const panelId = `mobile-${item.label.toLowerCase().replaceAll(" ", "-")}`;
+                return (
+                  <div className="border-b border-line" key={item.label}>
+                    {item.children ? (
+                      <button
+                        ref={index === 0 ? firstControlRef : undefined}
+                        className="flex min-h-14 w-full items-center gap-4 py-3 text-left"
+                        type="button"
+                        aria-controls={panelId}
+                        aria-expanded={isExpanded}
+                        onClick={() =>
+                          setExpanded(isExpanded ? null : item.label)
+                        }
+                      >
+                        <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-base font-extrabold uppercase tracking-[0.08em] text-ink">
+                          {item.label}
+                        </span>
+                        <span
+                          className={`ml-auto text-xl text-wine transition-transform ${isExpanded ? "rotate-45" : ""}`}
+                          aria-hidden="true"
+                        >
+                          +
+                        </span>
+                      </button>
+                    ) : (
+                      <Link
+                        className="flex min-h-14 items-center gap-4 py-3"
+                        href={item.href}
+                        onClick={closeMenu}
+                      >
+                        <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-base font-extrabold uppercase tracking-[0.08em] text-ink">
+                          {item.label}
+                        </span>
+                        <Icon
+                          className="ml-auto size-4 text-wine"
+                          name="arrow"
+                        />
+                      </Link>
+                    )}
 
-              <nav
-                className="grid min-h-0 flex-1 overflow-y-auto px-6 py-2"
-                aria-label="Navigazione mobile"
+                    <AnimatePresence initial={false}>
+                      {item.children && isExpanded ? (
+                        <motion.div
+                          className="overflow-hidden"
+                          id={panelId}
+                          initial={
+                            reducedMotion ? false : { height: 0, opacity: 0 }
+                          }
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                        >
+                          <div className="grid gap-1 pb-4 pl-10">
+                            {item.children.map((child) => (
+                              <Link
+                                className="rounded-lg px-3 py-2.5 text-sm font-semibold text-ink transition hover:bg-rose-soft hover:text-wine"
+                                href={child.href}
+                                key={child.href}
+                                onClick={closeMenu}
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </nav>
+
+            <div className="border-t border-line bg-white px-5 py-4 sm:px-8">
+              <Link
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-wine px-6 font-bold text-wine transition hover:bg-rose-soft"
+                href="/area-personale"
+                onClick={closeMenu}
               >
-                {items.map(([label, href], index) => (
-                  <motion.div
-                    key={href}
-                    initial={reducedMotion ? false : { opacity: 0, x: 24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.08 + index * 0.045, duration: 0.35 }}
-                  >
-                    <Link
-                      ref={index === 0 ? firstLinkRef : undefined}
-                      className="group flex items-center gap-3 border-b border-line py-2.5 min-[375px]:py-3"
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className="font-sans text-[17px] font-bold text-ink transition-colors min-[375px]:text-lg group-hover:text-wine">
-                        {label}
-                      </span>
-                      <Icon
-                        className="ml-auto size-4 text-wine transition-transform group-hover:translate-x-1"
-                        name="arrow"
-                      />
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
-
-              <div className="mt-auto bg-wine-deep px-6 py-5 text-white">
-                <p className="mb-3 max-w-[290px] text-xs leading-relaxed text-white/75 [@media(max-height:650px)]:hidden">
-                  Ogni contributo avvicina la ricerca alla vita delle persone.
-                </p>
-                <Link
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-6 font-bold text-wine transition hover:bg-rose-soft"
-                  href="/sostieni-la-ricerca"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Sostieni la ricerca{" "}
-                  <Icon className="size-[18px]" name="heart" />
-                </Link>
-              </div>
-            </motion.div>
-          </>
+                <IconifyIcon
+                  aria-hidden="true"
+                  className="size-5"
+                  icon="solar:user-rounded-linear"
+                />
+                Accedi / Registrati
+              </Link>
+            </div>
+          </motion.div>
         ) : null}
       </AnimatePresence>
     </div>

@@ -1,58 +1,134 @@
+"use client";
+
+import { Icon as IconifyIcon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
-import { navigation } from "@/components/home/data";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/home/icons";
-import { button } from "@/components/home/styles";
 import { Entrance } from "@/components/ui/entrance";
+import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
+import { navigation } from "./navigation-data";
 
 export function Header() {
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    const updateHeader = () => setIsCompact(window.scrollY > 80);
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 border-b border-wine/10 bg-white">
+      <Entrance className="hidden xl:block" direction="down">
+        <div
+          className={`overflow-hidden transition-[height,opacity] duration-300 ease-out ${isCompact ? "h-0 opacity-0" : "h-28 opacity-100"}`}
+        >
+          <div className="mx-auto flex h-full w-full max-w-site items-center justify-between px-8 2xl:px-0">
+            <BrandLogo active={!isCompact} desktop />
+
+            <div className="flex items-center gap-10">
+              <Link
+                className="text-sm font-semibold text-ink transition hover:text-wine"
+                href="/come-sostenerci/aziende-e-partner"
+                tabIndex={isCompact ? -1 : undefined}
+              >
+                Sostienici con la tua azienda
+              </Link>
+              <Link
+                className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-wine px-7 text-base font-bold text-white transition hover:bg-wine-deep"
+                href="/sostieni-la-ricerca"
+                tabIndex={isCompact ? -1 : undefined}
+              >
+                Sostieni la ricerca{" "}
+                <Icon className="size-[18px]" name="heart" />
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="h-20 border-t border-wine/10">
+          <div
+            className={`mx-auto grid h-full w-full max-w-site items-center px-8 transition-[grid-template-columns,gap] duration-300 2xl:px-0 ${isCompact ? "grid-cols-[auto_1fr_auto] gap-6" : "grid-cols-[0fr_1fr_auto] gap-0"}`}
+          >
+            <div
+              className={`min-w-0 overflow-hidden transition-opacity duration-200 ${isCompact ? "opacity-100" : "opacity-0"}`}
+              aria-hidden={!isCompact}
+            >
+              <BrandLogo active={isCompact} compact />
+            </div>
+
+            <DesktopNavigation compact={isCompact} items={navigation} />
+
+            <div className="min-w-0 overflow-hidden">
+              {isCompact ? (
+                <Link
+                  className="inline-flex min-h-12 whitespace-nowrap items-center gap-2.5 rounded-full bg-wine px-6 text-sm font-bold text-white transition hover:bg-wine-deep"
+                  href="/sostieni-la-ricerca"
+                >
+                  Sostieni la ricerca <Icon className="size-4" name="heart" />
+                </Link>
+              ) : (
+                <Link
+                  className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-semibold text-ink transition hover:text-wine"
+                  href="/area-personale"
+                >
+                  <IconifyIcon
+                    aria-hidden="true"
+                    className="size-5"
+                    icon="solar:user-rounded-linear"
+                  />
+                  Accedi / Registrati
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </Entrance>
+
       <Entrance
-        className="relative z-[60] mx-auto grid min-h-24 w-full max-w-site grid-cols-[auto_1fr_auto] items-center px-4 lg:px-12 2xl:px-0 max-sm:min-h-[84px]"
+        className="relative z-[60] mx-auto grid min-h-[84px] w-full max-w-site grid-cols-[auto_1fr_auto] items-center gap-2 px-4 sm:px-8 xl:hidden"
         direction="down"
       >
+        <BrandLogo />
         <Link
-          className="flex shrink-0 items-center"
-          href="/"
-          aria-label="A-ROSE ODV, homepage"
-        >
-          <Image
-            className="block h-auto w-40 object-contain lg:w-48"
-            src="/brand/logo2_arose_positivo.png"
-            alt="A-ROSE ODV"
-            width={1200}
-            height={400}
-            sizes="(max-width: 1023px) 160px, 192px"
-            loading="eager"
-          />
-        </Link>
-
-        <nav
-          className="hidden items-center justify-center gap-6 font-sans text-[13px] font-bold lg:flex xl:gap-9"
-          aria-label="Navigazione principale"
-        >
-          {navigation.map(([label, href]) => (
-            <Link
-              key={href}
-              className="relative whitespace-nowrap py-2 transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-rose after:transition-transform hover:text-wine hover:after:scale-x-100"
-              href={href}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-
-        <Link
-          className={`${button} hidden lg:inline-flex`}
+          className="inline-flex min-h-11 justify-self-end items-center gap-2 whitespace-nowrap rounded-full bg-wine px-4 text-sm font-bold text-white transition hover:bg-wine-deep 2xs:px-3 xs:px-4"
           href="/sostieni-la-ricerca"
         >
-          Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
+          Dona ora <Icon className="hidden size-4 xs:block" name="heart" />
         </Link>
-
         <MobileNavigation items={navigation} />
       </Entrance>
     </header>
+  );
+}
+
+function BrandLogo({
+  active = true,
+  compact = false,
+  desktop = false,
+}: {
+  active?: boolean;
+  compact?: boolean;
+  desktop?: boolean;
+}) {
+  return (
+    <Link
+      className="flex shrink-0 items-center"
+      href="/"
+      aria-label="A-ROSE ODV, homepage"
+      tabIndex={active ? undefined : -1}
+    >
+      <Image
+        className={`block h-auto object-contain ${compact ? "w-40" : desktop ? "w-52" : "w-32 xs:w-36 sm:w-40"}`}
+        src="/brand/logo2_arose_positivo.png"
+        alt="A-ROSE ODV"
+        width={1200}
+        height={400}
+        sizes={desktop && !compact ? "208px" : "160px"}
+        loading="eager"
+      />
+    </Link>
   );
 }

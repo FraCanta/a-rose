@@ -5,22 +5,32 @@ import { container } from "@/components/home/styles";
 
 const footerColumns = [
   {
-    title: "Esplora",
+    title: "Conosci A-ROSE",
     links: [
-      ["Chi siamo", "/chi-siamo"],
-      ["La ricerca", "/progetti"],
-      ["Team", "/team"],
-      ["Eventi", "/eventi"],
-      ["News", "/news"],
+      ["La nostra associazione", "/chi-siamo/la-nostra-associazione"],
+      ["Team scientifico", "/chi-siamo/team-scientifico"],
+      ["Partner", "/chi-siamo/partner-e-sostenitori"],
+      ["Trasparenza", "/trasparenza"],
     ],
   },
   {
-    title: "Trasparenza",
+    title: "Ricerca e prevenzione",
     links: [
-      ["Bilanci e documenti", "https://a-roseodv.org/trasparenza/"],
-      ["5×1000", "/#trasparenza"],
-      ["Privacy", "https://a-roseodv.org/privacy-policy-2/"],
-      ["Cookie policy", "https://a-roseodv.org/cookie-policy/"],
+      ["La ricerca", "/la-ricerca"],
+      ["Progetti", "/progetti"],
+      ["Formazione", "/la-ricerca/formazione"],
+      ["Prevenzione", "/prevenzione"],
+      ["Guide e FAQ", "/prevenzione/guide-e-approfondimenti"],
+    ],
+  },
+  {
+    title: "Partecipa e sostieni",
+    links: [
+      ["Eventi", "/eventi"],
+      ["Volontariato", "/partecipa/volontariato"],
+      ["Dona ora", "/sostieni-la-ricerca"],
+      ["5×1000", "/come-sostenerci/5x1000"],
+      ["Aziende e partner", "/come-sostenerci/aziende-e-partner"],
     ],
   },
 ] as const;
@@ -29,9 +39,9 @@ export function Footer() {
   return (
     <footer className="bg-[#28141c] pt-20 text-white max-sm:pt-16" id="trasparenza">
       <div
-        className={`${container} grid gap-16 pb-16 md:grid-cols-[1.5fr_repeat(3,1fr)] max-md:grid-cols-[1.5fr_1fr_1fr] max-sm:grid-cols-2 max-sm:gap-x-8 max-sm:gap-y-11`}
+        className={`${container} grid gap-12 pb-16 lg:grid-cols-[1.3fr_repeat(4,1fr)] max-lg:grid-cols-3 max-sm:grid-cols-2 max-sm:gap-x-8 max-sm:gap-y-11`}
       >
-        <div className="max-md:col-span-full">
+        <div className="max-lg:col-span-full">
           <Link
             className="block w-[205px]"
             href="/"
@@ -90,7 +100,11 @@ export function Footer() {
         className={`${container} flex justify-between gap-2 border-t border-white/10 py-6 text-[10px] text-white/35 max-sm:flex-col`}
       >
         <p>© {new Date().getFullYear()} A-ROSE ODV. Tutti i diritti riservati.</p>
-        <p>Associazione Ricerca Oncologica Sperimentale Estense</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
+          <Link className="hover:text-white" href="/trasparenza">Trasparenza</Link>
+          <Link className="hover:text-white" href="https://a-roseodv.org/privacy-policy-2/">Privacy</Link>
+          <Link className="hover:text-white" href="https://a-roseodv.org/cookie-policy/">Cookie policy</Link>
+        </div>
       </div>
     </footer>
   );
