@@ -16,23 +16,29 @@ export function TeamSection({
     <section className={section} id="team">
       <div className={container}>
         <div className="mx-auto max-w-[760px] text-center">
-          <Eyebrow centered>{aboutVariant ? "I volti della ricerca" : "La nostra squadra"}</Eyebrow>
+          <Eyebrow centered>
+            {aboutVariant ? "I volti della ricerca" : "La nostra squadra"}
+          </Eyebrow>
           <h2 className={heading}>
             {aboutVariant ? (
               <>
                 I professionisti che trasformano
                 <br />
-                <em className="font-normal text-rose">la scienza in speranza</em>
+                <em className="font-normal text-rose">
+                  la scienza in speranza
+                </em>
               </>
             ) : (
               <>
-                Le persone dietro <em className="font-normal text-rose">la ricerca</em>
+                Le persone dietro{" "}
+                <em className="font-normal text-rose">la ricerca</em>
               </>
             )}
           </h2>
           <p className="mx-auto mt-6 max-w-[680px] text-muted">
-            Ricercatori, professionisti e volontari lavorano ogni giorno per trasformare conoscenza
-            scientifica, prevenzione e solidarietà in azioni concrete.
+            Ricercatori, professionisti e volontari lavorano ogni giorno per
+            trasformare conoscenza scientifica, prevenzione e solidarietà in
+            azioni concrete.
           </p>
         </div>
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -42,7 +48,11 @@ export function TeamSection({
               key={member.name}
               member={
                 aboutVariant
-                  ? { ...member, image: member.hoverImage, hoverImage: member.image }
+                  ? {
+                      ...member,
+                      image: member.hoverImage,
+                      hoverImage: member.image,
+                    }
                   : member
               }
             />
@@ -50,7 +60,7 @@ export function TeamSection({
         </div>
         {showCta ? (
           <div className="mt-12 text-center">
-          <Link className={textLink} href="/team">
+            <Link className={textLink} href="/chi-siamo/team-scientifico">
               Scopri tutto il team <Icon className="size-4" name="arrow" />
             </Link>
           </div>
