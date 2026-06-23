@@ -11,13 +11,15 @@ const footerColumns = [
       ["Team scientifico", "/chi-siamo/team-scientifico"],
       ["Partner", "/chi-siamo/partner-e-sostenitori"],
       ["Trasparenza", "/trasparenza"],
+      ["Come usiamo i fondi", "/come-sostenerci/come-usiamo-i-fondi"],
+      ["Benefici fiscali", "/come-sostenerci/benefici-fiscali"],
     ],
   },
   {
     title: "Ricerca e prevenzione",
     links: [
       ["La ricerca", "/la-ricerca"],
-      ["Progetti", "/progetti"],
+      ["Progetti", "/la-ricerca/progetti"],
       ["Formazione", "/la-ricerca/formazione"],
       ["Prevenzione", "/prevenzione"],
       ["Guide e FAQ", "/prevenzione/guide-e-approfondimenti"],
@@ -26,10 +28,12 @@ const footerColumns = [
   {
     title: "Partecipa e sostieni",
     links: [
-      ["Eventi", "/eventi"],
+      ["Eventi", "/partecipa/eventi"],
       ["Volontariato", "/partecipa/volontariato"],
       ["Dona ora", "/sostieni-la-ricerca"],
       ["5×1000", "/come-sostenerci/5x1000"],
+      ["Regala una donazione", "/come-sostenerci/regala-una-donazione"],
+      ["Organizza una raccolta fondi", "/come-sostenerci/raccolta-fondi"],
       ["Aziende e partner", "/come-sostenerci/aziende-e-partner"],
     ],
   },

@@ -71,7 +71,7 @@ export function ProjectCarousel({
               {showImages && project.image && linkCards ? (
                 <Link
                   className="relative block aspect-[16/9] overflow-hidden bg-rose-soft"
-                  href={`/progetti/${project.slug}`}
+                  href={`/la-ricerca/progetti/${project.slug}`}
                   tabIndex={-1}
                   aria-hidden="true"
                 >
@@ -95,7 +95,7 @@ export function ProjectCarousel({
                 </div>
                 <h3 className="mt-4 line-clamp-4 font-serif text-[clamp(24px,2vw,31px)] font-normal leading-[1.08] tracking-[-0.025em] text-ink">
                   {linkCards ? (
-                    <Link className="transition-colors hover:text-wine" href={`/progetti/${project.slug}`}>
+                    <Link className="transition-colors hover:text-wine" href={`/la-ricerca/progetti/${project.slug}`}>
                       {project.title}
                     </Link>
                   ) : project.title}
@@ -105,7 +105,7 @@ export function ProjectCarousel({
                     <p className="mt-5 line-clamp-4 text-sm leading-[1.75] text-muted">
                       {project.excerpt || "Un progetto A-ROSE a sostegno della ricerca oncologica e della comunità."}
                     </p>
-                    <Link className={`${textLink} mt-auto pt-7 text-sm`} href={`/progetti/${project.slug}`}>
+                    <Link className={`${textLink} mt-auto pt-7 text-sm`} href={`/la-ricerca/progetti/${project.slug}`}>
                       Leggi il progetto <Icon className="size-4" name="arrow" />
                     </Link>
                   </>

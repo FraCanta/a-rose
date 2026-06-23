@@ -49,7 +49,7 @@ export function MissionSection() {
               </p>
               <Link
                 className="mt-auto grid size-9 place-items-center rounded-full border border-line text-wine max-sm:mt-6"
-                href={item.title === "Ricerca" ? "/progetti" : item.title === "Formazione" ? "/team" : "/news"}
+                href={item.title === "Ricerca" ? "/la-ricerca/progetti" : item.title === "Formazione" ? "/team" : "/news"}
                 aria-label={`Approfondisci: ${item.title}`}
               >
                 <Icon className="size-5" name="arrow" />

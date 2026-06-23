@@ -72,7 +72,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Scopri i progetti",
-      href: "/progetti",
+      href: "/la-ricerca/progetti",
       text: "Guarda come la missione si traduce in attività concrete.",
     },
     metaTitle: "Missione e valori | A-ROSE ODV",
@@ -170,7 +170,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Esplora i progetti",
-      href: "/progetti",
+      href: "/la-ricerca/progetti",
       text: "Scopri le attività di ricerca sostenute da A-ROSE.",
     },
     metaTitle: "La ricerca | A-ROSE ODV",
@@ -203,7 +203,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Vedi i progetti",
-      href: "/progetti",
+      href: "/la-ricerca/progetti",
       text: "Conosci gli ambiti di ricerca sostenuti dall'associazione.",
     },
     metaTitle: "Cos'è la ricerca traslazionale | A-ROSE ODV",
@@ -500,7 +500,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Scopri gli eventi",
-      href: "/eventi",
+      href: "/partecipa/eventi",
       text: "Consulta gli appuntamenti A-ROSE.",
     },
     metaTitle: "Partecipa | A-ROSE ODV",
@@ -569,39 +569,6 @@ export const institutionalPages: InstitutionalPageData[] = [
     metaTitle: "Scuole e territorio | A-ROSE ODV",
     metaDescription:
       "Attività divulgative A-ROSE per scuole e comunità territoriali.",
-  },
-  {
-    path: "/partecipa/organizza-raccolta-fondi",
-    eyebrow: "Partecipa",
-    title: "Organizza una",
-    accent: "raccolta fondi.",
-    intro:
-      "Un'iniziativa locale può trasformarsi in sostegno concreto alla ricerca.",
-    description:
-      "Prima di utilizzare nome e identità A-ROSE è necessario concordare finalità, comunicazione e modalità di raccolta con l'associazione.",
-    parent: { label: "Partecipa", href: "/partecipa" },
-    points: [
-      {
-        title: "Condividi l'idea",
-        text: "Raccontaci obiettivo, pubblico e formato dell'iniziativa.",
-      },
-      {
-        title: "Definiamo le modalità",
-        text: "Verifichiamo insieme aspetti organizzativi e comunicativi.",
-      },
-      {
-        title: "Rendicontiamo",
-        text: "La raccolta deve essere chiara, tracciabile e coerente con la finalità concordata.",
-      },
-    ],
-    cta: {
-      label: "Proponi un'iniziativa",
-      href: "/contatti",
-      text: "Contatta A-ROSE prima di avviare la raccolta.",
-    },
-    metaTitle: "Organizza una raccolta fondi | A-ROSE ODV",
-    metaDescription:
-      "Come proporre una raccolta fondi a sostegno di A-ROSE ODV.",
   },
   {
     path: "/come-sostenerci/5x1000",
@@ -699,14 +666,14 @@ export const institutionalPages: InstitutionalPageData[] = [
   },
   {
     path: "/come-sostenerci/come-usiamo-i-fondi",
-    eyebrow: "Sostienici",
+    eyebrow: "Chi siamo",
     title: "Come usiamo",
     accent: "i fondi.",
     intro:
       "Le risorse sostengono finalità scientifiche, formative e divulgative coerenti con la missione A-ROSE.",
     description:
       "Questa pagina offre un quadro sintetico. La documentazione ufficiale e gli aggiornamenti economici trovano spazio nella sezione Trasparenza.",
-    parent: { label: "Sostienici", href: "/come-sostenerci" },
+    parent: { label: "Chi siamo", href: "/chi-siamo/la-nostra-associazione" },
     points: [
       {
         title: "Ricerca",
@@ -732,14 +699,14 @@ export const institutionalPages: InstitutionalPageData[] = [
   },
   {
     path: "/come-sostenerci/benefici-fiscali",
-    eyebrow: "Sostienici",
+    eyebrow: "Chi siamo",
     title: "Benefici",
     accent: "fiscali.",
     intro:
       "Le erogazioni liberali tracciabili agli Enti del Terzo Settore possono beneficiare delle agevolazioni previste dalla normativa.",
     description:
       "Le regole dipendono dal soggetto che dona e dalla normativa vigente. Conserva la documentazione e verifica il trattamento applicabile con un professionista fiscale.",
-    parent: { label: "Sostienici", href: "/come-sostenerci" },
+    parent: { label: "Chi siamo", href: "/chi-siamo/la-nostra-associazione" },
     points: [
       {
         title: "Pagamenti tracciabili",

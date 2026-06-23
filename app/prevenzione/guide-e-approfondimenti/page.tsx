@@ -15,6 +15,8 @@ export default function PreventionGuidesPage() {
       intro="Articoli pubblicati da A-ROSE per rendere più accessibili i temi della prevenzione, della diagnosi e della consapevolezza oncologica. I contenuti sono divulgativi e non sostituiscono il parere medico."
       eyebrow="Prevenzione"
       parent={{ href: "/prevenzione", label: "Prevenzione" }}
+      currentLabel="Guide e approfondimenti"
+      detailHrefPrefix="/prevenzione/guide-e-approfondimenti"
       filter={(category) => {
         const normalizedCategory = category.toLowerCase();
         return (

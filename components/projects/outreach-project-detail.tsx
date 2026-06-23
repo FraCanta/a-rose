@@ -15,7 +15,7 @@ export function OutreachProjectDetail({ content }: OutreachProjectDetailProps) {
     <main id="contenuto">
       <article className="bg-white py-10 sm:py-14 lg:py-20">
         <div className={container}>
-          <Link className={`${textLink} text-sm`} href="/progetti">
+          <Link className={`${textLink} text-sm`} href="/la-ricerca/progetti">
             <Icon className="size-4 rotate-180" name="arrow" /> Tutti i progetti
           </Link>
 

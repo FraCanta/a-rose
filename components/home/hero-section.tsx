@@ -33,7 +33,7 @@ export function HeroSection() {
             >
               Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
             </Link>
-            <Link className={outlineButton} href="/progetti">
+            <Link className={outlineButton} href="/la-ricerca/progetti">
               Scopri i progetti <Icon className="size-5" name="arrow" />
             </Link>
           </div>
@@ -48,7 +48,7 @@ export function HeroSection() {
               <br />
               <Link
                 className="inline-flex items-center gap-2 font-bold text-wine"
-                href="/come-sostenerci"
+                href="/come-sostenerci/come-usiamo-i-fondi"
               >
                 Scopri come utilizziamo le donazioni{" "}
                 <Icon className="size-3.5" name="arrow" />

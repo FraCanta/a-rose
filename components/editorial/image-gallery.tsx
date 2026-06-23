@@ -12,7 +12,12 @@ type ImageGalleryProps = {
   compact?: boolean;
 };
 
-export function ImageGallery({ images, title, contain = false, compact = false }: ImageGalleryProps) {
+export function ImageGallery({
+  images,
+  title,
+  contain = false,
+  compact = false,
+}: ImageGalleryProps) {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const reducedMotion = useReducedMotion();
 
@@ -34,21 +39,27 @@ export function ImageGallery({ images, title, contain = false, compact = false }
 
   return (
     <>
-      <div className={`grid gap-3 sm:gap-4 ${compact ? "grid-cols-2 sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+      <div
+        className={`grid gap-3 sm:gap-4 ${compact ? "grid-cols-2 sm:grid-cols-3" : "sm:grid-cols-1"}`}
+      >
         {images.map((image, index) => (
           <button
-            className={`group relative overflow-hidden bg-rose-soft ${contain ? "aspect-[4/5] border border-line bg-ivory" : compact ? "aspect-square sm:aspect-[4/3]" : "aspect-[4/3]"}`}
+            className={`group relative overflow-hidden bg-rose-soft ${contain ? "aspect-square border border-line bg-ivory" : compact ? "aspect-square sm:aspect-[4/3]" : "aspect-[4/3]"}`}
             type="button"
             aria-label={`Ingrandisci immagine ${index + 1} di ${title}`}
             key={image}
             onClick={() => setActiveImage(image)}
           >
             <Image
-              className={`${contain ? "object-contain" : "object-cover"} transition duration-500 group-hover:scale-[1.03]`}
+              className={`${contain ? "object-cover" : "object-cover"} transition duration-500 group-hover:scale-[1.03]`}
               src={image}
               alt={`Galleria dell'evento ${title}, immagine ${index + 1}`}
               fill
-              sizes={compact ? "(max-width: 639px) 46vw, (max-width: 1023px) 31vw, 330px" : "(max-width: 639px) calc(100vw - 32px), 410px"}
+              sizes={
+                compact
+                  ? "(max-width: 639px) 46vw, (max-width: 1023px) 100vw, 430px"
+                  : "(max-width: 639px) calc(100vw - 32px), 510px"
+              }
             />
           </button>
         ))}
@@ -82,7 +93,14 @@ export function ImageGallery({ images, title, contain = false, compact = false }
                     exit={{ scale: 0.97 }}
                     onClick={(event) => event.stopPropagation()}
                   >
-                    <Image className="object-contain" src={activeImage} alt={`Immagine ingrandita: ${title}`} fill sizes="92vw" priority />
+                    <Image
+                      className="object-contain"
+                      src={activeImage}
+                      alt={`Immagine ingrandita: ${title}`}
+                      fill
+                      sizes="92vw"
+                      priority
+                    />
                   </motion.div>
                 </motion.div>
               ) : null}

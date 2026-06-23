@@ -8,7 +8,26 @@ export type DonationCheckoutInput = {
   lastName: string;
   email: string;
   company?: string;
+  fiscalCode?: string;
+  phone?: string;
+  birthDate?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  province?: string;
   comment?: string;
+  donationType: "generale" | "regalo" | "raccolta";
+  occasion?: string;
+  campaignName?: string;
+  donationFrequency?: string;
+  giftSenderName?: string;
+  giftRecipient?: string;
+  giftRecipientEmail?: string;
+  giftCardStyle?: string;
+  sendDate?: string;
+  dedicationMessage?: string;
+  hideGiftAmount?: boolean;
+  sendGiftCopy?: boolean;
   anonymous?: boolean;
   consent: boolean;
   website?: string;
@@ -27,7 +46,27 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
   const lastName = cleanText(input.lastName, 100);
   const email = cleanText(input.email, 254).toLowerCase();
   const company = cleanText(input.company, 160);
+  const fiscalCode = cleanText(input.fiscalCode, 32);
+  const phone = cleanText(input.phone, 40);
+  const birthDate = cleanText(input.birthDate, 20);
+  const address = cleanText(input.address, 180);
+  const city = cleanText(input.city, 120);
+  const postalCode = cleanText(input.postalCode, 20);
+  const province = cleanText(input.province, 80);
   const comment = cleanText(input.comment, 500);
+  const donationType =
+    input.donationType === "regalo" || input.donationType === "raccolta"
+      ? input.donationType
+      : "generale";
+  const occasion = cleanText(input.occasion, 120);
+  const campaignName = cleanText(input.campaignName, 160);
+  const donationFrequency = cleanText(input.donationFrequency, 40);
+  const giftSenderName = cleanText(input.giftSenderName, 160);
+  const giftRecipient = cleanText(input.giftRecipient, 160);
+  const giftRecipientEmail = cleanText(input.giftRecipientEmail, 254).toLowerCase();
+  const giftCardStyle = cleanText(input.giftCardStyle, 80);
+  const sendDate = cleanText(input.sendDate, 20);
+  const dedicationMessage = cleanText(input.dedicationMessage, 500);
 
   if (cleanText(input.website, 200)) throw new Error("Richiesta non valida");
   if (!Number.isFinite(amount) || amount < 1 || amount > 100000) {
@@ -38,6 +77,22 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
     throw new Error("Inserisci un indirizzo email valido");
   }
   if (input.consent !== true) throw new Error("Devi accettare i termini della donazione");
+  if (donationType === "regalo") {
+    if (!lastName) throw new Error("Il cognome o la ragione sociale sono obbligatori");
+    if (!fiscalCode) throw new Error("Il codice fiscale è obbligatorio");
+    if (!phone) throw new Error("Il cellulare è obbligatorio");
+    if (!birthDate) throw new Error("La data di nascita è obbligatoria");
+    if (!address || !city || !postalCode || !province) {
+      throw new Error("Completa i dati di indirizzo");
+    }
+    if (!giftSenderName) throw new Error("Il nome del mittente è obbligatorio");
+    if (!giftRecipient) throw new Error("Il nome del destinatario è obbligatorio");
+    if (!giftRecipientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(giftRecipientEmail)) {
+      throw new Error("Inserisci l'email del destinatario");
+    }
+    if (!giftCardStyle) throw new Error("Seleziona una e-card regalo");
+    if (!sendDate) throw new Error("Scegli la data di invio della e-card");
+  }
 
   return {
     amount: Math.round(amount * 100) / 100,
@@ -45,7 +100,26 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
     lastName,
     email,
     company: company || undefined,
+    fiscalCode: fiscalCode || undefined,
+    phone: phone || undefined,
+    birthDate: birthDate || undefined,
+    address: address || undefined,
+    city: city || undefined,
+    postalCode: postalCode || undefined,
+    province: province || undefined,
     comment: comment || undefined,
+    donationType,
+    occasion: occasion || undefined,
+    campaignName: campaignName || undefined,
+    donationFrequency: donationFrequency || undefined,
+    giftSenderName: giftSenderName || undefined,
+    giftRecipient: giftRecipient || undefined,
+    giftRecipientEmail: giftRecipientEmail || undefined,
+    giftCardStyle: giftCardStyle || undefined,
+    sendDate: sendDate || undefined,
+    dedicationMessage: dedicationMessage || undefined,
+    hideGiftAmount: input.hideGiftAmount === true,
+    sendGiftCopy: input.sendGiftCopy === true,
     anonymous: input.anonymous === true,
     consent: true,
   };

@@ -82,18 +82,14 @@ export default function FiveForThousandPage() {
           </div>
         </div>
         <div className="relative min-h-[390px] overflow-hidden lg:min-h-full">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source
-              src="https://youtu.be/eqPjmk0420k?si=woWgkn-vpmxZLia7&t=5"
-              type="video/mp4"
-            />
-          </video>
+          <Image
+            className="object-cover"
+            src="/images/sostegno-cuore.webp"
+            alt="Mani che custodiscono un cuore, simbolo del sostegno alla ricerca"
+            fill
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-wine/30 via-transparent to-transparent lg:from-wine/15" />
         </div>
       </section>

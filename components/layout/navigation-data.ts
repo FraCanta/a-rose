@@ -37,6 +37,16 @@ export const navigation: readonly NavigationGroup[] = [
         href: "/trasparenza",
         description: "Documenti e informazioni associative.",
       },
+      {
+        label: "Come usiamo i fondi",
+        href: "/come-sostenerci/come-usiamo-i-fondi",
+        description: "Finalità e impiego delle donazioni.",
+      },
+      {
+        label: "Benefici fiscali",
+        href: "/come-sostenerci/benefici-fiscali",
+        description: "Indicazioni generali sulle agevolazioni.",
+      },
     ],
   },
   {
@@ -51,7 +61,7 @@ export const navigation: readonly NavigationGroup[] = [
       },
       {
         label: "Progetti di ricerca",
-        href: "/progetti",
+        href: "/la-ricerca/progetti",
         description: "Gli studi sostenuti da A-ROSE.",
       },
       {
@@ -105,7 +115,7 @@ export const navigation: readonly NavigationGroup[] = [
     children: [
       {
         label: "Eventi",
-        href: "/eventi",
+        href: "/partecipa/eventi",
         description: "Gli appuntamenti A-ROSE.",
       },
       {
@@ -117,11 +127,6 @@ export const navigation: readonly NavigationGroup[] = [
         label: "Scuole e territorio",
         href: "/partecipa/scuole-e-territorio",
         description: "Divulgazione vicina alle comunità.",
-      },
-      {
-        label: "Organizza una raccolta fondi",
-        href: "/partecipa/organizza-raccolta-fondi",
-        description: "Costruiamo insieme un'iniziativa.",
       },
     ],
   },
@@ -140,34 +145,23 @@ export const navigation: readonly NavigationGroup[] = [
         href: "/come-sostenerci/5x1000",
         description: "Destina il tuo 5×1000 ad A-ROSE.",
       },
-
+      {
+        label: "Regala una donazione",
+        href: "/come-sostenerci/regala-una-donazione",
+        description: "Trasforma un regalo in sostegno alla ricerca.",
+      },
+      {
+        label: "Organizza una raccolta fondi",
+        href: "/come-sostenerci/raccolta-fondi",
+        description: "Organizza un'iniziativa a sostegno di A-ROSE.",
+      },
       {
         label: "Aziende e partner",
         href: "/come-sostenerci/aziende-e-partner",
         description: "Collaborazioni responsabili e condivise.",
       },
-      {
-        label: "Come usiamo i fondi",
-        href: "/come-sostenerci/come-usiamo-i-fondi",
-        description: "Finalità e impiego delle donazioni.",
-      },
-      {
-        label: "Benefici fiscali",
-        href: "/come-sostenerci/benefici-fiscali",
-        description: "Indicazioni generali sulle agevolazioni.",
-      },
     ],
   },
-  // {
-  //   label: "News",
-  //   href: "/news",
-  //   description: "Aggiornamenti dalla ricerca e dall'associazione.",
-  //   children: [
-  //     { label: "Tutte le news", href: "/news", description: "Tutti gli aggiornamenti pubblicati." },
-  //     { label: "Articoli", href: "/news/articoli", description: "Approfondimenti e divulgazione." },
-  //     { label: "Comunicati", href: "/news/comunicati", description: "Comunicazioni istituzionali." },
-  //   ],
-  // },
   {
     label: "Contatti",
     href: "/contatti",

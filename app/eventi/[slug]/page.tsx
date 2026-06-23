@@ -38,7 +38,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       <article>
         <header className="border-b border-line bg-paper py-14 sm:py-20 lg:py-24">
           <div className={container}>
-            <Link className={`${textLink} mb-9 text-xs sm:text-sm`} href="/eventi">
+            <Link className={`${textLink} mb-9 text-xs sm:text-sm`} href="/partecipa/eventi">
               <Icon className="size-4 rotate-180" name="arrow" /> Tutti gli eventi
             </Link>
             <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">
@@ -86,7 +86,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">Altri appuntamenti</p>
             <h2 className="mt-3 font-serif text-[clamp(34px,4vw,54px)] font-normal text-ink">Continua dal calendario A-ROSE</h2>
             <div className="mt-9">
-              <RelatedGrid items={allEvents.filter((item) => item.id !== event.id).slice(0, 3).map((item) => ({ href: `/eventi/${item.slug || item.id}`, category: item.category, title: item.title }))} />
+              <RelatedGrid items={allEvents.filter((item) => item.id !== event.id).slice(0, 3).map((item) => ({ href: `/partecipa/eventi/${item.slug || item.id}`, category: item.category, title: item.title }))} />
             </div>
           </div>
         </section>

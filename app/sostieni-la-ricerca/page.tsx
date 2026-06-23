@@ -10,7 +10,19 @@ export const metadata: Metadata = {
   description: "Dona ad A-ROSE ODV e sostieni progetti di ricerca oncologica, formazione e prevenzione.",
 };
 
-export default function DonatePage() {
+type DonatePageProps = {
+  searchParams: Promise<{ amount?: string }>;
+};
+
+function getInitialAmount(value?: string) {
+  if (value === "custom") return "custom" as const;
+  const amount = Number(value);
+  return Number.isFinite(amount) && amount > 0 ? amount : undefined;
+}
+
+export default async function DonatePage({ searchParams }: DonatePageProps) {
+  const initialAmount = getInitialAmount((await searchParams).amount);
+
   return (
     <main id="contenuto">
       <section className={`${section} scroll-mt-24 bg-ivory`} id="donazione">
@@ -28,6 +40,7 @@ export default function DonatePage() {
               <div className="mt-8">
                 <DonationCheckout
                   publishableKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""}
+                  initialAmount={initialAmount}
                 />
               </div>
             </article>

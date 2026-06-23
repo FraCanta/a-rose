@@ -12,9 +12,40 @@ export async function POST(request: Request) {
 
     const donation = validateDonationInput(await request.json());
     const stripe = getStripe();
+    const donationLabels = {
+      generale: "Donazione ad A-ROSE ODV",
+      regalo: "Regalo solidale A-ROSE ODV",
+      raccolta: "Raccolta fondi A-ROSE ODV",
+    } as const;
+    const contextComment = [
+      donation.comment,
+      donation.donationType !== "generale" ? `Tipo: ${donation.donationType}` : "",
+      donation.occasion ? `Occasione: ${donation.occasion}` : "",
+      donation.campaignName ? `Titolo raccolta: ${donation.campaignName}` : "",
+      donation.donationFrequency ? `Frequenza: ${donation.donationFrequency}` : "",
+      donation.giftSenderName ? `Mittente regalo: ${donation.giftSenderName}` : "",
+      donation.giftRecipient ? `Destinatario regalo: ${donation.giftRecipient}` : "",
+      donation.giftRecipientEmail ? `Email destinatario regalo: ${donation.giftRecipientEmail}` : "",
+      donation.giftCardStyle ? `E-card: ${donation.giftCardStyle}` : "",
+      donation.sendDate ? `Data invio e-card: ${donation.sendDate}` : "",
+      donation.hideGiftAmount ? "Importo nascosto nella e-card" : "",
+      donation.sendGiftCopy ? "Copia e-card richiesta dal donatore" : "",
+      donation.dedicationMessage ? `Messaggio: ${donation.dedicationMessage}` : "",
+      donation.fiscalCode ? `Codice fiscale: ${donation.fiscalCode}` : "",
+      donation.phone ? `Telefono: ${donation.phone}` : "",
+      donation.birthDate ? `Data di nascita: ${donation.birthDate}` : "",
+      donation.address || donation.city || donation.postalCode || donation.province
+        ? `Indirizzo: ${[donation.address, donation.postalCode, donation.city, donation.province]
+            .filter(Boolean)
+            .join(" ")}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+    const safeContextComment = contextComment.slice(0, 500);
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      ui_mode: "embedded_page",
       locale: "it",
       customer_email: donation.email,
       payment_method_types: ["card"],
@@ -25,32 +56,61 @@ export async function POST(request: Request) {
             currency: "eur",
             unit_amount: Math.round(donation.amount * 100),
             product_data: {
-              name: "Donazione ad A-ROSE ODV",
-              description: "Sostegno alla ricerca oncologica traslazionale, alla formazione e alla prevenzione.",
+              name: donationLabels[donation.donationType],
+              description:
+                donation.donationType === "raccolta"
+                  ? "Sostegno tramite raccolta fondi a favore della ricerca oncologica."
+                  : donation.donationType === "regalo"
+                    ? "Donazione dedicata a una persona o a una ricorrenza."
+                    : "Sostegno alla ricerca oncologica traslazionale, alla formazione e alla prevenzione.",
             },
           },
         },
       ],
       payment_intent_data: {
-        description: "Donazione ad A-ROSE ODV",
-        metadata: { giveWpFormId: "28216" },
+        description: donationLabels[donation.donationType],
+        metadata: {
+          giveWpFormId: "28216",
+          donationType: donation.donationType,
+          occasion: donation.occasion ?? "",
+        },
       },
       metadata: {
         firstName: donation.firstName,
         lastName: donation.lastName,
         company: donation.company ?? "",
-        comment: donation.comment ?? "",
+        fiscalCode: donation.fiscalCode ?? "",
+        phone: donation.phone ?? "",
+        birthDate: donation.birthDate ?? "",
+        address: donation.address ?? "",
+        city: donation.city ?? "",
+        postalCode: donation.postalCode ?? "",
+        province: donation.province ?? "",
+        comment: safeContextComment,
+        donationType: donation.donationType,
+        occasion: donation.occasion ?? "",
+        campaignName: donation.campaignName ?? "",
+        donationFrequency: donation.donationFrequency ?? "",
+        giftSenderName: donation.giftSenderName ?? "",
+        giftRecipient: donation.giftRecipient ?? "",
+        giftRecipientEmail: donation.giftRecipientEmail ?? "",
+        giftCardStyle: donation.giftCardStyle ?? "",
+        sendDate: donation.sendDate ?? "",
+        dedicationMessage: donation.dedicationMessage ?? "",
+        hideGiftAmount: String(Boolean(donation.hideGiftAmount)),
+        sendGiftCopy: String(Boolean(donation.sendGiftCopy)),
         anonymous: String(Boolean(donation.anonymous)),
         giveWpFormId: "28216",
       },
-      return_url: `${requestOrigin}/sostieni-la-ricerca/conferma?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${requestOrigin}/sostieni-la-ricerca/conferma?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${requestOrigin}/donazione?annullata=1`,
     });
 
-    if (!session.client_secret) {
-      throw new Error("Stripe non ha restituito il client secret del checkout");
+    if (!session.url) {
+      throw new Error("Stripe non ha restituito l'URL del checkout");
     }
 
-    return NextResponse.json({ clientSecret: session.client_secret });
+    return NextResponse.json({ url: session.url });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Impossibile avviare la donazione";
     return NextResponse.json({ error: message }, { status: 400 });

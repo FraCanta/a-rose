@@ -56,7 +56,8 @@ export function DonationSection() {
             </div>
           </div>
 
-          <fieldset className="relative m-0 border-0 p-0">
+          <form action="/sostieni-la-ricerca" className="relative" method="get">
+          <fieldset className="m-0 border-0 p-0">
             <legend className="mb-3 text-xs font-bold">Importo della donazione</legend>
             <div className="grid grid-cols-4 gap-2 max-sm:grid-cols-2">
               {[25, 50, 100, 250].map((amount) => (
@@ -82,10 +83,11 @@ export function DonationSection() {
             </div>
           </fieldset>
 
-          <Link className={`${button} relative mt-5 w-full !inline-flex`} href="/sostieni-la-ricerca">
+          <button className={`${button} mt-5 w-full`} type="submit">
             Dona ora <Icon className="size-[18px]" name="heart" />
-          </Link>
-          <Link className={`${textLink} relative mx-auto mt-5 text-xs`} href="/come-sostenerci">
+          </button>
+          </form>
+          <Link className={`${textLink} relative mx-auto mt-5 text-xs`} href="/come-sostenerci/come-usiamo-i-fondi">
             Scopri come usiamo le donazioni <Icon className="size-4" name="arrow" />
           </Link>
           <p className="relative mt-6 flex gap-2 border-t border-line pt-5 text-[10px] leading-relaxed text-muted">

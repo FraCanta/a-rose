@@ -3,7 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
-import { container, heading, section, textLink } from "@/components/home/styles";
+import {
+  container,
+  heading,
+  section,
+  textLink,
+} from "@/components/home/styles";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { getEvents } from "@/lib/wordpress";
 
@@ -47,8 +52,8 @@ export default async function EventsPage() {
                   <em className="font-normal text-rose">dal territorio</em>
                 </h1>
               </div>
-              <Link className={textLink} href="/#eventi">
-                Torna alla home <Icon className="size-4" name="arrow" />
+              <Link className={textLink} href="/partecipa">
+                Torna a Partecipa <Icon className="size-4" name="arrow" />
               </Link>
             </div>
 
@@ -87,19 +92,20 @@ export default async function EventsPage() {
                           <span className="rounded-full bg-rose-soft px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-wine">
                             {event.category}
                           </span>
-                          <time className="text-[11px] font-medium text-muted" dateTime={event.date}>
+                          <time
+                            className="text-[11px] font-medium text-muted"
+                            dateTime={event.date}
+                          >
                             {date.full}
                           </time>
                         </div>
                         <h2 className="mt-4 min-h-[3.1em] font-serif text-[28px] font-normal leading-[1.04] tracking-[-0.025em] text-ink">
                           {event.title}
                         </h2>
-                        <p className="mt-4 line-clamp-4 min-h-[7em] text-sm leading-[1.75] text-muted">
-                          {event.excerpt}
-                        </p>
+
                         <Link
                           className={`${textLink} mt-auto pt-6 text-xs`}
-                          href={`/eventi/${event.slug || event.id}`}
+                          href={`/partecipa/eventi/${event.slug || event.id}`}
                           aria-label={`Leggi l'evento: ${event.title}`}
                         >
                           Leggi evento <Icon className="size-4" name="arrow" />

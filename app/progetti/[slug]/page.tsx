@@ -53,7 +53,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             Sostieni questo impegno <Icon className="size-4" name="heart" />
           </Link>
         }
-        backHref="/progetti"
+        backHref="/la-ricerca/progetti"
         backLabel="Tutti i progetti"
         category={project.kind}
         date={project.date}
@@ -67,7 +67,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           relatedProjects.length ? (
             <RelatedGrid
               items={relatedProjects.map((item) => ({
-                href: `/progetti/${item.slug}`,
+                href: `/la-ricerca/progetti/${item.slug}`,
                 category: item.kind,
                 title: item.title,
               }))}

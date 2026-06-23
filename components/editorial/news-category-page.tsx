@@ -12,6 +12,8 @@ type NewsCategoryPageProps = {
   filter: (category: string) => boolean;
   parent?: { href: string; label: string };
   eyebrow?: string;
+  currentLabel?: string;
+  detailHrefPrefix?: string;
 };
 
 function formatDate(date: string) {
@@ -29,6 +31,8 @@ export async function NewsCategoryPage({
   filter,
   parent = { href: "/news", label: "News" },
   eyebrow = "News",
+  currentLabel,
+  detailHrefPrefix = "/news",
 }: NewsCategoryPageProps) {
   const posts = (await getPosts(30)).filter((post) => filter(post.category));
   return (
@@ -44,7 +48,7 @@ export async function NewsCategoryPage({
             <Link href={parent.href}>{parent.label}</Link>
             <span>/</span>
             <span aria-current="page" className="text-ink">
-              Guide e approfondimenti
+              {currentLabel ?? `${title} ${accent}`.replace(/\s+/g, " ").replace(".", "")}
             </span>
           </nav>
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -96,7 +100,7 @@ export async function NewsCategoryPage({
                     </p>
                     <Link
                       className={`${textLink} mt-auto pt-6 text-xs`}
-                      href={`/news/${post.slug}`}
+                      href={`${detailHrefPrefix}/${post.slug}`}
                     >
                       Leggi <Icon className="size-4" name="arrow" />
                     </Link>

@@ -40,7 +40,7 @@ export function ResearchSection() {
           </div>
           <Link
             className="w-full lg:max-w-max inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-wine bg-wine px-8 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep"
-            href="/progetti"
+            href="/la-ricerca/progetti"
           >
             Scopri i progetti <Icon className="size-5" name="arrow" />
           </Link>
