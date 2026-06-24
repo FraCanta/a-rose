@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CampaignCountdown } from "@/components/donations/campaign-countdown";
 import { Icon } from "@/components/home/icons";
 import { createClient } from "@/utils/supabase/server";
 
@@ -49,28 +50,12 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
   const cover = getCampaignCover(campaign);
   const goal = Number(campaign.goal_cents || 0);
   const raised = Number(campaign.raised_cents || 0);
-  const progress = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
+  const progress =
+    goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
   const donationHref = `/donazione?tipo=raccolta&campagna=${encodeURIComponent(campaign.title)}#checkout`;
 
   return (
     <main id="contenuto" className="bg-white">
-      <section className="border-b border-line bg-ivory px-5 py-10 sm:px-8 lg:py-14">
-        <div className="mx-auto flex max-w-site items-center justify-between gap-5">
-          <Link
-            className="inline-flex items-center gap-2 text-sm font-bold text-wine transition hover:text-wine-deep"
-            href="/"
-          >
-            A-ROSE ODV
-          </Link>
-          <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-full bg-wine px-6 text-sm font-bold text-white transition hover:bg-wine-deep"
-            href={donationHref}
-          >
-            Dona ora
-          </Link>
-        </div>
-      </section>
-
       <section className="px-5 py-12 sm:px-8 lg:py-20">
         <div className="mx-auto grid max-w-site gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
           <div className="relative aspect-[1.25] overflow-hidden rounded-[2rem] bg-rose-soft">
@@ -81,7 +66,9 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
               fill
               priority
               sizes="(min-width: 1024px) 52vw, 100vw"
-              unoptimized={cover.startsWith("blob:") || cover.includes("supabase.co")}
+              unoptimized={
+                cover.startsWith("blob:") || cover.includes("supabase.co")
+              }
             />
           </div>
 
@@ -89,10 +76,10 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
             <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-wine">
               Raccolta fondi A-ROSE
             </p>
-            <h1 className="mt-5 font-serif text-[clamp(46px,6vw,82px)] font-normal leading-[0.95] tracking-[-0.055em] text-ink">
+            <h1 className="mt-5 font-serif text-[clamp(46px,6vw,46px)] font-normal leading-[0.95] tracking-[-0.055em] text-ink">
               {campaign.title}
             </h1>
-            <p className="mt-7 whitespace-pre-line text-base leading-8 text-muted sm:text-lg">
+            <p className="mt-7 whitespace-pre-line text-base leading-8 text-muted sm:text-base">
               {campaign.description}
             </p>
 
@@ -120,6 +107,10 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
               <p className="mt-3 text-sm font-bold text-wine">
                 {progress}% dell’obiettivo raggiunto
               </p>
+              <CampaignCountdown
+                className="mt-6 border-t border-line pt-6"
+                endDate={campaign.end_date}
+              />
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -153,7 +144,9 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
               {campaign.end_date ? (
                 <div>
                   <dt className="font-bold text-ink">Data fine raccolta</dt>
-                  <dd className="mt-1 text-muted">{formatDate(campaign.end_date)}</dd>
+                  <dd className="mt-1 text-muted">
+                    {formatDate(campaign.end_date)}
+                  </dd>
                 </div>
               ) : null}
               {campaign.region ? (
@@ -185,7 +178,9 @@ async function getCampaign(slug: string) {
   return data;
 }
 
-function getCampaignCover(campaign: NonNullable<Awaited<ReturnType<typeof getCampaign>>>) {
+function getCampaignCover(
+  campaign: NonNullable<Awaited<ReturnType<typeof getCampaign>>>,
+) {
   if (campaign.cover_url) return campaign.cover_url;
   if (campaign.cover_preset && presetCovers[campaign.cover_preset]) {
     return presetCovers[campaign.cover_preset];

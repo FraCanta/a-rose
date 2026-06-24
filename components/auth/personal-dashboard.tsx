@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ProfileDataForm } from "@/components/auth/profile-data-form";
+import { CampaignCountdown } from "@/components/donations/campaign-countdown";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Icon } from "@/components/home/icons";
+import { createClient } from "@/utils/supabase/client";
 
 type DashboardTab =
   | "dashboard"
@@ -37,7 +40,27 @@ type PersonalDashboardProps = {
   email?: string;
   campaignsCount: number;
   donationsCount: number;
+  campaigns: CampaignSummary[];
   profile: ProfileData | null;
+};
+
+type CampaignSummary = {
+  id: string;
+  slug: string;
+  title: string;
+  end_date?: string | null;
+  goal_cents?: number | null;
+  raised_cents?: number | null;
+  cover_preset?: string | null;
+  cover_url?: string | null;
+  status?: string | null;
+};
+
+const presetCovers: Record<string, string> = {
+  compleanno: "/images/fundraising-covers/compleanno.svg",
+  matrimonio: "/images/fundraising-covers/matrimonio.svg",
+  memoria: "/images/fundraising-covers/memoria.svg",
+  comunita: "/images/fundraising-covers/comunita.svg",
 };
 
 const tabs: { id: DashboardTab; label: string }[] = [
@@ -89,11 +112,12 @@ function isLinkedDashboardCard(
 export function PersonalDashboard({
   displayName,
   email,
-  campaignsCount,
   donationsCount,
+  campaigns,
   profile,
 }: PersonalDashboardProps) {
   const [activeTab, setActiveTab] = useState<DashboardTab>("dashboard");
+  const [campaignItems, setCampaignItems] = useState(campaigns);
 
   return (
     <section className="overflow-hidden bg-white px-5 sm:px-8">
@@ -130,7 +154,7 @@ export function PersonalDashboard({
         <div className="min-w-0 pb-14 pt-3 lg:py-16">
           {activeTab === "dashboard" ? (
             <DashboardOverview
-              campaignsCount={campaignsCount}
+              campaignsCount={campaignItems.length}
               displayName={displayName}
               donationsCount={donationsCount}
               onProfileClick={() => setActiveTab("profilo")}
@@ -138,13 +162,20 @@ export function PersonalDashboard({
           ) : null}
 
           {activeTab === "raccolte" ? (
-            <EmptyArea
-              title="Le tue raccolte fondi"
-              count={campaignsCount}
-              emptyText="Non hai ancora creato raccolte fondi."
-              filledText="Hai già creato raccolte fondi. La gestione dettagliata verrà ampliata nelle prossime fasi."
-              cta="Crea una raccolta"
-              href="/come-sostenerci/raccolta-fondi"
+            <CampaignsArea
+              campaigns={campaignItems}
+              onCampaignDeleted={(campaignId) =>
+                setCampaignItems((items) =>
+                  items.filter((item) => item.id !== campaignId),
+                )
+              }
+              onCampaignUpdated={(campaignId, updates) =>
+                setCampaignItems((items) =>
+                  items.map((item) =>
+                    item.id === campaignId ? { ...item, ...updates } : item,
+                  ),
+                )
+              }
             />
           ) : null}
 
@@ -193,6 +224,329 @@ export function PersonalDashboard({
       </div>
     </section>
   );
+}
+
+function CampaignsArea({
+  campaigns,
+  onCampaignDeleted,
+  onCampaignUpdated,
+}: {
+  campaigns: CampaignSummary[];
+  onCampaignDeleted: (campaignId: string) => void;
+  onCampaignUpdated: (
+    campaignId: string,
+    updates: Pick<CampaignSummary, "title" | "end_date">,
+  ) => void;
+}) {
+  if (campaigns.length === 0) {
+    return (
+      <EmptyArea
+        title="Le tue raccolte fondi"
+        count={0}
+        emptyText="Non hai ancora creato raccolte fondi."
+        filledText=""
+        cta="Crea una raccolta"
+        href="/come-sostenerci/raccolta-fondi"
+      />
+    );
+  }
+
+  return (
+    <section>
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-rose">
+            Area personale
+          </p>
+          <h2 className="mt-3 font-serif text-5xl leading-tight text-ink">
+            Le tue raccolte fondi
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
+            Qui trovi le raccolte pubblicate dal tuo profilo e il tempo
+            rimanente prima della scadenza.
+          </p>
+        </div>
+        <Link
+          className="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-wine px-6 text-sm font-bold text-white transition hover:bg-wine-deep"
+          href="/come-sostenerci/raccolta-fondi"
+        >
+          Crea nuova raccolta <Icon className="size-4" name="arrow" />
+        </Link>
+      </div>
+
+      <div className="mt-8 grid gap-6 xl:grid-cols-2">
+        {campaigns.map((campaign) => (
+          <CampaignCard
+            campaign={campaign}
+            key={campaign.id}
+            onDeleted={() => onCampaignDeleted(campaign.id)}
+            onUpdated={(updates) => onCampaignUpdated(campaign.id, updates)}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CampaignCard({
+  campaign,
+  onDeleted,
+  onUpdated,
+}: {
+  campaign: CampaignSummary;
+  onDeleted: () => void;
+  onUpdated: (updates: Pick<CampaignSummary, "title" | "end_date">) => void;
+}) {
+  const cover = getCampaignCover(campaign);
+  const goal = Number(campaign.goal_cents || 0);
+  const raised = Number(campaign.raised_cents || 0);
+  const progress =
+    goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(campaign.title);
+  const [endDate, setEndDate] = useState(campaign.end_date ?? "");
+  const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const publicPath = `/raccolte/${campaign.slug}`;
+
+  async function shareCampaign() {
+    const url = `${window.location.origin}${publicPath}`;
+    const shareData = {
+      title: campaign.title,
+      text: "Sostieni questa raccolta fondi A-ROSE ODV.",
+      url,
+    };
+
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+
+    await navigator.clipboard.writeText(url);
+    setStatusMessage("Link copiato negli appunti.");
+  }
+
+  async function saveCampaign() {
+    setErrorMessage("");
+    setStatusMessage("");
+    setIsSaving(true);
+
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) {
+      setErrorMessage("Inserisci un titolo per la raccolta.");
+      setIsSaving(false);
+      return;
+    }
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("fundraising_campaigns")
+        .update({
+          title: trimmedTitle,
+          end_date: endDate || null,
+        })
+        .eq("id", campaign.id);
+
+      if (error) throw error;
+
+      onUpdated({ title: trimmedTitle, end_date: endDate || null });
+      setIsEditing(false);
+      setStatusMessage("Raccolta aggiornata.");
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Non è stato possibile aggiornare la raccolta.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function deleteCampaign() {
+    const confirmed = window.confirm(
+      "Vuoi eliminare questa raccolta fondi? L'operazione non può essere annullata.",
+    );
+    if (!confirmed) return;
+
+    setErrorMessage("");
+    setStatusMessage("");
+    setIsDeleting(true);
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("fundraising_campaigns")
+        .delete()
+        .eq("id", campaign.id);
+
+      if (error) throw error;
+
+      onDeleted();
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Non è stato possibile eliminare la raccolta.",
+      );
+      setIsDeleting(false);
+    }
+  }
+
+  return (
+    <article className="overflow-hidden border border-wine/30 bg-white shadow-sm">
+      <div className="group grid min-h-full md:grid-cols-[180px_1fr]">
+        <span className="relative block aspect-[1.35] overflow-hidden bg-rose-soft md:aspect-auto">
+          <Image
+            className="object-cover transition duration-500 group-hover:scale-105"
+            src={cover}
+            alt={`Immagine della raccolta ${campaign.title}`}
+            fill
+            sizes="(min-width: 1280px) 180px, (min-width: 768px) 30vw, 100vw"
+            unoptimized={cover.includes("supabase.co")}
+          />
+        </span>
+        <span className="min-w-0 p-5 sm:p-6">
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
+            {campaign.status === "published" ? "Pubblicata" : "Bozza"}
+          </span>
+          {isEditing ? (
+            <div className="mt-3 grid gap-3">
+              <label className="grid gap-2 text-sm font-bold text-ink">
+                Titolo
+                <input
+                  className="min-h-11 border border-line bg-white px-3 text-sm outline-none transition focus:border-wine focus:ring-2 focus:ring-rose-soft"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                />
+              </label>
+              <label className="grid gap-2 text-sm font-bold text-ink">
+                Scadenza
+                <input
+                  className="min-h-11 border border-line bg-white px-3 text-sm outline-none transition focus:border-wine focus:ring-2 focus:ring-rose-soft"
+                  type="date"
+                  value={endDate}
+                  onChange={(event) => setEndDate(event.target.value)}
+                />
+              </label>
+            </div>
+          ) : (
+            <>
+              <Link
+                className="mt-2 block line-clamp-2 font-serif text-3xl leading-tight text-wine transition hover:text-wine-deep"
+                href={publicPath}
+              >
+                {campaign.title}
+              </Link>
+              {campaign.end_date ? (
+                <p className="mt-3 text-sm font-bold text-ink">
+                  Scade il {formatDate(campaign.end_date)}
+                </p>
+              ) : null}
+              <CampaignCountdown
+                className="mt-2"
+                compact
+                endDate={campaign.end_date}
+              />
+            </>
+          )}
+          <span className="mt-5 block h-2 overflow-hidden rounded-full bg-rose-soft">
+            <span
+              className="block h-full rounded-full bg-wine"
+              style={{ width: `${progress}%` }}
+            />
+          </span>
+          <span className="mt-2 flex items-center justify-between gap-4 text-xs font-bold text-muted">
+            <span>{progress}% raccolto</span>
+            <Link className="text-wine hover:text-wine-deep" href={publicPath}>
+              Apri raccolta →
+            </Link>
+          </span>
+
+          <span className="mt-5 flex flex-wrap gap-2">
+            {isEditing ? (
+              <>
+                <button
+                  className="inline-flex min-h-10 items-center justify-center rounded-full bg-wine px-4 text-xs font-bold text-white transition hover:bg-wine-deep disabled:opacity-60"
+                  disabled={isSaving}
+                  type="button"
+                  onClick={saveCampaign}
+                >
+                  {isSaving ? "Salvataggio..." : "Salva"}
+                </button>
+                <button
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-line px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
+                  type="button"
+                  onClick={() => {
+                    setTitle(campaign.title);
+                    setEndDate(campaign.end_date ?? "");
+                    setIsEditing(false);
+                    setErrorMessage("");
+                  }}
+                >
+                  Annulla
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
+                  type="button"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Modifica
+                </button>
+                <button
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
+                  type="button"
+                  onClick={shareCampaign}
+                >
+                  Condividi
+                </button>
+                <button
+                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-rose px-4 text-xs font-bold text-rose transition hover:bg-rose hover:text-white disabled:opacity-60"
+                  disabled={isDeleting}
+                  type="button"
+                  onClick={deleteCampaign}
+                >
+                  {isDeleting ? "Elimino..." : "Elimina"}
+                </button>
+              </>
+            )}
+          </span>
+          {statusMessage ? (
+            <p className="mt-3 text-xs font-bold text-wine" role="status">
+              {statusMessage}
+            </p>
+          ) : null}
+          {errorMessage ? (
+            <p className="mt-3 text-xs font-bold text-red-700" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
+        </span>
+      </div>
+    </article>
+  );
+}
+
+function getCampaignCover(campaign: CampaignSummary) {
+  if (campaign.cover_url) return campaign.cover_url;
+  if (campaign.cover_preset && presetCovers[campaign.cover_preset]) {
+    return presetCovers[campaign.cover_preset];
+  }
+  return presetCovers.comunita;
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("it-IT", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(value));
 }
 
 function DashboardOverview({

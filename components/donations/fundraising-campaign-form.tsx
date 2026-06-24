@@ -19,7 +19,7 @@ const projectOptions = [
   "Ricerca oncologica traslazionale",
   "Formazione specialistica",
   "Prevenzione e divulgazione",
-  "AttivitÃ  generali A-ROSE",
+  "Attività generali A-ROSE",
 ] as const;
 
 const imageOptions = [
@@ -45,8 +45,29 @@ const imageOptions = [
   },
 ] as const;
 
+const draftStorageKey = "arose.fundraisingCampaignDraft.v1";
+const maxDraftImageSize = 2_500_000;
+
 type FundraisingCampaignFormProps = {
   occasion?: string;
+};
+
+type CampaignDraft = {
+  campaignTitle: string;
+  campaignDescription: string;
+  goal: string;
+  endDate: string;
+  project: string;
+  ownerName: string;
+  region: string;
+  videoUrl: string;
+  selectedCover: (typeof imageOptions)[number]["id"] | "custom";
+  customImage?: {
+    dataUrl: string;
+    name: string;
+    type: string;
+  };
+  customImageSkipped?: boolean;
 };
 
 export function FundraisingCampaignForm({
@@ -65,6 +86,8 @@ export function FundraisingCampaignForm({
   const [uploadedPreview, setUploadedPreview] = useState("");
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const [draft, setDraft] = useState<CampaignDraft | null>(null);
+  const [isDraftLoaded, setIsDraftLoaded] = useState(false);
   const readableOccasion = occasion ?? "Raccolta fondi";
 
   const defaultTitle = useMemo(
@@ -77,6 +100,45 @@ export function FundraisingCampaignForm({
       if (uploadedPreview) URL.revokeObjectURL(uploadedPreview);
     };
   }, [uploadedPreview]);
+
+  useEffect(() => {
+    let active = true;
+
+    restoreCampaignDraft().then((restoredDraft) => {
+      if (!active) return;
+
+      if (restoredDraft) {
+        setDraft(restoredDraft);
+        setSelectedCover(restoredDraft.selectedCover);
+
+        if (restoredDraft.customImage) {
+          const file = dataUrlToFile(
+            restoredDraft.customImage.dataUrl,
+            restoredDraft.customImage.name,
+            restoredDraft.customImage.type,
+          );
+          const preview = URL.createObjectURL(file);
+          setUploadedFile(file);
+          setUploadedFileName(file.name);
+          setUploadedPreview(preview);
+        }
+
+        setStatusMessage("Bozza ripristinata. Controlla i dati e pubblica la raccolta.");
+
+        if (restoredDraft.customImageSkipped) {
+          setErrorMessage(
+            "La bozza è stata ripristinata, ma l’immagine personale era troppo pesante: caricala di nuovo prima di pubblicare.",
+          );
+        }
+      }
+
+      setIsDraftLoaded(true);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -117,12 +179,17 @@ export function FundraisingCampaignForm({
     setCopied(false);
     setIsSubmitting(true);
 
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const supabase = createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
+      await saveCampaignDraft(form, selectedCover, uploadedFile).catch(() => {
+        sessionStorage.removeItem(draftStorageKey);
+      });
       const redirectTo = encodeURIComponent(
         `${window.location.pathname}${window.location.search}`,
       );
@@ -131,7 +198,6 @@ export function FundraisingCampaignForm({
       return;
     }
 
-    const form = new FormData(event.currentTarget);
     const title = String(form.get("campaignTitle") || defaultTitle).trim();
     const description = String(form.get("campaignDescription") || "").trim();
     const goal = Number(form.get("goal"));
@@ -190,6 +256,7 @@ export function FundraisingCampaignForm({
 
       if (insertError) throw insertError;
 
+      sessionStorage.removeItem(draftStorageKey);
       const publicLink = `${window.location.origin}/raccolte/${slug}`;
       setGeneratedLink(publicLink);
       setStatusMessage("Raccolta pubblicata. Ora puoi condividere il link.");
@@ -234,7 +301,7 @@ export function FundraisingCampaignForm({
         </section>
       ) : null}
 
-      <form className="grid gap-8" onSubmit={submit}>
+      <form className="grid gap-8" key={isDraftLoaded ? "draft-loaded" : "draft-loading"} onSubmit={submit}>
         <section className="grid gap-5 border-b border-line pb-8">
           <div>
             <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
@@ -249,22 +316,23 @@ export function FundraisingCampaignForm({
             <input
               className={fieldClass}
               name="campaignTitle"
-              defaultValue={defaultTitle}
+              defaultValue={draft?.campaignTitle || defaultTitle}
               maxLength={120}
               required
             />
           </label>
           <label className="grid gap-2 text-sm font-bold text-ink">
-            PerchÃ© hai scelto questa occasione?*
+            Perché hai scelto questa occasione?*
             <textarea
               className={`${fieldClass} min-h-40 resize-y`}
               name="campaignDescription"
+              defaultValue={draft?.campaignDescription}
               maxLength={1500}
-              placeholder="Racconta in poche righe perchÃ© vuoi trasformare questo momento in un gesto di solidarietÃ ."
+              placeholder="Racconta in poche righe perché vuoi trasformare questo momento in un gesto di solidarietà."
               required
             />
             <span className="text-xs font-normal text-muted">
-              Testo consigliato: breve, personale e chiaro. SarÃ  utile per
+              Testo consigliato: breve, personale e chiaro. Sarà utile per
               presentare la raccolta quando condividi il link.
             </span>
           </label>
@@ -280,16 +348,17 @@ export function FundraisingCampaignForm({
               min="1"
               inputMode="numeric"
               placeholder="Es. 5000"
+              defaultValue={draft?.goal}
               required
             />
           </label>
           <label className="grid gap-2 text-sm font-bold text-ink">
             Data di fine raccolta*
-            <input className={fieldClass} name="endDate" type="date" required />
+            <input className={fieldClass} name="endDate" type="date" defaultValue={draft?.endDate} required />
           </label>
           <label className="grid gap-2 text-sm font-bold text-ink sm:col-span-2">
             Progetto da sostenere*
-            <select className={fieldClass} name="project" required>
+            <select className={fieldClass} name="project" defaultValue={draft?.project || ""} required>
               <option value="">Seleziona un progetto</option>
               {projectOptions.map((option) => (
                 <option key={option}>{option}</option>
@@ -298,19 +367,19 @@ export function FundraisingCampaignForm({
           </label>
           <label className="grid gap-2 text-sm font-bold text-ink">
             Nome del festeggiato o referente*
-            <input className={fieldClass} name="ownerName" required />
+            <input className={fieldClass} name="ownerName" defaultValue={draft?.ownerName} required />
           </label>
           <label className="grid gap-2 text-sm font-bold text-ink">
-            Regione o luogo dellâ€™evento{" "}
+            Regione o luogo dell&apos;evento{" "}
             <span className="font-normal text-muted">(facoltativo)</span>
-            <input className={fieldClass} name="region" />
+            <input className={fieldClass} name="region" defaultValue={draft?.region} />
           </label>
         </section>
 
         <section className="grid gap-5 border-b border-line pb-8">
           <div>
             <h3 className="font-serif text-3xl font-normal text-ink">
-              Scegli unâ€™immagine per la raccolta*
+              Scegli un&apos;immagine per la raccolta*
             </h3>
             <p className="mt-2 text-sm leading-7 text-muted">
               Scegli una cover pronta oppure carica una tua immagine personale.
@@ -384,7 +453,7 @@ export function FundraisingCampaignForm({
           <label className="grid gap-2 text-sm font-bold text-ink">
             Video YouTube o Vimeo{" "}
             <span className="font-normal text-muted">(facoltativo)</span>
-            <input className={fieldClass} name="videoUrl" type="url" />
+            <input className={fieldClass} name="videoUrl" type="url" defaultValue={draft?.videoUrl} />
           </label>
         </section>
 
@@ -461,6 +530,73 @@ function getSafeExtension(fileName: string) {
   const extension = fileName.split(".").pop()?.toLowerCase();
   if (extension === "png" || extension === "webp") return extension;
   return "jpg";
+}
+
+async function saveCampaignDraft(
+  form: FormData,
+  selectedCover: CampaignDraft["selectedCover"],
+  uploadedFile: File | null,
+) {
+  const draft: CampaignDraft = {
+    campaignTitle: String(form.get("campaignTitle") || ""),
+    campaignDescription: String(form.get("campaignDescription") || ""),
+    goal: String(form.get("goal") || ""),
+    endDate: String(form.get("endDate") || ""),
+    project: String(form.get("project") || ""),
+    ownerName: String(form.get("ownerName") || ""),
+    region: String(form.get("region") || ""),
+    videoUrl: String(form.get("videoUrl") || ""),
+    selectedCover,
+  };
+
+  if (selectedCover === "custom" && uploadedFile) {
+    if (uploadedFile.size <= maxDraftImageSize) {
+      draft.customImage = {
+        dataUrl: await fileToDataUrl(uploadedFile),
+        name: uploadedFile.name,
+        type: uploadedFile.type || "image/jpeg",
+      };
+    } else {
+      draft.selectedCover = "compleanno";
+      draft.customImageSkipped = true;
+    }
+  }
+
+  sessionStorage.setItem(draftStorageKey, JSON.stringify(draft));
+}
+
+async function restoreCampaignDraft() {
+  const rawDraft = sessionStorage.getItem(draftStorageKey);
+  if (!rawDraft) return null;
+
+  try {
+    return JSON.parse(rawDraft) as CampaignDraft;
+  } catch {
+    sessionStorage.removeItem(draftStorageKey);
+    return null;
+  }
+}
+
+function fileToDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(String(reader.result || "")));
+    reader.addEventListener("error", () => reject(reader.error));
+    reader.readAsDataURL(file);
+  });
+}
+
+function dataUrlToFile(dataUrl: string, fileName: string, type: string) {
+  const [metadata, content] = dataUrl.split(",");
+  const mimeType = metadata.match(/data:(.*);base64/)?.[1] || type || "image/jpeg";
+  const binary = atob(content || "");
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return new File([bytes], fileName, { type: mimeType });
 }
 
 function normalizeOccasionForDatabase(value: string) {

@@ -33,12 +33,16 @@ export default async function PersonalAreaPage() {
       .join(" ");
     const displayName = fullName || user.email?.split("@")[0] || "utente";
 
-    const [{ count: campaignsCount }, { count: donationsCount }] =
+    const [{ data: campaigns, count: campaignsCount }, { count: donationsCount }] =
       await Promise.all([
         supabase
           .from("fundraising_campaigns")
-          .select("id", { count: "exact", head: true })
-          .eq("owner_id", user.id),
+          .select(
+            "id, slug, title, end_date, goal_cents, raised_cents, cover_preset, cover_url, status",
+            { count: "exact" },
+          )
+          .eq("owner_id", user.id)
+          .order("created_at", { ascending: false }),
         supabase
           .from("donations")
           .select("id", { count: "exact", head: true })
@@ -63,6 +67,7 @@ export default async function PersonalAreaPage() {
           displayName={displayName}
           donationsCount={donationsCount ?? 0}
           email={user.email}
+          campaigns={campaigns ?? []}
           profile={profile}
         />
       </main>
