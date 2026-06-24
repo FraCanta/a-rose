@@ -1,32 +1,101 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Icon } from "@/components/home/icons";
+import { AuthForms } from "@/components/auth/auth-forms";
+import { PersonalDashboard } from "@/components/auth/personal-dashboard";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata: Metadata = {
   title: "Area personale | A-ROSE ODV",
-  description: "Area personale A-ROSE ODV in preparazione per sostenitori e donatori.",
+  description:
+    "Accedi o registrati all'area personale A-ROSE ODV per gestire raccolte fondi e azioni di sostegno.",
   robots: { index: false, follow: false },
 };
 
-export default function PersonalAreaPage() {
+export default async function PersonalAreaPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select(
+        "first_name,last_name,donor_code,birth_date,biological_sex,phone,fiscal_code,address,street_number,city,postal_code,province,privacy_accepted_at,marketing_accepted_at",
+      )
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const fullName = [
+      profile?.first_name ?? user.user_metadata?.first_name,
+      profile?.last_name ?? user.user_metadata?.last_name,
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const displayName = fullName || user.email?.split("@")[0] || "utente";
+
+    const [{ count: campaignsCount }, { count: donationsCount }] =
+      await Promise.all([
+        supabase
+          .from("fundraising_campaigns")
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id),
+        supabase
+          .from("donations")
+          .select("id", { count: "exact", head: true })
+          .eq("donor_id", user.id),
+      ]);
+
+    return (
+      <main id="contenuto">
+        <section className="bg-ivory px-5 py-16 text-center sm:px-8 lg:py-24">
+          <div className="mx-auto max-w-site">
+            <h1 className="font-serif text-5xl leading-none text-ink sm:text-6xl lg:text-7xl">
+              Area riservata
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-base font-semibold leading-7 text-wine">
+              Ti diamo il benvenuto nella tua area personale A-ROSE.
+            </p>
+          </div>
+        </section>
+
+        <PersonalDashboard
+          campaignsCount={campaignsCount ?? 0}
+          displayName={displayName}
+          donationsCount={donationsCount ?? 0}
+          email={user.email}
+          profile={profile}
+        />
+      </main>
+    );
+  }
+
   return (
     <main id="contenuto">
-      <section className="bg-ivory px-5 py-20 sm:px-8 lg:py-28">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-wine">Area personale</p>
-          <h1 className="mt-5 font-serif text-5xl leading-[0.98] text-ink sm:text-6xl">
-            Uno spazio dedicato ai <em className="font-normal text-rose">sostenitori.</em>
-          </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            L’area personale è in preparazione. In futuro permetterà di gestire il proprio profilo e consultare le informazioni legate al sostegno ad A-ROSE.
+      <section className="bg-ivory px-5 py-16 sm:px-8 lg:py-24">
+        <div className="mx-auto max-w-site text-center">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-wine">
+            Area riservata
           </p>
-          <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-wine px-7 font-bold text-white transition hover:bg-wine-deep" href="/contatti">
-              Contattaci <Icon className="size-4" name="arrow" />
-            </Link>
-            <Link className="inline-flex min-h-12 items-center justify-center rounded-full border border-wine px-7 font-bold text-wine transition hover:bg-rose-soft" href="/sostieni-la-ricerca">
-              Sostieni la ricerca
-            </Link>
+          <h1 className="mx-auto mt-5 max-w-4xl font-serif text-5xl leading-[0.98] text-ink sm:text-6xl lg:text-7xl">
+            Accedi o registrati al tuo spazio{" "}
+            <em className="font-normal text-rose">A-ROSE.</em>
+          </h1>
+          <p className="mx-auto mt-7 max-w-3xl text-base leading-8 text-muted sm:text-lg">
+            Potrai creare e gestire raccolte fondi, salvare iniziative e
+            accedere alle funzionalità dedicate ai sostenitori.
+          </p>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-14 sm:px-8 lg:py-20">
+        <div className="mx-auto max-w-site">
+          <AuthForms />
+          <div className="mt-10 rounded-3xl bg-ivory p-6 text-sm leading-7 text-muted sm:p-8">
+            <p>
+              L&apos;area personale è pensata per strumenti di partecipazione e
+              sostegno. A-ROSE non fornisce consulenze mediche, diagnosi o
+              indicazioni terapeutiche personalizzate attraverso questo spazio.
+            </p>
           </div>
         </div>
       </section>

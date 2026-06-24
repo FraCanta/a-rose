@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import { Icon } from "@/components/home/icons";
 
@@ -26,9 +27,21 @@ const giftOccasions = [
   "Altro",
 ] as const;
 const giftCards = [
-  { id: "rosa", label: "Rosa A-ROSE", className: "from-rose-soft to-white" },
-  { id: "ricerca", label: "Ricerca", className: "from-[#f6d8dd] to-[#fff8f5]" },
-  { id: "speranza", label: "Speranza", className: "from-[#eadbd2] to-white" },
+  {
+    id: "donne",
+    label: "Un dono che sostiene la ricerca",
+    image: "/images/e-card/arose-e-card-1.jpg",
+  },
+  {
+    id: "alleanze",
+    label: "La ricerca ha bisogno di alleanze",
+    image: "/images/e-card/arose-e-card-2.jpg",
+  },
+  {
+    id: "team",
+    label: "Un dono che sostiene la ricerca ogni giorno",
+    image: "/images/e-card/arose-e-card-3.jpg",
+  },
 ] as const;
 
 function StepLabel({ number, title }: { number: number; title: string }) {
@@ -267,9 +280,16 @@ export function DonationCheckout({
                       required
                     />
                     <span
-                      className={`grid aspect-[0.72] place-items-end rounded-2xl border border-line bg-gradient-to-br ${card.className} p-4 font-serif text-xl text-wine transition peer-checked:border-wine peer-checked:ring-4 peer-checked:ring-rose-soft`}
+                      className="relative block aspect-[0.72] overflow-hidden rounded-2xl border border-line bg-white transition peer-checked:border-wine peer-checked:ring-4 peer-checked:ring-rose-soft peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-rose"
                     >
-                      {card.label}
+                      <Image
+                        className="object-cover"
+                        src={card.image}
+                        alt={card.label}
+                        fill
+                        sizes="(min-width: 640px) 30vw, 100vw"
+                      />
+                      <span className="sr-only">{card.label}</span>
                     </span>
                   </label>
                 ))}
@@ -468,27 +488,34 @@ export function DonationCheckout({
               ))}
             </select>
           </label>
-          <div className="grid gap-3">
-            <p className="text-sm font-bold text-ink">Seleziona la e-card</p>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {giftCards.map((card) => (
-                <label className="cursor-pointer" key={card.id}>
+            <div className="grid gap-3">
+              <p className="text-sm font-bold text-ink">Seleziona la e-card</p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {giftCards.map((card) => (
+                  <label className="cursor-pointer" key={card.id}>
                   <input
                     className="peer sr-only"
                     type="radio"
                     name="giftCardStyle"
-                    value={card.label}
-                    required
-                  />
-                  <span
-                    className={`grid aspect-[0.72] place-items-end rounded-2xl border border-line bg-gradient-to-br ${card.className} p-4 font-serif text-xl text-wine transition peer-checked:border-wine peer-checked:ring-4 peer-checked:ring-rose-soft`}
-                  >
-                    {card.label}
-                  </span>
-                </label>
-              ))}
+                      value={card.label}
+                      required
+                    />
+                    <span
+                      className="relative block aspect-[0.72] overflow-hidden rounded-2xl border border-line bg-white transition peer-checked:border-wine peer-checked:ring-4 peer-checked:ring-rose-soft peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-rose"
+                    >
+                      <Image
+                        className="object-cover"
+                        src={card.image}
+                        alt={card.label}
+                        fill
+                        sizes="(min-width: 640px) 30vw, 100vw"
+                      />
+                      <span className="sr-only">{card.label}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
           <label className="grid gap-2 text-sm font-bold text-ink">
             Nome del destinatario*
             <input

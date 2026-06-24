@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Cover raccolta fondi in memoria</title>
+  <desc id="desc">Illustrazione astratta con luce, cuore e petali delicati.</desc>
+  <rect width="900" height="600" fill="#F8F1EC"/>
+  <circle cx="450" cy="245" r="190" fill="#FFFDFC"/>
+  <circle cx="450" cy="245" r="125" fill="#F3D8DD"/>
+  <path d="M450 370s-142-86-142-173c0-48 33-82 78-82 28 0 51 14 64 36 13-22 36-36 64-36 45 0 78 34 78 82 0 87-142 173-142 173Z" fill="#DA5D75"/>
+  <path d="M240 152c54-52 105-52 153 0M507 152c54-52 105-52 153 0" fill="none" stroke="#8B1735" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <g fill="#DA5D75" opacity=".7">
+    <ellipse cx="168" cy="330" rx="16" ry="36" transform="rotate(-32 168 330)"/>
+    <ellipse cx="730" cy="345" rx="16" ry="36" transform="rotate(35 730 345)"/>
+    <ellipse cx="238" cy="105" rx="11" ry="28" transform="rotate(52 238 105)"/>
+    <ellipse cx="682" cy="92" rx="11" ry="28" transform="rotate(-52 682 92)"/>
+  </g>
+  <text x="78" y="505" fill="#2D2927" font-family="Georgia, serif" font-size="62">Ricorda con un gesto</text>
+  <text x="78" y="560" fill="#DA5D75" font-family="Georgia, serif" font-size="62" font-style="italic">che guarda avanti.</text>
+</svg>

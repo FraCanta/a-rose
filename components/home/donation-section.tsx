@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Eyebrow } from "./eyebrow";
 import { Icon } from "./icons";
-import { button, container, heading, iconWrap, section, textLink } from "./styles";
+import {
+  container,
+  heading,
+  iconWrap,
+  section,
+  textLink,
+} from "./styles";
 
 const benefits = [
   ["search", "Progetti scientifici concreti"],
@@ -12,7 +18,9 @@ const benefits = [
 export function DonationSection() {
   return (
     <section className={`${section} bg-ivory`} id="dona">
-      <div className={`${container} grid items-center gap-28 lg:grid-cols-[0.93fr_1.07fr] max-lg:gap-16 max-md:grid-cols-1`}>
+      <div
+        className={`${container} grid items-center gap-28 lg:grid-cols-[0.93fr_1.07fr] max-lg:gap-16 max-md:grid-cols-1`}
+      >
         <div>
           <Eyebrow>Sostieni il cambiamento</Eyebrow>
           <h2 className={heading}>
@@ -21,13 +29,17 @@ export function DonationSection() {
             <em className="font-normal text-rose">accelera la ricerca</em>
           </h2>
           <p className="my-9 max-w-xl text-[17px] leading-[1.85] text-muted">
-            Donare ad A-ROSE significa sostenere progetti scientifici, formazione specialistica e
-            attività di prevenzione. Ogni contributo aiuta a trasformare la conoscenza in nuove
-            possibilità per il futuro della cura.
+            Donare ad A-ROSE significa sostenere progetti scientifici,
+            formazione specialistica e attività di prevenzione. Ogni contributo
+            aiuta a trasformare la conoscenza in nuove possibilità per il futuro
+            della cura.
           </p>
           <ul className="grid gap-4 p-0">
             {benefits.map(([icon, label]) => (
-              <li className="flex items-center gap-3 text-sm font-bold" key={label}>
+              <li
+                className="flex items-center gap-3 text-sm font-bold"
+                key={label}
+              >
                 <Icon className="size-4 text-rose" name={icon} />
                 {label}
               </li>
@@ -57,43 +69,57 @@ export function DonationSection() {
           </div>
 
           <form action="/sostieni-la-ricerca" className="relative" method="get">
-          <fieldset className="m-0 border-0 p-0">
-            <legend className="mb-3 text-xs font-bold">Importo della donazione</legend>
-            <div className="grid grid-cols-4 gap-2 max-sm:grid-cols-2">
-              {[25, 50, 100, 250].map((amount) => (
-                <label className="cursor-pointer" key={amount}>
+            <fieldset className="m-0 border-0 p-0">
+              <legend className="mb-3 text-xs font-bold">
+                Importo della donazione
+              </legend>
+              <div className="grid grid-cols-4 gap-2 max-sm:grid-cols-2">
+                {[25, 50, 100, 250].map((amount) => (
+                  <label className="cursor-pointer" key={amount}>
+                    <input
+                      className="peer sr-only"
+                      type="radio"
+                      name="amount"
+                      value={amount}
+                      defaultChecked={amount === 50}
+                    />
+                    <span className="grid min-h-[55px] place-items-center border border-line bg-white font-serif text-xl text-wine transition peer-checked:border-wine peer-checked:bg-wine peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#ef9bae]">
+                      {amount}€
+                    </span>
+                  </label>
+                ))}
+                <label className="col-span-full cursor-pointer">
                   <input
                     className="peer sr-only"
                     type="radio"
                     name="amount"
-                    value={amount}
-                    defaultChecked={amount === 50}
+                    value="custom"
                   />
-                  <span className="grid min-h-[55px] place-items-center border border-line bg-white font-serif text-xl text-wine transition peer-checked:border-wine peer-checked:bg-wine peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#ef9bae]">
-                    {amount}€
+                  <span className="grid min-h-[55px] place-items-center border border-line bg-white text-sm font-bold text-wine transition peer-checked:border-wine peer-checked:bg-wine peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#ef9bae]">
+                    Importo libero
                   </span>
                 </label>
-              ))}
-              <label className="col-span-full cursor-pointer">
-                <input className="peer sr-only" type="radio" name="amount" value="custom" />
-                <span className="grid min-h-[55px] place-items-center border border-line bg-white text-sm font-bold text-wine transition peer-checked:border-wine peer-checked:bg-wine peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#ef9bae]">
-                  Importo libero
-                </span>
-              </label>
-            </div>
-          </fieldset>
+              </div>
+            </fieldset>
 
-          <button className={`${button} mt-5 w-full`} type="submit">
-            Dona ora <Icon className="size-[18px]" name="heart" />
-          </button>
+            <button
+              className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full border border-wine bg-wine px-8 py-3 font-bold leading-tight text-white transition hover:-translate-y-0.5 hover:border-wine-deep hover:bg-wine-deep mt-5 w-full"
+              type="submit"
+            >
+              Dona ora <Icon className="size-[18px]" name="heart" />
+            </button>
           </form>
-          <Link className={`${textLink} relative mx-auto mt-5 text-xs`} href="/come-sostenerci/come-usiamo-i-fondi">
-            Scopri come usiamo le donazioni <Icon className="size-4" name="arrow" />
+          <Link
+            className={`${textLink} relative mx-auto mt-5 text-xs`}
+            href="/come-sostenerci/come-usiamo-i-fondi"
+          >
+            Scopri come usiamo le donazioni{" "}
+            <Icon className="size-4" name="arrow" />
           </Link>
           <p className="relative mt-6 flex gap-2 border-t border-line pt-5 text-[10px] leading-relaxed text-muted">
             <Icon className="size-4 shrink-0 text-rose" name="shield" />
-            Le donazioni sono tracciabili e rendicontate. Puoi consultare documenti, bilanci e
-            informazioni fiscali nella sezione Trasparenza.
+            Le donazioni sono tracciabili e rendicontate. Puoi consultare
+            documenti, bilanci e informazioni fiscali nella sezione Trasparenza.
           </p>
         </div>
       </div>

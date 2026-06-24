@@ -1,11 +1,11 @@
 "use client";
 
-import { Icon as IconifyIcon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/home/icons";
 import { Entrance } from "@/components/ui/entrance";
+import { AuthProfileLink } from "./auth-profile-link";
 import { DesktopNavigation } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { navigation } from "./navigation-data";
@@ -63,24 +63,19 @@ export function Header() {
 
             <div className="min-w-0 overflow-hidden">
               {isCompact ? (
-                <Link
-                  className="inline-flex min-h-12 whitespace-nowrap items-center gap-2.5 rounded-full bg-wine px-6 text-sm font-bold text-white transition hover:bg-wine-deep"
-                  href="/sostieni-la-ricerca"
-                >
-                  Sostieni la ricerca <Icon className="size-4" name="heart" />
-                </Link>
+                <div className="flex items-center gap-5">
+                  <AuthProfileLink className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-semibold text-ink transition hover:text-wine" />
+                  <Link
+                    className="inline-flex min-h-12 whitespace-nowrap items-center gap-2.5 rounded-full bg-wine px-6 text-sm font-bold text-white transition hover:bg-wine-deep"
+                    href="/sostieni-la-ricerca"
+                  >
+                    Sostieni la ricerca <Icon className="size-4" name="heart" />
+                  </Link>
+                </div>
               ) : (
-                <Link
+                <AuthProfileLink
                   className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-semibold text-ink transition hover:text-wine"
-                  href="/area-personale"
-                >
-                  <IconifyIcon
-                    aria-hidden="true"
-                    className="size-5"
-                    icon="solar:user-rounded-linear"
-                  />
-                  Accedi / Registrati
-                </Link>
+                />
               )}
             </div>
           </div>

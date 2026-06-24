@@ -1,10 +1,10 @@
 "use client";
 
-import { Icon as IconifyIcon } from "@iconify/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/home/icons";
+import { AuthProfileLink } from "./auth-profile-link";
 import type { NavigationGroup } from "./navigation-data";
 
 type MobileNavigationProps = { items: readonly NavigationGroup[] };
@@ -151,18 +151,10 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
             </nav>
 
             <div className="border-t border-line bg-white px-5 py-4 sm:px-8">
-              <Link
+              <AuthProfileLink
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-wine px-6 font-bold text-wine transition hover:bg-rose-soft"
-                href="/area-personale"
                 onClick={closeMenu}
-              >
-                <IconifyIcon
-                  aria-hidden="true"
-                  className="size-5"
-                  icon="solar:user-rounded-linear"
-                />
-                Accedi / Registrati
-              </Link>
+              />
             </div>
           </motion.div>
         ) : null}
