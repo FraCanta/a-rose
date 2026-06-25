@@ -58,7 +58,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
     <main id="contenuto" className="bg-white">
       <section className="px-5 py-12 sm:px-8 lg:py-20">
         <div className="mx-auto grid max-w-site gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
-          <div className="relative aspect-[1.25] overflow-hidden rounded-[2rem] bg-rose-soft">
+          <div className="relative aspect-[1.25] overflow-hidden rounded-4xl bg-rose-soft">
             <Image
               className="object-cover"
               src={cover}
