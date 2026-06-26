@@ -337,11 +337,12 @@ using (owner_id = auth.uid())
 with check (owner_id = auth.uid());
 
 drop policy if exists "campaigns_delete_own_draft" on public.fundraising_campaigns;
-create policy "campaigns_delete_own_draft"
+drop policy if exists "campaigns_delete_own" on public.fundraising_campaigns;
+create policy "campaigns_delete_own"
 on public.fundraising_campaigns
 for delete
 to authenticated
-using (owner_id = auth.uid() and status = 'draft');
+using (owner_id = auth.uid());
 
 -- Donations:
 -- Le donazioni vanno scritte dal backend con service role attraverso webhook/API.

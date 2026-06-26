@@ -169,13 +169,6 @@ export function PersonalDashboard({
                   items.filter((item) => item.id !== campaignId),
                 )
               }
-              onCampaignUpdated={(campaignId, updates) =>
-                setCampaignItems((items) =>
-                  items.map((item) =>
-                    item.id === campaignId ? { ...item, ...updates } : item,
-                  ),
-                )
-              }
             />
           ) : null}
 
@@ -229,14 +222,9 @@ export function PersonalDashboard({
 function CampaignsArea({
   campaigns,
   onCampaignDeleted,
-  onCampaignUpdated,
 }: {
   campaigns: CampaignSummary[];
   onCampaignDeleted: (campaignId: string) => void;
-  onCampaignUpdated: (
-    campaignId: string,
-    updates: Pick<CampaignSummary, "title" | "end_date">,
-  ) => void;
 }) {
   if (campaigns.length === 0) {
     return (
@@ -280,7 +268,6 @@ function CampaignsArea({
             campaign={campaign}
             key={campaign.id}
             onDeleted={() => onCampaignDeleted(campaign.id)}
-            onUpdated={(updates) => onCampaignUpdated(campaign.id, updates)}
           />
         ))}
       </div>
@@ -291,25 +278,21 @@ function CampaignsArea({
 function CampaignCard({
   campaign,
   onDeleted,
-  onUpdated,
 }: {
   campaign: CampaignSummary;
   onDeleted: () => void;
-  onUpdated: (updates: Pick<CampaignSummary, "title" | "end_date">) => void;
 }) {
   const cover = getCampaignCover(campaign);
   const goal = Number(campaign.goal_cents || 0);
   const raised = Number(campaign.raised_cents || 0);
   const progress =
     goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(campaign.title);
-  const [endDate, setEndDate] = useState(campaign.end_date ?? "");
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const publicPath = `/raccolte/${campaign.slug}`;
+  const editPath = `/donazione?tipo=raccolta&modifica=${encodeURIComponent(campaign.id)}#checkout`;
 
   async function shareCampaign() {
     const url = `${window.location.origin}${publicPath}`;
@@ -328,50 +311,7 @@ function CampaignCard({
     setStatusMessage("Link copiato negli appunti.");
   }
 
-  async function saveCampaign() {
-    setErrorMessage("");
-    setStatusMessage("");
-    setIsSaving(true);
-
-    const trimmedTitle = title.trim();
-    if (!trimmedTitle) {
-      setErrorMessage("Inserisci un titolo per la raccolta.");
-      setIsSaving(false);
-      return;
-    }
-
-    try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from("fundraising_campaigns")
-        .update({
-          title: trimmedTitle,
-          end_date: endDate || null,
-        })
-        .eq("id", campaign.id);
-
-      if (error) throw error;
-
-      onUpdated({ title: trimmedTitle, end_date: endDate || null });
-      setIsEditing(false);
-      setStatusMessage("Raccolta aggiornata.");
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "Non è stato possibile aggiornare la raccolta.",
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  }
-
   async function deleteCampaign() {
-    const confirmed = window.confirm(
-      "Vuoi eliminare questa raccolta fondi? L'operazione non può essere annullata.",
-    );
-    if (!confirmed) return;
-
     setErrorMessage("");
     setStatusMessage("");
     setIsDeleting(true);
@@ -385,6 +325,7 @@ function CampaignCard({
 
       if (error) throw error;
 
+      setIsDeleteDialogOpen(false);
       onDeleted();
     } catch (error) {
       setErrorMessage(
@@ -413,46 +354,22 @@ function CampaignCard({
           <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
             {campaign.status === "published" ? "Pubblicata" : "Bozza"}
           </span>
-          {isEditing ? (
-            <div className="mt-3 grid gap-3">
-              <label className="grid gap-2 text-sm font-bold text-ink">
-                Titolo
-                <input
-                  className="min-h-11 border border-line bg-white px-3 text-sm outline-none transition focus:border-wine focus:ring-2 focus:ring-rose-soft"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                />
-              </label>
-              <label className="grid gap-2 text-sm font-bold text-ink">
-                Scadenza
-                <input
-                  className="min-h-11 border border-line bg-white px-3 text-sm outline-none transition focus:border-wine focus:ring-2 focus:ring-rose-soft"
-                  type="date"
-                  value={endDate}
-                  onChange={(event) => setEndDate(event.target.value)}
-                />
-              </label>
-            </div>
-          ) : (
-            <>
-              <Link
-                className="mt-2 block line-clamp-2 font-serif text-3xl leading-tight text-wine transition hover:text-wine-deep"
-                href={publicPath}
-              >
-                {campaign.title}
-              </Link>
-              {campaign.end_date ? (
-                <p className="mt-3 text-sm font-bold text-ink">
-                  Scade il {formatDate(campaign.end_date)}
-                </p>
-              ) : null}
-              <CampaignCountdown
-                className="mt-2"
-                compact
-                endDate={campaign.end_date}
-              />
-            </>
-          )}
+          <Link
+            className="mt-2 block line-clamp-2 font-serif text-3xl leading-tight text-wine transition hover:text-wine-deep"
+            href={publicPath}
+          >
+            {campaign.title}
+          </Link>
+          {campaign.end_date ? (
+            <p className="mt-3 text-sm font-bold text-ink">
+              Scade il {formatDate(campaign.end_date)}
+            </p>
+          ) : null}
+          <CampaignCountdown
+            className="mt-2"
+            compact
+            endDate={campaign.end_date}
+          />
           <span className="mt-5 block h-2 overflow-hidden rounded-full bg-rose-soft">
             <span
               className="block h-full rounded-full bg-wine"
@@ -467,55 +384,27 @@ function CampaignCard({
           </span>
 
           <span className="mt-5 flex flex-wrap gap-2">
-            {isEditing ? (
-              <>
-                <button
-                  className="inline-flex min-h-10 items-center justify-center rounded-full bg-wine px-4 text-xs font-bold text-white transition hover:bg-wine-deep disabled:opacity-60"
-                  disabled={isSaving}
-                  type="button"
-                  onClick={saveCampaign}
-                >
-                  {isSaving ? "Salvataggio..." : "Salva"}
-                </button>
-                <button
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-line px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
-                  type="button"
-                  onClick={() => {
-                    setTitle(campaign.title);
-                    setEndDate(campaign.end_date ?? "");
-                    setIsEditing(false);
-                    setErrorMessage("");
-                  }}
-                >
-                  Annulla
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
-                  type="button"
-                  onClick={() => setIsEditing(true)}
-                >
-                  Modifica
-                </button>
-                <button
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
-                  type="button"
-                  onClick={shareCampaign}
-                >
-                  Condividi
-                </button>
-                <button
-                  className="inline-flex min-h-10 items-center justify-center rounded-full border border-rose px-4 text-xs font-bold text-rose transition hover:bg-rose hover:text-white disabled:opacity-60"
-                  disabled={isDeleting}
-                  type="button"
-                  onClick={deleteCampaign}
-                >
-                  {isDeleting ? "Elimino..." : "Elimina"}
-                </button>
-              </>
-            )}
+            <Link
+              className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
+              href={editPath}
+            >
+              Modifica
+            </Link>
+            <button
+              className="inline-flex min-h-10 items-center justify-center rounded-full border border-wine/35 px-4 text-xs font-bold text-wine transition hover:bg-rose-soft"
+              type="button"
+              onClick={shareCampaign}
+            >
+              Condividi
+            </button>
+            <button
+              className="inline-flex min-h-10 items-center justify-center rounded-full border border-rose px-4 text-xs font-bold text-rose transition hover:bg-rose hover:text-white disabled:opacity-60"
+              disabled={isDeleting}
+              type="button"
+              onClick={() => setIsDeleteDialogOpen(true)}
+            >
+              {isDeleting ? "Elimino..." : "Elimina"}
+            </button>
           </span>
           {statusMessage ? (
             <p className="mt-3 text-xs font-bold text-wine" role="status">
@@ -529,6 +418,50 @@ function CampaignCard({
           ) : null}
         </span>
       </div>
+      {isDeleteDialogOpen ? (
+        <div
+          className="fixed inset-0 z-[80] grid place-items-center bg-ink/60 px-5"
+          role="presentation"
+        >
+          <div
+            aria-labelledby={`delete-campaign-${campaign.id}`}
+            aria-modal="true"
+            className="w-full max-w-md border border-wine/25 bg-white p-6 shadow-2xl"
+            role="dialog"
+          >
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
+              Conferma eliminazione
+            </p>
+            <h2
+              className="mt-3 font-serif text-3xl font-normal text-ink"
+              id={`delete-campaign-${campaign.id}`}
+            >
+              Vuoi eliminare questa raccolta?
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-muted">
+              L’operazione non può essere annullata. Il link pubblico non sarà
+              più disponibile.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button
+                className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-line px-5 text-sm font-bold text-wine transition hover:bg-rose-soft"
+                type="button"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
+                Annulla
+              </button>
+              <button
+                className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-rose px-5 text-sm font-bold text-white transition hover:bg-wine disabled:opacity-60"
+                disabled={isDeleting}
+                type="button"
+                onClick={deleteCampaign}
+              >
+                {isDeleting ? "Elimino..." : "Sì, elimina"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </article>
   );
 }

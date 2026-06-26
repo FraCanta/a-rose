@@ -310,11 +310,12 @@ using (owner_id = auth.uid())
 with check (owner_id = auth.uid());
 
 drop policy if exists "campaigns_delete_own_draft" on public.fundraising_campaigns;
-create policy "campaigns_delete_own_draft"
+drop policy if exists "campaigns_delete_own" on public.fundraising_campaigns;
+create policy "campaigns_delete_own"
 on public.fundraising_campaigns
 for delete
 to authenticated
-using (owner_id = auth.uid() and status = 'draft');
+using (owner_id = auth.uid());
 
 drop policy if exists "donations_select_own_or_owned_campaign" on public.donations;
 create policy "donations_select_own_or_owned_campaign"

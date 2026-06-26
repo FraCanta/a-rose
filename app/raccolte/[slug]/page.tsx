@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CampaignShareActions } from "@/components/donations/campaign-share-actions";
 import { CampaignCountdown } from "@/components/donations/campaign-countdown";
 import { Icon } from "@/components/home/icons";
 import { createClient } from "@/utils/supabase/server";
@@ -17,6 +18,21 @@ const presetCovers: Record<string, string> = {
   comunita: "/images/fundraising-covers/comunita.svg",
 };
 
+function getSiteUrl() {
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://a-rose-tau.vercel.app/"
+  ).replace(/\/$/, "");
+}
+
+function getAbsoluteUrl(value: string) {
+  if (value.startsWith("http")) return value;
+  return `${getSiteUrl()}${value.startsWith("/") ? value : `/${value}`}`;
+}
+
+function getCampaignUrl(slug: string) {
+  return `${getSiteUrl()}/raccolte/${slug}`;
+}
+
 export async function generateMetadata({
   params,
 }: CampaignPageProps): Promise<Metadata> {
@@ -30,13 +46,34 @@ export async function generateMetadata({
     };
   }
 
+  const description =
+    campaign.description ?? "Sostieni questa raccolta fondi A-ROSE ODV.";
+  const image = getAbsoluteUrl(getCampaignCover(campaign));
+  const url = getCampaignUrl(campaign.slug);
+
   return {
     title: `${campaign.title} | A-ROSE ODV`,
-    description: campaign.description,
+    description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       title: campaign.title,
-      description: campaign.description,
-      images: [getCampaignCover(campaign)],
+      description,
+      type: "website",
+      url,
+      images: [
+        {
+          url: image,
+          alt: `Raccolta fondi ${campaign.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: campaign.title,
+      description,
+      images: [image],
     },
   };
 }
@@ -53,6 +90,8 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
   const progress =
     goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
   const donationHref = `/donazione?tipo=raccolta&campagna=${encodeURIComponent(campaign.title)}#checkout`;
+  const campaignUrl = getCampaignUrl(campaign.slug);
+  const shareText = `Sostieni questa raccolta fondi A-ROSE ODV: ${campaign.title}`;
 
   return (
     <main id="contenuto" className="bg-white">
@@ -113,19 +152,18 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
               />
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 grid gap-4">
               <Link
                 className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-wine px-8 font-bold text-white transition hover:bg-wine-deep"
                 href={donationHref}
               >
                 Dona a questa raccolta <Icon className="size-4" name="heart" />
               </Link>
-              <a
-                className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-wine px-8 font-bold text-wine transition hover:bg-rose-soft"
-                href={`https://wa.me/?text=${encodeURIComponent(`Sostieni questa raccolta A-ROSE: ${campaign.title}`)}`}
-              >
-                Condividi su WhatsApp
-              </a>
+              <CampaignShareActions
+                text={shareText}
+                title={campaign.title}
+                url={campaignUrl}
+              />
             </div>
 
             <dl className="mt-9 grid gap-4 border-t border-line pt-7 text-sm sm:grid-cols-2">
@@ -168,7 +206,7 @@ async function getCampaign(slug: string) {
   const { data, error } = await supabase
     .from("fundraising_campaigns")
     .select(
-      "title, description, goal_cents, raised_cents, honoree_name, project_label, end_date, region, cover_preset, cover_url",
+      "slug, title, description, goal_cents, raised_cents, honoree_name, project_label, end_date, region, cover_preset, cover_url",
     )
     .eq("slug", slug)
     .eq("status", "published")

@@ -19,6 +19,7 @@ type DonationPageProps = {
     tipo?: string;
     occasione?: string;
     campagna?: string;
+    modifica?: string;
   }>;
 };
 
@@ -62,6 +63,10 @@ function normalizeCampaignTitle(value?: string) {
   return value ? value.slice(0, 160) : undefined;
 }
 
+function normalizeCampaignId(value?: string) {
+  return value ? value.slice(0, 80) : undefined;
+}
+
 export default async function DonationPage({
   searchParams,
 }: DonationPageProps) {
@@ -69,9 +74,11 @@ export default async function DonationPage({
   const donationType = normalizeType(params.tipo);
   const occasion = normalizeOccasion(params.occasione);
   const campaignTitle = normalizeCampaignTitle(params.campagna);
+  const editCampaignId = normalizeCampaignId(params.modifica);
   const copy = pageCopy[donationType];
   void copy;
-  const isCampaignCreation = donationType === "raccolta" && !campaignTitle;
+  const isCampaignCreation =
+    donationType === "raccolta" && (!campaignTitle || Boolean(editCampaignId));
 
   return (
     <main id="contenuto">
@@ -84,24 +91,33 @@ export default async function DonationPage({
             <div className="mb-8 border-b border-line pb-6">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
                 {isCampaignCreation
-                  ? "Creazione raccolta"
+                  ? editCampaignId
+                    ? "Modifica raccolta"
+                    : "Creazione raccolta"
                   : "Pagamento interno"}
               </p>
               <h2 className="mt-3 font-serif text-3xl font-normal text-ink">
                 {isCampaignCreation
-                  ? "Compila la tua campagna"
+                  ? editCampaignId
+                    ? "Modifica la tua campagna"
+                    : "Compila la tua campagna"
                   : campaignTitle
                     ? `Dona per: ${campaignTitle}`
                     : "Dona in modo semplice e sicuro"}
               </h2>
               <p className="mt-4 text-sm leading-[1.8] text-muted">
                 {isCampaignCreation
-                  ? "Al termine verrà generato un link da condividere con chi vuole sostenere la raccolta."
+                  ? editCampaignId
+                    ? "Aggiorna tutti i dati della raccolta. Il link pubblico resta invariato."
+                    : "Al termine verrà generato un link da condividere con chi vuole sostenere la raccolta."
                   : "I dati della carta sono gestiti da Stripe. A-ROSE riceve solo le informazioni necessarie per registrare e rendicontare la donazione."}
               </p>
             </div>
             {isCampaignCreation ? (
-              <FundraisingCampaignForm occasion={occasion} />
+              <FundraisingCampaignForm
+                editCampaignId={editCampaignId}
+                occasion={occasion}
+              />
             ) : (
               <DonationCheckout
                 publishableKey={

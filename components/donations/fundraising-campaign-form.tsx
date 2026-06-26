@@ -48,8 +48,12 @@ const imageOptions = [
 const draftStorageKey = "arose.fundraisingCampaignDraft.v1";
 const maxDraftImageSize = 2_500_000;
 
+type CampaignCoverId = (typeof imageOptions)[number]["id"];
+type CampaignCoverChoice = CampaignCoverId | "custom";
+
 type FundraisingCampaignFormProps = {
   occasion?: string;
+  editCampaignId?: string;
 };
 
 type CampaignDraft = {
@@ -61,7 +65,7 @@ type CampaignDraft = {
   ownerName: string;
   region: string;
   videoUrl: string;
-  selectedCover: (typeof imageOptions)[number]["id"] | "custom";
+  selectedCover: CampaignCoverChoice;
   customImage?: {
     dataUrl: string;
     name: string;
@@ -70,8 +74,32 @@ type CampaignDraft = {
   customImageSkipped?: boolean;
 };
 
+type EditableCampaign = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string | null;
+  occasion: string | null;
+  goal_cents: number | null;
+  end_date: string | null;
+  project_label: string | null;
+  honoree_name: string | null;
+  region: string | null;
+  video_url: string | null;
+  cover_type: string | null;
+  cover_preset: string | null;
+  cover_storage_path: string | null;
+  cover_url: string | null;
+  status: string | null;
+  published_at: string | null;
+};
+
+const editableCampaignSelect =
+  "id, slug, title, description, occasion, goal_cents, end_date, project_label, honoree_name, region, video_url, cover_type, cover_preset, cover_storage_path, cover_url, status, published_at";
+
 export function FundraisingCampaignForm({
   occasion,
+  editCampaignId,
 }: FundraisingCampaignFormProps) {
   const router = useRouter();
   const [generatedLink, setGeneratedLink] = useState("");
@@ -79,15 +107,18 @@ export function FundraisingCampaignForm({
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedCover, setSelectedCover] = useState<
-    (typeof imageOptions)[number]["id"] | "custom"
-  >("compleanno");
+  const [selectedCover, setSelectedCover] =
+    useState<CampaignCoverChoice>("compleanno");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadedPreview, setUploadedPreview] = useState("");
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [draft, setDraft] = useState<CampaignDraft | null>(null);
   const [isDraftLoaded, setIsDraftLoaded] = useState(false);
+  const [editingCampaign, setEditingCampaign] =
+    useState<EditableCampaign | null>(null);
+  const [isLoadingCampaign, setIsLoadingCampaign] =
+    useState(Boolean(editCampaignId));
   const readableOccasion = occasion ?? "Raccolta fondi";
 
   const defaultTitle = useMemo(
@@ -97,11 +128,18 @@ export function FundraisingCampaignForm({
 
   useEffect(() => {
     return () => {
-      if (uploadedPreview) URL.revokeObjectURL(uploadedPreview);
+      if (uploadedPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(uploadedPreview);
+      }
     };
   }, [uploadedPreview]);
 
   useEffect(() => {
+    if (editCampaignId) {
+      setIsDraftLoaded(true);
+      return;
+    }
+
     let active = true;
 
     restoreCampaignDraft().then((restoredDraft) => {
@@ -160,11 +198,87 @@ export function FundraisingCampaignForm({
     };
   }, []);
 
+  useEffect(() => {
+    if (!editCampaignId) {
+      setIsLoadingCampaign(false);
+      return;
+    }
+
+    const supabase = createClient();
+    let active = true;
+
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!active) return;
+
+      const user = data.user;
+      if (!user) {
+        const redirectTo = encodeURIComponent(
+          `${window.location.pathname}${window.location.search}`,
+        );
+        router.push(`/area-personale?redirectTo=${redirectTo}`);
+        return;
+      }
+
+      const { data: campaign, error } = await supabase
+        .from("fundraising_campaigns")
+        .select(editableCampaignSelect)
+        .eq("id", editCampaignId)
+        .eq("owner_id", user.id)
+        .maybeSingle();
+
+      if (!active) return;
+
+      if (error || !campaign) {
+        setErrorMessage(
+          "Non è stato possibile caricare la raccolta da modificare.",
+        );
+        setIsLoadingCampaign(false);
+        return;
+      }
+
+      const editableCampaign = campaign as EditableCampaign;
+      const presetCover = getPresetCoverId(editableCampaign.cover_preset);
+
+      setEditingCampaign(editableCampaign);
+      setDraft({
+        campaignTitle: editableCampaign.title ?? "",
+        campaignDescription: editableCampaign.description ?? "",
+        goal: editableCampaign.goal_cents
+          ? String(Math.round(editableCampaign.goal_cents / 100))
+          : "",
+        endDate: editableCampaign.end_date ?? "",
+        project: editableCampaign.project_label ?? "",
+        ownerName: editableCampaign.honoree_name ?? "",
+        region: editableCampaign.region ?? "",
+        videoUrl: editableCampaign.video_url ?? "",
+        selectedCover:
+          editableCampaign.cover_type === "custom" ? "custom" : presetCover,
+      });
+
+      if (editableCampaign.cover_type === "custom" && editableCampaign.cover_url) {
+        setSelectedCover("custom");
+        setUploadedPreview(editableCampaign.cover_url);
+        setUploadedFileName("Immagine caricata");
+      } else {
+        setSelectedCover(presetCover);
+      }
+
+      setStatusMessage("Stai modificando una raccolta già pubblicata.");
+      setIsLoadingCampaign(false);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [editCampaignId, router]);
+
   function handleImageUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (uploadedPreview) URL.revokeObjectURL(uploadedPreview);
+    if (uploadedPreview.startsWith("blob:")) {
+      URL.revokeObjectURL(uploadedPreview);
+    }
 
     setUploadedPreview(URL.createObjectURL(file));
     setUploadedFile(file);
@@ -206,11 +320,17 @@ export function FundraisingCampaignForm({
     const ownerName = String(form.get("ownerName") || "").trim();
     const region = String(form.get("region") || "").trim();
     const videoUrl = String(form.get("videoUrl") || "").trim();
-    const slug = createCampaignSlug(title);
+    const slug = editingCampaign?.slug ?? createCampaignSlug(title);
 
     try {
-      let coverStoragePath: string | null = null;
-      let coverUrl: string | null = null;
+      let coverStoragePath: string | null =
+        editingCampaign?.cover_storage_path ?? null;
+      let coverUrl: string | null = editingCampaign?.cover_url ?? null;
+
+      if (selectedCover !== "custom") {
+        coverStoragePath = null;
+        coverUrl = null;
+      }
 
       if (selectedCover === "custom" && uploadedFile) {
         const extension = getSafeExtension(uploadedFile.name);
@@ -232,39 +352,75 @@ export function FundraisingCampaignForm({
         coverUrl = data.publicUrl;
       }
 
-      const { error: insertError } = await supabase
-        .from("fundraising_campaigns")
-        .insert({
-          owner_id: user.id,
-          slug,
-          title,
-          description,
-          occasion: normalizeOccasionForDatabase(readableOccasion),
-          honoree_name: ownerName,
-          project_label: project,
-          goal_cents: Math.round(goal * 100),
-          end_date: endDate || null,
-          region: region || null,
-          video_url: videoUrl || null,
-          cover_type: selectedCover === "custom" ? "custom" : "preset",
-          cover_preset: selectedCover === "custom" ? null : selectedCover,
-          cover_storage_path: coverStoragePath,
-          cover_url: coverUrl,
-          status: "published",
-          published_at: new Date().toISOString(),
-        });
+      const campaignPayload = {
+        title,
+        description,
+        occasion:
+          editingCampaign?.occasion ??
+          normalizeOccasionForDatabase(readableOccasion),
+        honoree_name: ownerName,
+        project_label: project,
+        goal_cents: Math.round(goal * 100),
+        end_date: endDate || null,
+        region: region || null,
+        video_url: videoUrl || null,
+        cover_type: selectedCover === "custom" ? "custom" : "preset",
+        cover_preset: selectedCover === "custom" ? null : selectedCover,
+        cover_storage_path: coverStoragePath,
+        cover_url: coverUrl,
+        status: "published",
+        published_at: editingCampaign?.published_at ?? new Date().toISOString(),
+      };
 
-      if (insertError) throw insertError;
+      if (editingCampaign) {
+        const { data: updatedCampaign, error: updateError } = await supabase
+          .from("fundraising_campaigns")
+          .update(campaignPayload)
+          .eq("id", editingCampaign.id)
+          .eq("owner_id", user.id)
+          .select(editableCampaignSelect)
+          .single();
+
+        if (updateError) throw updateError;
+        setEditingCampaign(updatedCampaign as EditableCampaign);
+      } else {
+        const { error: insertError } = await supabase
+          .from("fundraising_campaigns")
+          .insert({
+            owner_id: user.id,
+            slug,
+            ...campaignPayload,
+          });
+
+        if (insertError) throw insertError;
+      }
 
       sessionStorage.removeItem(draftStorageKey);
+      setDraft({
+        campaignTitle: title,
+        campaignDescription: description,
+        goal: String(goal),
+        endDate,
+        project,
+        ownerName,
+        region,
+        videoUrl,
+        selectedCover,
+      });
       const publicLink = `${window.location.origin}/raccolte/${slug}`;
       setGeneratedLink(publicLink);
-      setStatusMessage("Raccolta pubblicata. Ora puoi condividere il link.");
+      setStatusMessage(
+        editingCampaign
+          ? "Raccolta aggiornata. Il link pubblico resta lo stesso."
+          : "Raccolta pubblicata. Ora puoi condividere il link.",
+      );
     } catch (error) {
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : "Non è stato possibile creare la raccolta. Riprova.",
+          : editingCampaign
+            ? "Non è stato possibile salvare le modifiche. Riprova."
+            : "Non è stato possibile creare la raccolta. Riprova.",
       );
     } finally {
       setIsSubmitting(false);
@@ -279,6 +435,17 @@ export function FundraisingCampaignForm({
 
   return (
     <div className="grid gap-8">
+      {isLoadingCampaign ? (
+        <section className="rounded-3xl border border-line bg-paper p-6 sm:p-8">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
+            Caricamento
+          </p>
+          <p className="mt-3 text-sm font-bold text-muted">
+            Sto caricando i dati della raccolta da modificare.
+          </p>
+        </section>
+      ) : null}
+
       {isLoggedIn === false ? (
         <section className="rounded-3xl border border-line bg-paper p-6 sm:p-8">
           <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
@@ -301,14 +468,21 @@ export function FundraisingCampaignForm({
         </section>
       ) : null}
 
-      <form className="grid gap-8" key={isDraftLoaded ? "draft-loaded" : "draft-loading"} onSubmit={submit}>
+      {!isLoadingCampaign ? (
+      <form
+        className="grid gap-8"
+        key={`${editCampaignId ?? "new"}-${isDraftLoaded ? "draft-loaded" : "draft-loading"}`}
+        onSubmit={submit}
+      >
         <section className="grid gap-5 border-b border-line pb-8">
           <div>
             <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
-              Stai creando una raccolta per
+              {editingCampaign
+                ? "Stai modificando la raccolta"
+                : "Stai creando una raccolta per"}
             </p>
             <h2 className="mt-2 font-serif text-4xl font-normal leading-tight text-ink">
-              {readableOccasion}
+              {editingCampaign ? editingCampaign.title : readableOccasion}
             </h2>
           </div>
           <label className="grid gap-2 text-sm font-bold text-ink">
@@ -474,10 +648,17 @@ export function FundraisingCampaignForm({
             disabled={isSubmitting}
             type="submit"
           >
-            {isSubmitting ? "Pubblicazione..." : "Pubblica la raccolta"}
+            {isSubmitting
+              ? editingCampaign
+                ? "Salvataggio..."
+                : "Pubblicazione..."
+              : editingCampaign
+                ? "Salva le modifiche"
+                : "Pubblica la raccolta"}
           </button>
         </div>
       </form>
+      ) : null}
 
       {generatedLink ? (
         <section
@@ -530,6 +711,12 @@ function getSafeExtension(fileName: string) {
   const extension = fileName.split(".").pop()?.toLowerCase();
   if (extension === "png" || extension === "webp") return extension;
   return "jpg";
+}
+
+function getPresetCoverId(value?: string | null): CampaignCoverId {
+  return imageOptions.some((option) => option.id === value)
+    ? (value as CampaignCoverId)
+    : "compleanno";
 }
 
 async function saveCampaignDraft(
