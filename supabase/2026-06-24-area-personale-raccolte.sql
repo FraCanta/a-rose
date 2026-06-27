@@ -158,6 +158,7 @@ create table if not exists public.fundraising_campaigns (
 );
 
 alter table public.fundraising_campaigns add column if not exists occasion public.fundraising_occasion not null default 'altro';
+alter table public.fundraising_campaigns add column if not exists organizer_name text;
 alter table public.fundraising_campaigns add column if not exists honoree_name text;
 alter table public.fundraising_campaigns add column if not exists project_label text;
 alter table public.fundraising_campaigns add column if not exists goal_cents integer not null default 1;

@@ -92,10 +92,11 @@ type EditableCampaign = {
   cover_url: string | null;
   status: string | null;
   published_at: string | null;
+  organizer_name: string | null;
 };
 
 const editableCampaignSelect =
-  "id, slug, title, description, occasion, goal_cents, end_date, project_label, honoree_name, region, video_url, cover_type, cover_preset, cover_storage_path, cover_url, status, published_at";
+  "id, slug, title, description, occasion, goal_cents, end_date, project_label, honoree_name, region, video_url, cover_type, cover_preset, cover_storage_path, cover_url, status, published_at, organizer_name";
 
 export function FundraisingCampaignForm({
   occasion,
@@ -114,7 +115,7 @@ export function FundraisingCampaignForm({
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [draft, setDraft] = useState<CampaignDraft | null>(null);
-  const [isDraftLoaded, setIsDraftLoaded] = useState(false);
+  const [isDraftLoaded, setIsDraftLoaded] = useState(Boolean(editCampaignId));
   const [editingCampaign, setEditingCampaign] =
     useState<EditableCampaign | null>(null);
   const [isLoadingCampaign, setIsLoadingCampaign] =
@@ -135,10 +136,7 @@ export function FundraisingCampaignForm({
   }, [uploadedPreview]);
 
   useEffect(() => {
-    if (editCampaignId) {
-      setIsDraftLoaded(true);
-      return;
-    }
+    if (editCampaignId) return;
 
     let active = true;
 
@@ -176,7 +174,7 @@ export function FundraisingCampaignForm({
     return () => {
       active = false;
     };
-  }, []);
+  }, [editCampaignId]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -199,10 +197,7 @@ export function FundraisingCampaignForm({
   }, []);
 
   useEffect(() => {
-    if (!editCampaignId) {
-      setIsLoadingCampaign(false);
-      return;
-    }
+    if (!editCampaignId) return;
 
     const supabase = createClient();
     let active = true;
@@ -322,6 +317,20 @@ export function FundraisingCampaignForm({
     const videoUrl = String(form.get("videoUrl") || "").trim();
     const slug = editingCampaign?.slug ?? createCampaignSlug(title);
 
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("first_name, last_name")
+      .eq("id", user.id)
+      .maybeSingle();
+    const organizerName =
+      [profile?.first_name, profile?.last_name].filter(Boolean).join(" ").trim() ||
+      [user.user_metadata?.first_name, user.user_metadata?.last_name]
+        .filter(Boolean)
+        .join(" ")
+        .trim() ||
+      editingCampaign?.organizer_name ||
+      null;
+
     try {
       let coverStoragePath: string | null =
         editingCampaign?.cover_storage_path ?? null;
@@ -355,6 +364,7 @@ export function FundraisingCampaignForm({
       const campaignPayload = {
         title,
         description,
+        organizer_name: organizerName,
         occasion:
           editingCampaign?.occasion ??
           normalizeOccasionForDatabase(readableOccasion),
@@ -373,16 +383,26 @@ export function FundraisingCampaignForm({
       };
 
       if (editingCampaign) {
-        const { data: updatedCampaign, error: updateError } = await supabase
-          .from("fundraising_campaigns")
-          .update(campaignPayload)
-          .eq("id", editingCampaign.id)
-          .eq("owner_id", user.id)
-          .select(editableCampaignSelect)
-          .single();
+        const response = await fetch(
+          `/api/fundraising-campaigns/${encodeURIComponent(editingCampaign.id)}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(campaignPayload),
+          },
+        );
+        const result = (await response.json()) as {
+          campaign?: EditableCampaign;
+          error?: string;
+        };
 
-        if (updateError) throw updateError;
-        setEditingCampaign(updatedCampaign as EditableCampaign);
+        if (!response.ok || !result.campaign) {
+          throw new Error(
+            result.error || "Non è stato possibile salvare le modifiche.",
+          );
+        }
+
+        setEditingCampaign(result.campaign);
       } else {
         const { error: insertError } = await supabase
           .from("fundraising_campaigns")

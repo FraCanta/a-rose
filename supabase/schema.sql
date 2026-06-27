@@ -100,6 +100,7 @@ alter table public.profiles add column if not exists birth_date date;
 alter table public.profiles add column if not exists biological_sex text;
 alter table public.profiles add column if not exists street_number text;
 
+drop trigger if exists set_profiles_updated_at on public.profiles;
 create trigger set_profiles_updated_at
 before update on public.profiles
 for each row
@@ -142,6 +143,7 @@ end;
 $$;
 
 drop trigger if exists on_auth_user_created on auth.users;
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row
@@ -157,6 +159,7 @@ create table if not exists public.fundraising_campaigns (
   slug text not null unique,
   title text not null,
   description text not null,
+  organizer_name text,
   occasion public.fundraising_occasion not null default 'altro',
   honoree_name text,
   project_label text,
@@ -192,6 +195,7 @@ on public.fundraising_campaigns(status);
 create index if not exists fundraising_campaigns_slug_idx
 on public.fundraising_campaigns(slug);
 
+drop trigger if exists set_fundraising_campaigns_updated_at on public.fundraising_campaigns;
 create trigger set_fundraising_campaigns_updated_at
 before update on public.fundraising_campaigns
 for each row
@@ -235,6 +239,7 @@ on public.donations(campaign_id);
 create index if not exists donations_status_idx
 on public.donations(status);
 
+drop trigger if exists set_donations_updated_at on public.donations;
 create trigger set_donations_updated_at
 before update on public.donations
 for each row
