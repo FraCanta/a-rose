@@ -67,7 +67,7 @@ export default async function EventsPage() {
                       className="group flex h-full flex-col overflow-hidden border border-line bg-white transition hover:-translate-y-2 hover:shadow-soft"
                       key={event.id}
                     >
-                      <div className="relative h-[250px] overflow-hidden bg-[linear-gradient(145deg,#d99891,#8c1938)]">
+                      <div className="relative h-[250px] overflow-hidden bg-[linear-gradient(145deg,#d99891,#0f5c63)]">
                         {event.image ? (
                           <Image
                             className="object-cover transition duration-500 group-hover:scale-[1.035]"

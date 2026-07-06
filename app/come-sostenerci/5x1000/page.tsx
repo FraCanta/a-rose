@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
+import { FivePerThousandCalculator } from "@/components/support/five-per-thousand-calculator";
 import { TaxCodeCopy } from "@/components/support/tax-code-copy";
 
 export const metadata: Metadata = {
@@ -96,24 +97,17 @@ export default function FiveForThousandPage() {
 
       <section className={`${section} bg-white`}>
         <div
-          className={`${container} grid items-center gap-12 lg:grid-cols-2 lg:gap-24`}
+          className={`${container} grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24`}
         >
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[48%_52%_45%_55%/52%_45%_55%_48%] bg-rose-soft">
-            <Image
-              className="object-cover"
-              src="/images/sostegno-cuore.webp"
-              alt="Mani che custodiscono un cuore, simbolo del sostegno alla ricerca"
-              fill
-              sizes="(max-width: 1023px) 100vw, 50vw"
-            />
-          </div>
           <div>
             <Eyebrow>Una scelta semplice</Eyebrow>
             <h2 className={heading}>
               Il tuo 5x1000{" "}
               <em className="font-normal text-rose">non costa nulla.</em>
             </h2>
-            <p className="mt-6 text-base leading-8 text-muted sm:text-lg">
+          </div>
+          <div className="border-l-2 border-rose pl-7 sm:pl-10 lg:mt-11">
+            <p className="text-base leading-8 text-muted sm:text-lg">
               La scelta non modifica l’importo delle imposte dovute. Inserendo
               il codice fiscale di A-ROSE puoi contribuire alle finalità
               associative dedicate a ricerca oncologica, formazione, prevenzione
@@ -126,6 +120,18 @@ export default function FiveForThousandPage() {
               Come usiamo i fondi <Icon className="size-4" name="arrow" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-rose-soft py-16 sm:py-20" aria-labelledby="simulatore-5x1000">
+        <div className={container}>
+          <div className="mb-9 max-w-3xl">
+            <Eyebrow>Fai una stima</Eyebrow>
+            <h2 className="font-serif text-[clamp(34px,4vw,52px)] font-normal leading-tight tracking-[-0.035em] text-ink" id="simulatore-5x1000">
+              Quanto vale il tuo <em className="font-normal text-rose">5×1000?</em>
+            </h2>
+          </div>
+          <FivePerThousandCalculator />
         </div>
       </section>
 
@@ -148,44 +154,120 @@ export default function FiveForThousandPage() {
               <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">
                 Esempio di compilazione
               </p>
-              <p className="mt-5 text-sm font-bold text-ink">
-                Sostegno degli Enti del Terzo Settore iscritti nel RUNTS
-              </p>
-              <div className="mt-7 flex flex-wrap gap-2">
-                {taxCode.split("").map((digit, index) => (
-                  <span
-                    className="grid size-10 place-items-center border border-wine/35 font-mono text-lg text-wine sm:size-12"
-                    key={`${digit}-${index}`}
-                  >
-                    {digit}
+              <div
+                className="mt-6 rounded-lg border border-wine bg-[#faf9f7] p-5 text-wine sm:p-7"
+                aria-label={`Esempio di compilazione con firma Mario Rossi e codice fiscale ${taxCode}`}
+              >
+                <p className="text-[11px] font-medium uppercase leading-snug tracking-[0.025em] sm:text-sm">
+                  Finanziamento della ricerca scientifica e dell’università
+                </p>
+
+                <div className="mt-9 flex items-end gap-4 sm:mt-12">
+                  <span className="shrink-0 text-[10px] font-medium uppercase sm:text-xs">
+                    Firma
                   </span>
-                ))}
+                  <span className="min-w-0 flex-1 border-b-2 border-dotted border-current pb-1 text-center text-xl leading-none sm:text-3xl">
+                    Mario Rossi
+                  </span>
+                </div>
+
+                <p className="mb-4 mt-10 max-w-40 text-[10px] leading-[1.05] sm:mt-12 sm:text-xs">
+                  Codice fiscale del
+                  <br />
+                  beneficiario (eventuale)
+                </p>
+                <div className="grid grid-cols-11 border-b-2 border-x-2 border-current" aria-label={`Codice fiscale ${taxCode}`}>
+                  {taxCode.split("").map((digit, index) => (
+                    <span
+                      className="grid aspect-[0.8] min-w-0 place-items-center border-r border-current text-[clamp(18px,4.2vw,42px)] leading-none last:border-r-0"
+                      key={`${digit}-${index}`}
+                      aria-hidden="true"
+                    >
+                      {digit}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          <div className="mt-14 grid border border-line bg-line md:grid-cols-2">
-            <article className="bg-paper p-8 sm:p-10">
-              <span className="font-serif text-6xl text-rose">01</span>
-              <h3 className="mt-7 font-serif text-2xl text-ink">
-                Presenti la dichiarazione dei redditi
-              </h3>
-              <p className="mt-4 text-sm leading-7 text-muted">
-                Firma nel riquadro dedicato agli Enti del Terzo Settore e
-                inserisci il codice fiscale{" "}
-                <strong className="text-ink">{taxCode}</strong>.
-              </p>
-            </article>
-            <article className="bg-paper p-8 sm:p-10 md:border-l md:border-line">
-              <span className="font-serif text-6xl text-rose">02</span>
-              <h3 className="mt-7 font-serif text-2xl text-ink">
-                Non presenti la dichiarazione
-              </h3>
-              <p className="mt-4 text-sm leading-7 text-muted">
-                Puoi utilizzare la scheda allegata alla Certificazione Unica,
-                firmarla e consegnarla secondo le modalità indicate dalle
-                istruzioni fiscali vigenti.
-              </p>
-            </article>
+          <div className="mt-16">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">
+              Quale dichiarazione presenti?
+            </p>
+            <div className="mt-6 grid gap-5 lg:grid-cols-3">
+              {[
+                {
+                  badge: "730",
+                  title: "Modello 730",
+                  audience: "Per lavoratori dipendenti e pensionati.",
+                  steps: [
+                    "Apri la sezione dedicata alle scelte 8, 5 e 2 per mille.",
+                    "Seleziona il sostegno agli Enti del Terzo Settore iscritti nel RUNTS.",
+                    `Firma e inserisci il codice fiscale ${taxCode}.`,
+                  ],
+                },
+                {
+                  badge: "PF",
+                  title: "Redditi Persone Fisiche",
+                  audience: "Per autonomi e situazioni reddituali più articolate.",
+                  steps: [
+                    "Trova la scheda per la destinazione del 5×1000.",
+                    "Scegli il riquadro dedicato agli Enti del Terzo Settore iscritti nel RUNTS.",
+                    `Firma e inserisci il codice fiscale ${taxCode}.`,
+                  ],
+                },
+                {
+                  badge: "CU",
+                  title: "Certificazione Unica",
+                  audience: "Per chi non presenta una dichiarazione dei redditi.",
+                  steps: [
+                    "Usa la scheda allegata alla Certificazione Unica.",
+                    "Firma nel riquadro dedicato agli Enti del Terzo Settore.",
+                    `Inserisci il codice fiscale ${taxCode} e consegna la scheda secondo le istruzioni vigenti.`,
+                  ],
+                },
+              ].map((item) => (
+                <article className="flex min-h-[530px] flex-col overflow-hidden border border-line bg-white" key={item.title}>
+                  <div className="relative h-60 overflow-hidden bg-rose-soft p-7 sm:p-9">
+                    <span className={`absolute right-4 font-serif leading-none tracking-[-0.08em] text-white/70 ${item.badge === "730" ? "-bottom-1 text-[96px]" : "-bottom-7 text-[116px]"}`} aria-hidden="true">
+                      {item.badge}
+                    </span>
+                    <p className="relative z-10 text-[10px] font-extrabold uppercase tracking-[0.16em] text-wine">
+                      Tipo di dichiarazione
+                    </p>
+                    <h3 className="relative z-10 mt-5 h-20 max-w-56 font-serif text-3xl font-normal leading-tight text-ink">
+                      {item.title}
+                    </h3>
+                    <p className="relative z-10 mt-3 max-w-60 text-sm leading-6 text-muted">
+                      {item.audience}
+                    </p>
+                  </div>
+                  <div className="flex flex-1 flex-col p-7 sm:p-9">
+                    <ol className="grid gap-5 text-sm leading-6 text-muted">
+                      {item.steps.map((step, index) => (
+                        <li className="grid grid-cols-[28px_1fr] gap-3" key={step}>
+                          <span className="grid size-7 place-items-center rounded-full bg-rose-soft text-xs font-bold text-wine" aria-hidden="true">{index + 1}</span>
+                          <span>{step}</span>
+                        </li>
+                      ))}
+                    </ol>
+                    <div className="mt-auto border-t border-line pt-6">
+                      <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-rose">Codice fiscale A-ROSE</p>
+                      <p className="mt-2 font-mono text-base font-bold tracking-[0.08em] text-wine">{taxCode}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <a
+              className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-wine"
+              href="https://infoprecompilata.agenziaentrate.gov.it/portale/web/guest/scelte-8-5-e-2-per-mille"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Consulta le istruzioni aggiornate dell’Agenzia delle Entrate
+              <Icon className="size-4" name="arrow" />
+            </a>
           </div>
         </div>
       </section>

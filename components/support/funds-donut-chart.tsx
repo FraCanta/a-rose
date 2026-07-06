@@ -79,7 +79,7 @@ export function FundsDonutChart({ items }: FundsDonutChartProps) {
               const parentRect = parent.getBoundingClientRect();
               const color = Array.isArray(point.dataset.backgroundColor)
                 ? String(point.dataset.backgroundColor[point.dataIndex])
-                : String(point.dataset.backgroundColor ?? "#8b1737");
+                : String(point.dataset.backgroundColor ?? "#0f5c63");
               const value =
                 typeof point.parsed === "number"
                   ? point.parsed.toLocaleString("it-IT", {

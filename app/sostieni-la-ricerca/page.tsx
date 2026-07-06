@@ -4,6 +4,7 @@ import { DonationCheckout } from "@/components/donations/donation-checkout";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
+import { IbanCopy } from "@/components/support/iban-copy";
 
 export const metadata: Metadata = {
   title: "Sostieni la ricerca | A-ROSE ODV",
@@ -27,15 +28,24 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
     <main id="contenuto">
       <section className={`${section} scroll-mt-24 bg-ivory`} id="donazione">
         <div className={`${container} grid items-start gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24`}>
-          <div>
+          <div className="lg:sticky lg:top-28">
             <Eyebrow>Sostieni la ricerca</Eyebrow>
             <h1 className={heading}>Il tuo contributo <em className="font-normal text-rose">accelera la ricerca.</em></h1>
             <p className="mt-7 text-base leading-[1.8] text-muted">Ogni donazione sostiene attività scientifiche, borse di studio e iniziative di prevenzione. Puoi donare online oppure tramite bonifico bancario; per destinare il contributo a un progetto specifico, indicalo nella causale.</p>
+            <article className="mt-10 border border-line bg-paper p-7 sm:p-8">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">Bonifico bancario</p>
+              <h2 className="mt-3 font-serif text-3xl font-normal text-ink">A-ROSE ODV</h2>
+              <dl className="mt-6 grid gap-4 text-sm text-muted">
+                <div><dt className="font-bold text-ink">IBAN</dt><dd className="mt-1 break-all font-mono text-base">IT46A0301503200000003758386</dd></div>
+                <div><dt className="font-bold text-ink">Causale</dt><dd className="mt-1">Erogazione liberale</dd></div>
+              </dl>
+              <IbanCopy />
+            </article>
           </div>
-          <div className="grid gap-6">
+          <div>
             <article className="border border-line bg-white p-7 shadow-soft sm:p-10">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">Donazione online</p>
-              <h3 className="mt-3 font-serif text-3xl font-normal text-ink">Dona in modo semplice e sicuro</h3>
+              <h2 className="mt-3 font-serif text-3xl font-normal text-ink">Dona in modo semplice e sicuro</h2>
               <p className="mt-4 text-sm leading-[1.8] text-muted">Scegli l’importo, inserisci i dati necessari e completa il pagamento protetto da Stripe.</p>
               <div className="mt-8">
                 <DonationCheckout
@@ -43,14 +53,6 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
                   initialAmount={initialAmount}
                 />
               </div>
-            </article>
-            <article className="border border-line bg-paper p-7 sm:p-10">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-rose">Bonifico bancario</p>
-              <h3 className="mt-3 font-serif text-3xl font-normal text-ink">A-ROSE ODV</h3>
-              <dl className="mt-6 grid gap-4 text-sm text-muted">
-                <div><dt className="font-bold text-ink">IBAN</dt><dd className="mt-1 break-all font-mono text-base">IT46A0301503200000003758386</dd></div>
-                <div><dt className="font-bold text-ink">Causale</dt><dd className="mt-1">Erogazione liberale</dd></div>
-              </dl>
             </article>
           </div>
         </div>

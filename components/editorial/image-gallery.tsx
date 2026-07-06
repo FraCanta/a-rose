@@ -69,7 +69,7 @@ export function ImageGallery({
             <AnimatePresence>
               {activeImage ? (
                 <motion.div
-                  className="fixed inset-0 z-[120] grid place-items-center bg-[#160a0f]/95 p-4 sm:p-8"
+                  className="fixed inset-0 z-[120] grid place-items-center bg-[#031f22]/95 p-4 sm:p-8"
                   role="dialog"
                   aria-modal="true"
                   aria-label="Anteprima immagine"

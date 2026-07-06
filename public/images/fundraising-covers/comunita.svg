@@ -6,12 +6,12 @@
   <circle cx="190" cy="170" r="86" fill="#F3D8DD"/>
   <circle cx="450" cy="140" r="98" fill="#DA5D75"/>
   <circle cx="710" cy="170" r="86" fill="#F3D8DD"/>
-  <path d="M120 320c12-73 63-118 137-118s125 45 137 118M352 320c13-86 76-139 98-139s85 53 98 139M506 320c12-73 63-118 137-118s125 45 137 118" fill="#FFFDFC" stroke="#8B1735" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M120 320c12-73 63-118 137-118s125 45 137 118M352 320c13-86 76-139 98-139s85 53 98 139M506 320c12-73 63-118 137-118s125 45 137 118" fill="#FFFDFC" stroke="#0F5C63" stroke-width="8" stroke-linejoin="round"/>
   <g stroke="#DA5D75" stroke-width="7" stroke-linecap="round">
     <path d="M276 155c58-35 116-39 174-12M452 143c58-27 116-23 174 12"/>
     <path d="M308 385h284"/>
   </g>
-  <circle cx="450" cy="385" r="12" fill="#8B1735"/>
+  <circle cx="450" cy="385" r="12" fill="#0F5C63"/>
   <circle cx="308" cy="385" r="9" fill="#DA5D75"/>
   <circle cx="592" cy="385" r="9" fill="#DA5D75"/>
   <text x="76" y="505" fill="#2D2927" font-family="Georgia, serif" font-size="62">Insieme possiamo</text>

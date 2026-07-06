@@ -116,12 +116,12 @@ function BrandLogo({
       tabIndex={active ? undefined : -1}
     >
       <Image
-        className={`block h-auto object-contain ${compact ? "w-40" : desktop ? "w-52" : "w-32 xs:w-36 sm:w-40"}`}
-        src="/brand/logo2_arose_positivo.png"
+        className={`block w-auto object-contain ${compact ? "h-16" : desktop ? "h-24" : "h-16"}`}
+        src="/brand/a-rose-odv-positivo.png"
         alt="A-ROSE ODV"
-        width={1200}
-        height={400}
-        sizes={desktop && !compact ? "208px" : "160px"}
+        width={1066}
+        height={932}
+        sizes={desktop && !compact ? "110px" : "74px"}
         loading="eager"
       />
     </Link>

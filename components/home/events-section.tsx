@@ -36,7 +36,7 @@ export async function EventsSection() {
         className={`${container} grid items-center gap-28 lg:grid-cols-[1.05fr_0.95fr] max-lg:gap-16 max-md:grid-cols-1`}
       >
         <article className="grid min-h-[500px] grid-cols-[1.2fr_0.8fr] shadow-soft max-sm:grid-cols-1">
-          <div className="relative min-h-[500px] overflow-hidden bg-[linear-gradient(145deg,#d99891,#9d3e55)] max-sm:min-h-[340px]">
+          <div className="relative min-h-[500px] overflow-hidden bg-[linear-gradient(145deg,#d99891,#28757b)] max-sm:min-h-[340px]">
             <Image
               className="object-cover object-center"
               src={event.image ?? fallbackEvent.image}

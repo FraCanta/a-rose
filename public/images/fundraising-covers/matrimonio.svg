@@ -4,11 +4,11 @@
   <rect width="900" height="600" fill="#FFFDFC"/>
   <path d="M0 0h900v260C692 205 531 234 420 281 276 342 152 366 0 327Z" fill="#F8F1EC"/>
   <circle cx="710" cy="130" r="150" fill="#F3D8DD"/>
-  <path d="M278 282c54-50 115-50 167 0l-84 88Z" fill="#F6E6DE" stroke="#8B1735" stroke-width="8"/>
-  <path d="M455 282c54-50 115-50 167 0l-84 88Z" fill="#F6E6DE" stroke="#8B1735" stroke-width="8"/>
+  <path d="M278 282c54-50 115-50 167 0l-84 88Z" fill="#F6E6DE" stroke="#0F5C63" stroke-width="8"/>
+  <path d="M455 282c54-50 115-50 167 0l-84 88Z" fill="#F6E6DE" stroke="#0F5C63" stroke-width="8"/>
   <circle cx="405" cy="275" r="32" fill="none" stroke="#DA5D75" stroke-width="10"/>
   <circle cx="496" cy="275" r="32" fill="none" stroke="#DA5D75" stroke-width="10"/>
-  <path d="M122 230c105 60 165 93 253 96M778 230c-105 60-165 93-253 96" stroke="#8B1735" stroke-width="42" stroke-linecap="round"/>
+  <path d="M122 230c105 60 165 93 253 96M778 230c-105 60-165 93-253 96" stroke="#0F5C63" stroke-width="42" stroke-linecap="round"/>
   <path d="M150 210c105 60 165 93 253 96M750 210c-105 60-165 93-253 96" stroke="#E7BBAA" stroke-width="38" stroke-linecap="round"/>
   <g fill="none" stroke="#DA5D75" stroke-width="7" stroke-linecap="round">
     <path d="M178 420c43-38 80-38 112 0M610 420c43-38 80-38 112 0"/>

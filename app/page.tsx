@@ -1,4 +1,3 @@
-import { ContactSection } from "@/components/home/contact-section";
 import { DonationSection } from "@/components/home/donation-section";
 import { EventsSection } from "@/components/home/events-section";
 import { FinalCta } from "@/components/home/final-cta";
@@ -23,7 +22,6 @@ export default function Page() {
       <ScrollReveal><TeamSection /></ScrollReveal>
       <ScrollReveal><EventsSection /></ScrollReveal>
       <ScrollReveal><NewsSection /></ScrollReveal>
-      <ScrollReveal><ContactSection /></ScrollReveal>
       <ScrollReveal><FinalCta /></ScrollReveal>
     </main>
   );

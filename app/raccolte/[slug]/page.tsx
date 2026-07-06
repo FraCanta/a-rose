@@ -92,11 +92,11 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
         <div className="mx-auto flex min-h-20 max-w-site items-center justify-between gap-4 px-5 sm:px-8">
           <Link href="/" aria-label="A-ROSE ODV, homepage">
             <Image
-              className="h-auto w-36 object-contain sm:w-44"
-              src="/brand/logo2_arose_positivo.png"
+              className="h-16 w-auto object-contain"
+              src="/brand/a-rose-odv-positivo.png"
               alt="A-ROSE ODV"
-              width={1200}
-              height={400}
+              width={1066}
+              height={932}
               priority
             />
           </Link>

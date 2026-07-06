@@ -5,7 +5,7 @@
   <circle cx="450" cy="245" r="190" fill="#FFFDFC"/>
   <circle cx="450" cy="245" r="125" fill="#F3D8DD"/>
   <path d="M450 370s-142-86-142-173c0-48 33-82 78-82 28 0 51 14 64 36 13-22 36-36 64-36 45 0 78 34 78 82 0 87-142 173-142 173Z" fill="#DA5D75"/>
-  <path d="M240 152c54-52 105-52 153 0M507 152c54-52 105-52 153 0" fill="none" stroke="#8B1735" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <path d="M240 152c54-52 105-52 153 0M507 152c54-52 105-52 153 0" fill="none" stroke="#0F5C63" stroke-width="8" stroke-linecap="round" opacity=".45"/>
   <g fill="#DA5D75" opacity=".7">
     <ellipse cx="168" cy="330" rx="16" ry="36" transform="rotate(-32 168 330)"/>
     <ellipse cx="730" cy="345" rx="16" ry="36" transform="rotate(35 730 345)"/>

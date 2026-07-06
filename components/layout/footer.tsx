@@ -41,22 +41,22 @@ const footerColumns = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#28141c] pt-20 text-white max-sm:pt-16" id="trasparenza">
+    <footer className="bg-[#062f33] pt-20 text-white max-sm:pt-16" id="trasparenza">
       <div
         className={`${container} grid gap-12 pb-16 lg:grid-cols-[1.3fr_repeat(4,1fr)] max-lg:grid-cols-3 max-sm:grid-cols-2 max-sm:gap-x-8 max-sm:gap-y-11`}
       >
         <div className="max-lg:col-span-full">
           <Link
-            className="block w-[205px]"
+            className="block w-40"
             href="/"
             aria-label="A-ROSE ODV, torna alla homepage"
           >
             <Image
-              src="/brand/arose_logo_negativo.png"
+              src="/brand/a-rose-odv-negativo.png"
               alt="A-ROSE ODV"
-              width={1395}
-              height={546}
-              sizes="205px"
+              width={1065}
+              height={932}
+              sizes="160px"
             />
           </Link>
           <p className="mt-6 font-serif text-[17px] leading-normal text-white/55">

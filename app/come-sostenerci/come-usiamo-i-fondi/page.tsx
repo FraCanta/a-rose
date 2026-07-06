@@ -16,7 +16,7 @@ const fundAreas = [
     title: "Servizi per attività associative",
     text: "Iniziative di ricerca, prevenzione, formazione e divulgazione scientifica",
     percentage: 79.8,
-    color: "#8b1737",
+    color: "#0f5c63",
     dotClass: "bg-wine",
   },
   {

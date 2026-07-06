@@ -3,19 +3,11 @@ import { notFound } from "next/navigation";
 import { EditorialDetail } from "@/components/editorial/editorial-detail";
 import { RelatedGrid } from "@/components/editorial/related-grid";
 import { WordPressContent } from "@/components/ui/wordpress-content";
-import { getPostBySlug, getPosts } from "@/lib/wordpress";
+import { getAllPosts, getPostBySlug } from "@/lib/wordpress";
 
 type PreventionGuideDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
-
-function isPreventionCategory(category: string) {
-  const normalizedCategory = category.toLowerCase();
-  return (
-    normalizedCategory.includes("prevenzione") ||
-    normalizedCategory.includes("consapevolezza")
-  );
-}
 
 export async function generateMetadata({
   params,
@@ -35,12 +27,12 @@ export default async function PreventionGuideDetailPage({
   params,
 }: PreventionGuideDetailPageProps) {
   const { slug } = await params;
-  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getPosts(30)]);
+  const [post, allPosts] = await Promise.all([getPostBySlug(slug), getAllPosts()]);
 
   if (!post) notFound();
 
   const relatedPosts = allPosts
-    .filter((item) => item.id !== post.id && isPreventionCategory(item.category))
+    .filter((item) => item.id !== post.id)
     .slice(0, 3);
 
   return (

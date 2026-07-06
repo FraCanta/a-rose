@@ -41,7 +41,7 @@ export function DesktopNavigation({ compact = false, items }: DesktopNavigationP
           <div className="relative flex h-full items-center" key={item.label} onMouseEnter={() => item.children && setActiveMenu(item.label)}>
             {item.children ? (
               <button
-                className={`inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap px-2.5 text-[11px] font-extrabold uppercase tracking-[0.08em] transition xl:px-3 xl:text-[12px] ${isActive || isOpen ? "text-wine" : "text-ink hover:text-wine"}`}
+                className={`inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap px-2.5 text-[11px] font-semibold uppercase tracking-[0.13em] transition xl:px-3 xl:text-[12px] ${isActive || isOpen ? "text-wine" : "text-ink hover:text-wine"}`}
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={`menu-${item.label.toLowerCase().replaceAll(" ", "-")}`}
@@ -55,7 +55,7 @@ export function DesktopNavigation({ compact = false, items }: DesktopNavigationP
                 />
               </button>
             ) : (
-              <Link className={`inline-flex min-h-11 items-center px-2.5 text-[11px] font-extrabold uppercase tracking-[0.08em] transition xl:px-3 xl:text-[12px] ${isActive ? "text-wine" : "text-ink hover:text-wine"}`} href={item.href} onClick={() => setActiveMenu(null)}>{item.label}</Link>
+              <Link className={`inline-flex min-h-11 items-center px-2.5 text-[11px] font-semibold uppercase tracking-[0.13em] transition xl:px-3 xl:text-[12px] ${isActive ? "text-wine" : "text-ink hover:text-wine"}`} href={item.href} onClick={() => setActiveMenu(null)}>{item.label}</Link>
             )}
 
             <AnimatePresence>
@@ -78,7 +78,7 @@ export function DesktopNavigation({ compact = false, items }: DesktopNavigationP
                       {item.children.map((child) => (
                         <li key={child.href}>
                           <Link className="group flex min-h-[88px] items-start justify-between gap-4 border-b border-line px-3 py-4 transition hover:border-rose hover:bg-ivory focus-visible:bg-ivory" href={child.href} onClick={() => setActiveMenu(null)}>
-                            <span><span className="block text-sm font-bold text-ink group-hover:text-wine">{child.label}</span><span className="mt-1.5 block text-xs leading-relaxed text-muted">{child.description}</span></span>
+                            <span><span className="block text-sm font-bold tracking-[0.035em] text-ink group-hover:text-wine">{child.label}</span><span className="mt-1.5 block text-xs leading-relaxed tracking-[0.02em] text-muted">{child.description}</span></span>
                             <Icon className="mt-1 size-3.5 shrink-0 text-rose transition-transform group-hover:translate-x-1" name="arrow" />
                           </Link>
                         </li>

@@ -89,7 +89,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                         <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <span className="text-base font-extrabold uppercase tracking-[0.08em] text-ink">
+                        <span className="text-base font-semibold uppercase tracking-[0.12em] text-ink">
                           {item.label}
                         </span>
                         <span
@@ -108,7 +108,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                         <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <span className="text-base font-extrabold uppercase tracking-[0.08em] text-ink">
+                        <span className="text-base font-semibold uppercase tracking-[0.12em] text-ink">
                           {item.label}
                         </span>
                         <Icon
@@ -133,7 +133,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                           <div className="grid gap-1 pb-4 pl-10">
                             {item.children.map((child) => (
                               <Link
-                                className="rounded-lg px-3 py-2.5 text-sm font-semibold text-ink transition hover:bg-rose-soft hover:text-wine"
+                                className="rounded-lg px-3 py-2.5 text-sm font-semibold tracking-[0.035em] text-ink transition hover:bg-rose-soft hover:text-wine"
                                 href={child.href}
                                 key={child.href}
                                 onClick={closeMenu}

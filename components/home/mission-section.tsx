@@ -30,7 +30,7 @@ export function MissionSection() {
         <div className="mt-16 grid border border-line bg-paper/70 md:grid-cols-2 lg:grid-cols-4 max-sm:grid-cols-1">
           {pillars.map((item) => (
             <article
-              className="group flex min-h-[305px] flex-col border-line p-8 transition hover:z-10 hover:-translate-y-2 hover:bg-paper hover:shadow-soft lg:border-r lg:last:border-r-0 md:[&:nth-child(odd)]:border-r md:[&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 max-sm:min-h-0 max-sm:border-b max-sm:last:border-b-0"
+              className="flex min-h-[305px] flex-col border-line p-8 lg:border-r lg:last:border-r-0 md:[&:nth-child(odd)]:border-r md:[&:nth-child(n+3)]:border-t lg:[&:nth-child(n+3)]:border-t-0 max-sm:min-h-0 max-sm:border-b max-sm:last:border-b-0"
               key={item.title}
             >
               <div className="flex items-center justify-between">
@@ -47,15 +47,18 @@ export function MissionSection() {
               <p className="m-0 min-h-[78px] text-sm leading-[1.75] text-muted max-lg:min-h-[122px] max-md:min-h-[78px] max-sm:min-h-0">
                 {item.text}
               </p>
-              <Link
-                className="mt-auto grid size-9 place-items-center rounded-full border border-line text-wine max-sm:mt-6"
-                href={item.title === "Ricerca" ? "/la-ricerca/progetti" : item.title === "Formazione" ? "/team" : "/news"}
-                aria-label={`Approfondisci: ${item.title}`}
-              >
-                <Icon className="size-5" name="arrow" />
-              </Link>
             </article>
           ))}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <Link
+            className="inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-wine px-8 py-3 text-center font-bold text-white transition hover:-translate-y-0.5 hover:bg-wine-deep"
+            href="/chi-siamo/la-nostra-associazione"
+          >
+            Scopri la nostra associazione
+            <Icon className="size-4" name="arrow" />
+          </Link>
         </div>
       </div>
     </section>

@@ -5,16 +5,16 @@
   <circle cx="730" cy="120" r="170" fill="#F3D8DD"/>
   <circle cx="155" cy="485" r="210" fill="#F6E6DE"/>
   <path d="M120 150c135-62 255-59 362 8s208 80 302 38v248H120Z" fill="#FFFDFC"/>
-  <rect x="310" y="260" width="280" height="150" rx="26" fill="#8B1735"/>
+  <rect x="310" y="260" width="280" height="150" rx="26" fill="#0F5C63"/>
   <rect x="285" y="220" width="330" height="75" rx="28" fill="#DA5D75"/>
-  <path d="M338 219c8-42 21-69 40-81 20 18 29 45 25 81M456 219c8-42 21-69 40-81 20 18 29 45 25 81M562 219c8-42 21-69 40-81 20 18 29 45 25 81" fill="none" stroke="#8B1735" stroke-width="8" stroke-linecap="round"/>
+  <path d="M338 219c8-42 21-69 40-81 20 18 29 45 25 81M456 219c8-42 21-69 40-81 20 18 29 45 25 81M562 219c8-42 21-69 40-81 20 18 29 45 25 81" fill="none" stroke="#0F5C63" stroke-width="8" stroke-linecap="round"/>
   <g fill="#DA5D75">
     <circle cx="180" cy="135" r="12"/>
     <circle cx="710" cy="405" r="10"/>
     <circle cx="225" cy="365" r="8"/>
     <circle cx="640" cy="160" r="7"/>
   </g>
-  <g stroke="#8B1735" stroke-width="7" stroke-linecap="round">
+  <g stroke="#0F5C63" stroke-width="7" stroke-linecap="round">
     <path d="M165 238l42-42M685 305l46-18M245 105l52 22"/>
   </g>
   <text x="80" y="505" fill="#2D2927" font-family="Georgia, serif" font-size="64">Festeggia sostenendo</text>

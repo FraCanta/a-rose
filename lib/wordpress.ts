@@ -28,10 +28,17 @@ type WordPressPostResponse = {
   title: WordPressRendered;
   content?: WordPressRendered;
   excerpt: WordPressRendered;
+  categories?: number[];
   _embedded?: {
     "wp:featuredmedia"?: WordPressMedia[];
     "wp:term"?: WordPressTerm[][];
   };
+};
+
+type WordPressCategoryResponse = {
+  id: number;
+  name: string;
+  count: number;
 };
 
 type WordPressPageResponse = {
@@ -76,9 +83,11 @@ export type WordPressPost = {
   excerpt: string;
   date: string;
   category: string;
+  categories: string[];
   image: string | null;
   imageAlt: string;
   href: string;
+  readingMinutes: number;
 };
 
 export type WordPressPostDetail = WordPressPost & {
@@ -309,7 +318,17 @@ function getFeaturedImage(media?: WordPressMedia) {
 }
 
 function getCategory(terms?: WordPressTerm[][]) {
-  return terms?.flat().find((term) => term.taxonomy === "category")?.name ?? "News";
+  return getCategories(terms)[0] ?? "News";
+}
+
+function getCategories(terms?: WordPressTerm[][]) {
+  return Array.from(
+    new Set(
+      (terms?.flat() ?? [])
+        .filter((term) => term.taxonomy === "category" && term.name)
+        .map((term) => decodeEntities(term.name ?? "")),
+    ),
+  );
 }
 
 function getProjectKind(title: string): WordPressProject["kind"] {
@@ -377,11 +396,13 @@ function extractProjectsFromHtml(html: string): WordPressProject[] {
         excerpt: projectCardSummaries[slug] ?? excerpt,
         date: "2025-01-01T00:00:00",
         category: getProjectKind(title),
+        categories: [getProjectKind(title)],
         kind: getProjectKind(title),
         image: image ? decodeEntities(image) : null,
         imageAlt: `Immagine del progetto ${title}`,
         href: sourceUrl,
         contentHtml: "",
+        readingMinutes: 1,
       } satisfies WordPressProject];
     })
     .filter(
@@ -418,9 +439,11 @@ export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
         excerpt: plainText(post.excerpt.rendered),
         date: post.date,
         category: decodeEntities(getCategory(post._embedded?.["wp:term"])),
+        categories: getCategories(post._embedded?.["wp:term"]),
         image: getFeaturedImage(media),
         imageAlt: plainText(media?.alt_text ?? "") || `Immagine dell’articolo ${plainText(post.title.rendered)}`,
         href: post.link,
+        readingMinutes: Math.max(1, Math.ceil(plainText(post.content?.rendered ?? post.excerpt.rendered).split(/\s+/).filter(Boolean).length / 220)),
       };
     });
   } catch {
@@ -430,6 +453,80 @@ export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
 
 export async function getPosts(limit = 9): Promise<WordPressPost[]> {
   return getLatestPosts(limit);
+}
+
+async function getCategoryIndex() {
+  try {
+    const response = await fetch(`${WORDPRESS_ORIGIN}/wp-json/wp/v2/categories?per_page=100&hide_empty=true`, {
+      next: { revalidate: 3600 },
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) return new Map<number, string>();
+    const categories = (await response.json()) as WordPressCategoryResponse[];
+    return new Map(categories.map((category) => [category.id, decodeEntities(category.name)]));
+  } catch {
+    return new Map<number, string>();
+  }
+}
+
+export async function getPostCategories() {
+  return Array.from((await getCategoryIndex()).values()).sort((a, b) => a.localeCompare(b, "it"));
+}
+
+export async function getAllPosts(): Promise<WordPressPost[]> {
+  const firstPageParams = new URLSearchParams({
+    _embed: "1",
+    order: "desc",
+    orderby: "date",
+    per_page: "100",
+    page: "1",
+  });
+
+  try {
+    const [firstResponse, categoryIndex] = await Promise.all([
+      fetch(`${WORDPRESS_API_URL}?${firstPageParams}`, {
+        next: { revalidate: 3600 },
+        headers: { Accept: "application/json" },
+      }),
+      getCategoryIndex(),
+    ]);
+    if (!firstResponse.ok) return [];
+
+    const totalPages = Math.max(1, Number(firstResponse.headers.get("X-WP-TotalPages") ?? "1"));
+    const firstPage = (await firstResponse.json()) as WordPressPostResponse[];
+    const otherPages = await Promise.all(
+      Array.from({ length: totalPages - 1 }, (_, index) => index + 2).map(async (page) => {
+        const params = new URLSearchParams(firstPageParams);
+        params.set("page", String(page));
+        const response = await fetch(`${WORDPRESS_API_URL}?${params}`, {
+          next: { revalidate: 3600 },
+          headers: { Accept: "application/json" },
+        });
+        return response.ok ? ((await response.json()) as WordPressPostResponse[]) : [];
+      }),
+    );
+
+    return [...firstPage, ...otherPages.flat()].map((post) => {
+      const media = post._embedded?.["wp:featuredmedia"]?.[0];
+      const postCategories = (post.categories ?? []).map((id) => categoryIndex.get(id)).filter((name): name is string => Boolean(name));
+      const categories = postCategories.length ? postCategories : getCategories(post._embedded?.["wp:term"]);
+      return {
+        id: post.id,
+        slug: post.slug,
+        title: plainText(post.title.rendered),
+        excerpt: plainText(post.excerpt.rendered),
+        date: post.date,
+        category: categories[0] ?? "News",
+        categories,
+        image: getFeaturedImage(media),
+        imageAlt: plainText(media?.alt_text ?? "") || `Immagine dell'articolo ${plainText(post.title.rendered)}`,
+        href: post.link,
+        readingMinutes: Math.max(1, Math.ceil(plainText(post.content?.rendered ?? post.excerpt.rendered).split(/\s+/).filter(Boolean).length / 220)),
+      };
+    });
+  } catch {
+    return [];
+  }
 }
 
 export async function getPostBySlug(slug: string): Promise<WordPressPostDetail | null> {
@@ -459,12 +556,14 @@ export async function getPostBySlug(slug: string): Promise<WordPressPostDetail |
       excerpt: plainText(post.excerpt.rendered),
       date: post.date,
       category: decodeEntities(getCategory(post._embedded?.["wp:term"])),
+      categories: getCategories(post._embedded?.["wp:term"]),
       image: getFeaturedImage(media),
       imageAlt:
         plainText(media?.alt_text ?? "") ||
         `Immagine dell'articolo ${plainText(post.title.rendered)}`,
       href: post.link,
       contentHtml: post.content?.rendered ?? "",
+      readingMinutes: Math.max(1, Math.ceil(plainText(post.content?.rendered ?? post.excerpt.rendered).split(/\s+/).filter(Boolean).length / 220)),
     };
   } catch {
     return null;
