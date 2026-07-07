@@ -310,9 +310,9 @@ function getFeaturedImage(media?: WordPressMedia) {
   if (!media) return null;
 
   return (
-    media.media_details?.sizes?.medium_large?.source_url ??
-    media.media_details?.sizes?.large?.source_url ??
     media.source_url ??
+    media.media_details?.sizes?.large?.source_url ??
+    media.media_details?.sizes?.medium_large?.source_url ??
     null
   );
 }
