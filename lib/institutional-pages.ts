@@ -54,7 +54,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Sosteniamo la ricerca oncologica, la formazione e una divulgazione scientifica accessibile e responsabile.",
     description:
-      "La missione di A-ROSE unisce rigore scientifico, collaborazione, trasparenza e attenzione alle persone. I contenuti ufficiali di questa sezione potranno essere aggiornati con i documenti associativi.",
+      "La missione di A-ROSE unisce rigore scientifico, collaborazione, trasparenza e attenzione alle persone, trasformando principi condivisi in iniziative concrete.",
     parent: { label: "Chi siamo", href: "/chi-siamo" },
     points: [
       {
@@ -119,7 +119,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Informazioni associative e documenti utili per conoscere A-ROSE con chiarezza.",
     description:
-      "Questa sezione è predisposta per bilanci, rendicontazioni, statuto e documenti fiscali. I materiali ufficiali saranno pubblicati e aggiornati progressivamente.",
+      "Bilanci, rendicontazioni, statuto e documenti fiscali permettono di conoscere l'associazione e di seguire con chiarezza l'impiego delle risorse.",
     parent: { label: "Chi siamo", href: "/chi-siamo" },
     points: [
       {
@@ -218,7 +218,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "La crescita della ricerca passa anche dalla formazione di chi lavora nei laboratori e nei percorsi clinici.",
     description:
-      "La pagina raccoglierà borse, opportunità formative e iniziative sostenute da A-ROSE. I contenuti saranno aggiornati con informazioni ufficiali.",
+      "Borse, opportunità formative e occasioni di confronto contribuiscono a sviluppare competenze scientifiche e a sostenere le nuove generazioni della ricerca.",
     parent: { label: "La ricerca", href: "/la-ricerca" },
     points: [
       {
@@ -317,7 +317,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Una pagina per orientarsi tra informazione, consapevolezza e fonti sanitarie ufficiali.",
     description:
-      "I contenuti definitivi saranno sviluppati con supervisione competente. Questa pagina non sostituisce il medico o i programmi sanitari regionali.",
+      "Prevenzione significa anche accedere a informazioni comprensibili e riconoscere il ruolo dei programmi sanitari. Questa pagina non sostituisce il medico.",
     parent: { label: "Prevenzione", href: "/prevenzione" },
     points: [
       {
@@ -350,12 +350,12 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Uno spazio informativo dedicato a HPV, prevenzione e percorsi di screening.",
     description:
-      "La pagina è predisposta per contenuti verificati e riferimenti sanitari ufficiali. Non contiene indicazioni cliniche personalizzate.",
+      "Conoscere il tema aiuta a comprendere il valore della prevenzione e dei percorsi di screening, sempre facendo riferimento alle fonti sanitarie ufficiali.",
     parent: { label: "Prevenzione", href: "/prevenzione" },
     points: [
       {
         title: "Conoscere l'HPV",
-        text: "Informazioni introduttive da completare con fonti ufficiali.",
+        text: "Un'introduzione al tema e alle parole utili per orientarsi tra le fonti ufficiali.",
       },
       {
         title: "Prevenzione",
@@ -416,7 +416,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Una raccolta editoriale per rendere più accessibili i temi della prevenzione e della ricerca.",
     description:
-      "I materiali saranno selezionati e aggiornati progressivamente, distinguendo sempre la divulgazione dalle indicazioni mediche personali.",
+      "Articoli, guide e riferimenti aiutano ad approfondire i temi principali, distinguendo sempre la divulgazione dalle indicazioni mediche personali.",
     parent: { label: "Prevenzione", href: "/prevenzione" },
     points: [
       {
@@ -449,7 +449,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "Risposte sintetiche per orientarsi tra prevenzione, screening e attività dell'associazione.",
     description:
-      "Le FAQ saranno ampliate con contenuti ufficiali. Non possono rispondere a dubbi clinici individuali né sostituire una consulenza sanitaria.",
+      "Le risposte chiariscono il ruolo dell'associazione e indicano dove cercare fonti affidabili. Non possono rispondere a dubbi clinici individuali.",
     parent: { label: "Prevenzione", href: "/prevenzione" },
     points: [
       {
@@ -545,7 +545,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     intro:
       "La cultura scientifica cresce quando incontra studenti, famiglie e comunità locali.",
     description:
-      "La pagina raccoglierà proposte divulgative e collaborazioni territoriali. Ogni iniziativa viene definita con gli enti coinvolti e con linguaggi adatti al pubblico.",
+      "Le proposte divulgative e le collaborazioni territoriali nascono dal dialogo con gli enti coinvolti e adottano linguaggi adatti al pubblico.",
     parent: { label: "Partecipa", href: "/partecipa" },
     points: [
       {
