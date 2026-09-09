@@ -434,7 +434,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Vai agli articoli",
-      href: "/news/articoli",
+      href: "/prevenzione/guide-e-approfondimenti",
       text: "Leggi gli approfondimenti disponibili.",
     },
     metaTitle: "Guide e approfondimenti | A-ROSE ODV",

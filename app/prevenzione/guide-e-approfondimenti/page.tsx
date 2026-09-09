@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     "Articoli A-ROSE dedicati alla prevenzione oncologica e alla consapevolezza.",
 };
 
+export const revalidate = 300;
+
 export default async function PreventionGuidesPage() {
   const [posts, categories] = await Promise.all([getAllPosts(), getPostCategories()]);
 

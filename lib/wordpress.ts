@@ -421,7 +421,7 @@ export async function getLatestPosts(limit = 3): Promise<WordPressPost[]> {
 
   try {
     const response = await fetch(`${WORDPRESS_API_URL}?${params}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
       headers: { Accept: "application/json" },
     });
 
@@ -458,7 +458,7 @@ export async function getPosts(limit = 9): Promise<WordPressPost[]> {
 async function getCategoryIndex() {
   try {
     const response = await fetch(`${WORDPRESS_ORIGIN}/wp-json/wp/v2/categories?per_page=100&hide_empty=true`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
       headers: { Accept: "application/json" },
     });
     if (!response.ok) return new Map<number, string>();
@@ -485,7 +485,7 @@ export async function getAllPosts(): Promise<WordPressPost[]> {
   try {
     const [firstResponse, categoryIndex] = await Promise.all([
       fetch(`${WORDPRESS_API_URL}?${firstPageParams}`, {
-        next: { revalidate: 3600 },
+        next: { revalidate: 300 },
         headers: { Accept: "application/json" },
       }),
       getCategoryIndex(),
@@ -499,7 +499,7 @@ export async function getAllPosts(): Promise<WordPressPost[]> {
         const params = new URLSearchParams(firstPageParams);
         params.set("page", String(page));
         const response = await fetch(`${WORDPRESS_API_URL}?${params}`, {
-          next: { revalidate: 3600 },
+          next: { revalidate: 300 },
           headers: { Accept: "application/json" },
         });
         return response.ok ? ((await response.json()) as WordPressPostResponse[]) : [];
