@@ -20,8 +20,8 @@ export function AuthProfileLink({
     const supabase = createClient();
     let active = true;
 
-    supabase.auth.getUser().then(({ data }) => {
-      if (active) setIsLoggedIn(Boolean(data.user));
+    supabase.auth.getSession().then(({ data }) => {
+      if (active) setIsLoggedIn(Boolean(data.session?.user));
     });
 
     const {
