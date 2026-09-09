@@ -101,13 +101,20 @@ export function Footer() {
       </div>
 
       <div
-        className={`${container} flex justify-between gap-2 border-t border-white/10 py-6 text-[10px] text-white/35 max-sm:flex-col`}
+        className={`${container} flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-t border-white/10 py-6 text-[10px] text-white/35`}
       >
         <p>© {new Date().getFullYear()} A-ROSE ODV. Tutti i diritti riservati.</p>
-        <div className="flex flex-wrap gap-x-4 gap-y-2">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link className="hover:text-white" href="/trasparenza">Trasparenza</Link>
-          <Link className="hover:text-white" href="https://a-roseodv.org/privacy-policy-2/">Privacy</Link>
-          <Link className="hover:text-white" href="https://a-roseodv.org/cookie-policy/">Cookie policy</Link>
+          <Link className="hover:text-white" href="/privacy-policy">Privacy</Link>
+          <Link className="hover:text-white" href="/cookie-policy">Cookie policy</Link>
+          <Link className="inline-flex items-center gap-1.5 text-[#e9a5b2] transition hover:text-white" href="/ecosostenibilita">
+            <svg aria-hidden="true" className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 4c-8.5.4-14 4.6-14 10.3 0 3.1 2.3 5.7 5.4 5.7C17.8 20 20 12 20 4Z" />
+              <path d="M4 21c2.5-6.3 7-9.7 12.5-12" />
+            </svg>
+            Questo sito rispetta i principi dell’ecosostenibilità
+          </Link>
         </div>
       </div>
     </footer>

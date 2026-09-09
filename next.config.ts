@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.a-roseodv.org",
       },
+      {
+        protocol: "https",
+        hostname: "app.greenweb.org",
+        pathname: "/api/v3/greencheckimage/**",
+      },
     ],
   },
   turbopack: {

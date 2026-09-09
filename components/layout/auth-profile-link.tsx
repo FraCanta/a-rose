@@ -3,7 +3,10 @@
 import { Icon as IconifyIcon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState, type MouseEventHandler } from "react";
-import { createClient } from "@/utils/supabase/client";
+import {
+  createClient,
+  isSupabaseConfigured,
+} from "@/utils/supabase/client";
 
 export function AuthProfileLink({
   className,
@@ -17,6 +20,8 @@ export function AuthProfileLink({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) return;
+
     const supabase = createClient();
     let active = true;
 
