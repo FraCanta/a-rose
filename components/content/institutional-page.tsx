@@ -14,13 +14,13 @@ function getPageFamily(path: string): PageFamily {
   return "about";
 }
 
-export function InstitutionalPage({ page }: { page: InstitutionalPageData }) {
+export function InstitutionalPage({ page, hero }: { page: InstitutionalPageData; hero?: React.ReactNode }) {
   const isMacroArea = page.parent.href === "/" && page.parent.label === "Home";
   const family = getPageFamily(page.path);
 
   return (
     <main id="contenuto">
-      <header className={`relative overflow-hidden border-b border-line py-14 sm:py-20 lg:py-24 ${family === "prevention" ? "bg-wine text-white" : "bg-paper"}`}>
+      {hero ?? <header className={`relative overflow-hidden border-b border-line py-14 sm:py-20 lg:py-24 ${family === "prevention" ? "bg-wine text-white" : "bg-paper"}`}>
         <div aria-hidden="true" className="absolute -right-20 -top-20 size-72 rounded-full border-[58px] border-rose/10 sm:size-96 sm:border-[78px]" />
         <div className={`${container} relative`}>
           {!isMacroArea ? (
@@ -36,7 +36,7 @@ export function InstitutionalPage({ page }: { page: InstitutionalPageData }) {
           </h1>
           <p className={`mt-7 max-w-3xl text-base leading-[1.85] sm:text-lg ${family === "prevention" ? "text-white/75" : "text-muted"}`}>{page.intro}</p>
         </div>
-      </header>
+      </header>}
 
       <InstitutionalBody family={family} page={page} />
 
@@ -84,7 +84,7 @@ function ResearchBody({ page }: { page: InstitutionalPageData }) {
           <div className="grid gap-8 border-b border-line pb-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end"><div><Eyebrow>Metodo e prospettiva</Eyebrow><h2 className={heading}>Dalle domande alle <em className="font-normal text-rose">nuove possibilità.</em></h2></div><p className="max-w-3xl text-base leading-[1.9] text-muted sm:text-lg">{page.description}</p></div>
           <ol className="mt-12 grid gap-5 lg:grid-cols-3">
             {page.points.map((point, index) => (
-              <li className="relative min-h-72 overflow-hidden border border-line bg-paper p-7 sm:p-9" key={point.title}>
+              <li className="site-card site-card-body relative min-h-72 overflow-hidden" key={point.title}>
                 <span aria-hidden="true" className="absolute -right-3 -top-8 font-serif text-9xl text-wine/[0.06]">{index + 1}</span>
                 <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">Fase {String(index + 1).padStart(2, "0")}</span>
                 <h3 className="mt-14 font-serif text-3xl font-normal leading-tight text-ink">{point.title}</h3><p className="mt-4 text-sm leading-[1.8] text-muted">{point.text}</p>
@@ -106,7 +106,7 @@ function PreventionBody({ page }: { page: InstitutionalPageData }) {
           <div><Eyebrow>Orientarsi</Eyebrow><h2 className={heading}>Informazioni da leggere con <em className="font-normal text-rose">consapevolezza.</em></h2><p className="mt-7 max-w-xl text-base leading-[1.9] text-muted">{page.description}</p></div>
           <ul className="grid gap-4">
             {page.points.map((point, index) => (
-              <li className="grid grid-cols-[48px_1fr] gap-5 rounded-2xl border border-line bg-white p-6 shadow-soft sm:grid-cols-[60px_1fr] sm:p-8" key={point.title}>
+              <li className="site-card site-card-body grid grid-cols-[48px_1fr] gap-5 sm:grid-cols-[60px_1fr]" key={point.title}>
                 <span className="grid size-12 place-items-center rounded-full bg-rose-soft text-sm font-bold text-wine sm:size-14" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <div><h3 className="font-serif text-2xl font-normal text-ink">{point.title}</h3><p className="mt-3 text-sm leading-[1.8] text-muted">{point.text}</p></div>
               </li>
@@ -126,9 +126,9 @@ function ParticipationBody({ page }: { page: InstitutionalPageData }) {
         <div className="max-w-3xl"><Eyebrow>Prendi parte</Eyebrow><h2 className={heading}>C’è più di un modo per <em className="font-normal text-rose">esserci.</em></h2><p className="mt-7 text-base leading-[1.9] text-muted">{page.description}</p></div>
         <div className="mt-14 grid gap-5 md:grid-cols-12">
           {page.points.map((point, index) => (
-            <article className={`flex min-h-64 flex-col justify-between rounded-[2rem] p-7 sm:p-9 ${index === 0 ? "bg-wine text-white md:col-span-7" : index === 1 ? "bg-rose-soft text-ink md:col-span-5" : "border border-line bg-paper text-ink md:col-span-12 md:min-h-48"}`} key={point.title}>
-              <span className={`text-[10px] font-extrabold uppercase tracking-[0.18em] ${index === 0 ? "text-[#efabb6]" : "text-wine"}`}>Possibilità {String(index + 1).padStart(2, "0")}</span>
-              <div><h3 className="font-serif text-3xl font-normal">{point.title}</h3><p className={`mt-3 max-w-2xl text-sm leading-[1.8] ${index === 0 ? "text-white/75" : "text-muted"}`}>{point.text}</p></div>
+            <article className={`site-card site-card-body flex min-h-64 flex-col justify-between ${index === 0 ? "md:col-span-7" : index === 1 ? "md:col-span-5" : "md:col-span-12 md:min-h-48"}`} key={point.title}>
+              <span className={`text-[10px] font-extrabold uppercase tracking-[0.18em] text-wine`}>Possibilità {String(index + 1).padStart(2, "0")}</span>
+              <div><h3 className="font-serif text-3xl font-normal">{point.title}</h3><p className={`mt-3 max-w-2xl text-sm leading-[1.8] text-muted`}>{point.text}</p></div>
             </article>
           ))}
         </div>
@@ -142,9 +142,9 @@ function SupportBody({ page }: { page: InstitutionalPageData }) {
     <section className={`${section} bg-paper`}>
       <div className={container}>
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24"><div><Eyebrow>Un contributo concreto</Eyebrow><h2 className={heading}>Dal gesto individuale a un <em className="font-normal text-rose">impatto condiviso.</em></h2></div><p className="max-w-3xl text-base leading-[1.9] text-muted sm:text-lg">{page.description}</p></div>
-        <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
           {page.points.map((point, index) => (
-            <article className="bg-white p-7 sm:p-9" key={point.title}>
+            <article className="site-card site-card-body" key={point.title}>
               <div className="flex items-center justify-between"><span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-wine">Passaggio</span><span className="font-serif text-3xl text-rose/70">{String(index + 1).padStart(2, "0")}</span></div>
               <h3 className="mt-10 font-serif text-3xl font-normal leading-tight text-ink">{point.title}</h3><p className="mt-4 text-sm leading-[1.8] text-muted">{point.text}</p>
             </article>

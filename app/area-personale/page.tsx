@@ -77,33 +77,10 @@ export default async function PersonalAreaPage() {
   }
 
   return (
-    <main id="contenuto">
-      <section className="bg-ivory px-5 py-16 sm:px-8 lg:py-24">
-        <div className="mx-auto max-w-site text-center">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-wine">
-            Area riservata
-          </p>
-          <h1 className="mx-auto mt-5 max-w-4xl font-serif text-5xl leading-[0.98] text-ink sm:text-6xl lg:text-7xl">
-            Accedi o registrati al tuo spazio{" "}
-            <em className="font-normal text-rose">A-ROSE.</em>
-          </h1>
-          <p className="mx-auto mt-7 max-w-3xl text-base leading-8 text-muted sm:text-lg">
-            Potrai creare e gestire raccolte fondi, salvare iniziative e
-            accedere alle funzionalità dedicate ai sostenitori.
-          </p>
-        </div>
-      </section>
-
-      <section className="bg-white px-5 py-14 sm:px-8 lg:py-20">
-        <div className="mx-auto max-w-site">
+    <main className="bg-paper" id="contenuto">
+      <section className="flex min-h-[760px] items-center justify-center bg-white px-5 py-14 sm:px-10 lg:py-20">
+        <div className="w-full max-w-[680px] rounded-2xl border border-line bg-white p-7 shadow-elevated sm:p-12 lg:p-16">
           <AuthForms />
-          <div className="mt-10 rounded-3xl bg-ivory p-6 text-sm leading-7 text-muted sm:p-8">
-            <p>
-              L&apos;area personale è pensata per strumenti di partecipazione e
-              sostegno. A-ROSE non fornisce consulenze mediche, diagnosi o
-              indicazioni terapeutiche personalizzate attraverso questo spazio.
-            </p>
-          </div>
         </div>
       </section>
     </main>

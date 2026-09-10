@@ -2,17 +2,20 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/home/icons";
 import { AuthProfileLink } from "./auth-profile-link";
 import type { NavigationGroup } from "./navigation-data";
+import { HealthMenu } from "./health-menu";
 
 type MobileNavigationProps = { items: readonly NavigationGroup[] };
 
 export function MobileNavigation({ items }: MobileNavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const firstControlRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
   const closeMenu = () => {
     setIsOpen(false);
@@ -22,21 +25,39 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
   useEffect(() => {
     if (!isOpen) return;
     const previousOverflow = document.body.style.overflow;
+    const trigger = triggerRef.current;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Tab") {
+        const headerControls = Array.from(trigger?.closest("header")?.querySelectorAll<HTMLElement>('a[href], button') ?? []);
+        const panelControls = Array.from(panelRef.current?.querySelectorAll<HTMLElement>('a[href], button, input, [tabindex="0"]') ?? []);
+        const controls = [...headerControls, ...panelControls].filter((element) => element.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
     };
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", closeOnEscape);
-    firstControlRef.current?.focus();
+    trigger?.focus();
+    const closeOnHeaderLink = (event: MouseEvent) => {
+      if (event.target instanceof Element && event.target.closest("a")) closeMenu();
+    };
+    const header = trigger?.closest("header");
+    header?.addEventListener("click", closeOnHeaderLink);
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", closeOnEscape);
+      header?.removeEventListener("click", closeOnHeaderLink);
+      trigger?.focus();
     };
   }, [isOpen]);
 
   return (
     <div className="xl:hidden">
       <button
+        ref={triggerRef}
         className="relative grid size-12 place-items-center text-wine transition hover:text-wine-deep"
         type="button"
         aria-controls="menu-mobile"
@@ -55,10 +76,13 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
         />
       </button>
 
-      <AnimatePresence>
+      {isOpen && createPortal(<AnimatePresence>
         {isOpen ? (
           <motion.div
-            className="fixed inset-x-0 bottom-0 top-[84px] z-50 flex flex-col overflow-hidden bg-paper"
+            ref={panelRef}
+            role="region"
+            aria-label="Menu principale"
+            className="fixed inset-x-0 bottom-0 top-[84px] z-40 flex flex-col overflow-hidden bg-white"
             id="menu-mobile"
             initial={reducedMotion ? false : { opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,14 +94,13 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
               aria-label="Navigazione mobile"
               data-lenis-prevent
             >
-              {items.map((item, index) => {
+              {items.map((item) => {
                 const isExpanded = expanded === item.label;
                 const panelId = `mobile-${item.label.toLowerCase().replaceAll(" ", "-")}`;
                 return (
                   <div className="border-b border-line" key={item.label}>
                     {item.children ? (
                       <button
-                        ref={index === 0 ? firstControlRef : undefined}
                         className="flex min-h-14 w-full items-center gap-4 py-3 text-left"
                         type="button"
                         aria-controls={panelId}
@@ -86,10 +109,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                           setExpanded(isExpanded ? null : item.label)
                         }
                       >
-                        <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-base font-semibold uppercase tracking-[0.12em] text-ink">
+                        <span className="text-2xl font-normal leading-snug text-wine">
                           {item.label}
                         </span>
                         <span
@@ -105,10 +125,7 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                         href={item.href}
                         onClick={closeMenu}
                       >
-                        <span className="w-6 text-[10px] font-bold tracking-wider text-rose">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-base font-semibold uppercase tracking-[0.12em] text-ink">
+                        <span className="text-2xl font-normal leading-snug text-wine">
                           {item.label}
                         </span>
                         <Icon
@@ -130,17 +147,8 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.25 }}
                         >
-                          <div className="grid gap-1 pb-4 pl-10">
-                            {item.children.map((child) => (
-                              <Link
-                                className="rounded-lg px-3 py-2.5 text-sm font-semibold tracking-[0.035em] text-ink transition hover:bg-rose-soft hover:text-wine"
-                                href={child.href}
-                                key={child.href}
-                                onClick={closeMenu}
-                              >
-                                {child.label}
-                              </Link>
-                            ))}
+                          <div className="grid gap-1 pb-8 pt-3">
+                            <HealthMenu group={item} links={item.children} onNavigate={closeMenu} />
                           </div>
                         </motion.div>
                       ) : null}
@@ -150,15 +158,15 @@ export function MobileNavigation({ items }: MobileNavigationProps) {
               })}
             </nav>
 
-            <div className="border-t border-line bg-white px-5 py-4 sm:px-8">
+            <div className="shrink-0 border-t border-line bg-white px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-4 sm:px-8">
               <AuthProfileLink
-                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-wine px-6 font-bold text-wine transition hover:bg-rose-soft"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md border border-wine px-6 font-bold text-wine transition hover:bg-rose-soft"
                 onClick={closeMenu}
               />
             </div>
           </motion.div>
         ) : null}
-      </AnimatePresence>
+      </AnimatePresence>, document.body)}
     </div>
   );
 }

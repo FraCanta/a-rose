@@ -508,7 +508,7 @@ export const institutionalPages: InstitutionalPageData[] = [
       "Eventi, volontariato e iniziative territoriali di A-ROSE ODV.",
   },
   {
-    path: "/partecipa/volontariato",
+    path: "/partecipa/diventa-volontario",
     eyebrow: "Partecipa",
     title: "Diventa",
     accent: "volontario.",

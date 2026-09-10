@@ -77,10 +77,42 @@ export const navigation: readonly NavigationGroup[] = [
     ],
   },
   {
-    label: "Prevenzione",
-    href: "/prevenzione",
-    description: "Informazioni prudenti per orientarsi con consapevolezza.",
+    label: "Prevenzione e salute",
+    href: "/prevenzione-e-salute",
+    description: "Conoscere i tumori, prevenzione e controlli, benessere e supporto.",
     children: [
+      ...[
+        {
+          label: "Conoscere i tumori",
+          href: "/prevenzione-e-salute/conoscere-i-tumori",
+          description: "Cosa sono i tumori, glossario e patologie al centro della ricerca.",
+        },
+        {
+          label: "Stili di vita",
+          href: "/prevenzione-e-salute/stili-di-vita",
+          description: "Alimentazione, movimento, fumo, alcol e protezione dal sole.",
+        },
+        {
+          label: "Alimentazione durante le cure",
+          href: "/prevenzione-e-salute/alimentazione-durante-le-cure",
+          description: "Difficoltà ai pasti, peso, integratori e supporto nutrizionale.",
+        },
+        {
+          label: "Attività fisica",
+          href: "/prevenzione-e-salute/attivita-fisica",
+          description: "Muoversi secondo le proprie possibilità, con un percorso personale.",
+        },
+        {
+          label: "Sole e cura della pelle",
+          href: "/prevenzione-e-salute/sole-e-cura-della-pelle",
+          description: "Precauzioni e domande da fare durante e dopo le terapie.",
+        },
+        {
+          label: "Supporto psicologico e psiconcologia",
+          href: "/prevenzione-e-salute/supporto-psicologico-e-psiconcologia",
+          description: "Emozioni, ascolto e supporto per la persona e i caregiver.",
+        },
+      ],
       {
         label: "Prevenzione oncologica",
         href: "/prevenzione/prevenzione-oncologica",
@@ -119,8 +151,8 @@ export const navigation: readonly NavigationGroup[] = [
         description: "Gli appuntamenti A-ROSE.",
       },
       {
-        label: "Volontariato",
-        href: "/partecipa/volontariato",
+        label: "Diventa volontario",
+        href: "/partecipa/diventa-volontario",
         description: "Dona tempo e competenze.",
       },
       {

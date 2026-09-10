@@ -2,6 +2,8 @@ import { DonationSection } from "@/components/home/donation-section";
 import { EventsSection } from "@/components/home/events-section";
 import { FinalCta } from "@/components/home/final-cta";
 import { HeroSection } from "@/components/home/hero-section";
+import { HealthSection } from "@/components/home/health-section";
+import { SupportPathsSection } from "@/components/home/support-paths-section";
 import { ImpactSection } from "@/components/home/impact-section";
 import { MissionSection } from "@/components/home/mission-section";
 import { NewsSection } from "@/components/home/news-section";
@@ -17,7 +19,9 @@ export default function Page() {
       <ScrollReveal><MissionSection /></ScrollReveal>
       <ScrollReveal><PartnersSection /></ScrollReveal>
       <ScrollReveal><ResearchSection /></ScrollReveal>
+      <ScrollReveal><HealthSection /></ScrollReveal>
       <ScrollReveal><DonationSection /></ScrollReveal>
+      <ScrollReveal><SupportPathsSection /></ScrollReveal>
       <ScrollReveal><ImpactSection /></ScrollReveal>
       <ScrollReveal><TeamSection /></ScrollReveal>
       <ScrollReveal><EventsSection /></ScrollReveal>

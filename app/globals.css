@@ -1,6 +1,37 @@
 @import "tailwindcss";
 @config "../tailwind.config.mjs";
 
+/* Shared visual language for content cards; layouts and media stay local. */
+.site-card {
+  @apply rounded-none border border-line bg-paper text-ink shadow-none;
+}
+
+.site-card-body {
+  @apply p-6 sm:p-7;
+}
+
+.site-card :is(h2, h3, h4),
+.site-card-title {
+  @apply font-serif text-2xl font-normal leading-tight tracking-normal text-ink;
+}
+
+.site-card-action {
+  @apply inline-flex w-fit items-center gap-2 rounded-none border-0 border-b border-current bg-transparent px-0 pb-1 pt-5 text-sm font-bold text-wine;
+}
+
+.site-card:focus-within {
+  @apply border-wine;
+}
+
+@media (hover: hover) {
+  .site-card:where(a, .group):hover {
+    @apply border-wine/50 bg-paper shadow-none;
+  }
+  .site-card-action:hover {
+    @apply bg-transparent text-wine-deep;
+  }
+}
+
 :focus-visible {
   outline: 3px solid #ef9bae;
   outline-offset: 4px;

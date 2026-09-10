@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AreaHero } from "@/components/content/area-hero";
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/home/eyebrow";
@@ -86,59 +87,8 @@ const processSteps = [
 export default function SupportPage() {
   return (
     <main id="contenuto">
-      <section className="border-b border-line bg-white py-14 sm:py-16 lg:py-20">
-        <div className={container}>
-          <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
-            <div>
-              <Eyebrow>Sostienici</Eyebrow>
-              <h1 className="mt-6 max-w-4xl font-serif text-[clamp(46px,6vw,88px)] font-normal leading-[0.94] tracking-[-0.055em] text-ink">
-                Sostieni la{" "}
-                <em className="font-normal text-rose">ricerca.</em>
-              </h1>
-              <p className="mt-8 max-w-2xl text-base leading-[1.85] text-muted sm:text-lg">
-                Ogni contributo può sostenere progetti scientifici, formazione
-                specialistica e attività di prevenzione. Scegli il modo più
-                adatto: una donazione, il 5×1000, una raccolta fondi, un regalo
-                solidale o una collaborazione.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-wine px-8 font-bold text-white transition hover:bg-wine-deep"
-                  href="/sostieni-la-ricerca#donazione"
-                >
-                  Dona ora <Icon className="size-5" name="heart" />
-                </Link>
-                <Link
-                  className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-wine px-8 font-bold text-wine transition hover:bg-wine hover:text-white"
-                  href="/come-sostenerci/5x1000"
-                >
-                  Destina il 5×1000 <Icon className="size-4" name="arrow" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="relative min-h-[320px] overflow-hidden rounded-[2rem] bg-rose-soft sm:min-h-[420px]">
-              <Image
-                src="/images/sostegno-cuore.webp"
-                alt="Cuore rosa tra le mani, simbolo di sostegno alla ricerca"
-                fill
-                priority
-                sizes="(min-width: 1024px) 48vw, 100vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/10 to-transparent" />
-              <div className="absolute bottom-6 left-6 max-w-xs rounded-2xl bg-white/90 p-5 shadow-[0_18px_45px_rgba(87,22,41,0.14)] backdrop-blur">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-wine">
-                  Ricerca, cura, futuro
-                </p>
-                <p className="mt-2 font-serif text-2xl leading-tight text-ink">
-                  Ogni gesto può diventare una possibilità.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AreaHero label="Sostienici" title="Sostieni la ricerca." intro="Ogni contributo può sostenere progetti scientifici, formazione specialistica e attività di prevenzione. Scegli il modo più adatto: una donazione, il 5×1000, una raccolta fondi, un regalo solidale o una collaborazione." image="/images/sostegno-cuore.webp" imageAlt="Mani che sostengono un cuore rosa" />
+      <div id="percorsi" className="scroll-mt-28" />
 
       <section className={`${section} bg-ivory`}>
         <div className={container}>
@@ -152,7 +102,7 @@ export default function SupportPage() {
           <div className="grid gap-6 lg:grid-cols-3">
             {mainActions.map((action) => (
               <Link
-                className="group overflow-hidden rounded-[1.7rem] border border-line bg-paper transition hover:-translate-y-1 hover:bg-white hover:shadow-[0_22px_55px_rgba(87,22,41,0.1)]"
+                className="site-card group overflow-hidden"
                 href={action.href}
                 key={action.title}
               >
@@ -166,14 +116,14 @@ export default function SupportPage() {
                   />
                   <span className="absolute inset-0 bg-gradient-to-t from-wine/35 to-transparent" />
                 </span>
-                <span className="block p-7 sm:p-8">
-                  <span className="block font-serif text-3xl leading-tight text-ink">
+                <span className="site-card-body block">
+                  <span className="site-card-title block">
                     {action.title}
                   </span>
                   <span className="mt-4 block text-sm leading-7 text-muted">
                     {action.text}
                   </span>
-                  <span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-wine">
+                  <span className="site-card-action mt-5">
                     {action.label}
                     <Icon
                       className="size-4 transition group-hover:translate-x-1"
@@ -228,7 +178,7 @@ export default function SupportPage() {
             <div className="grid gap-px border border-line bg-line sm:grid-cols-2">
               {supportCards.map((action) => (
                 <Link
-                  className="group grid min-h-60 grid-cols-[auto_1fr] gap-5 bg-paper p-7 transition hover:bg-ivory sm:p-8"
+                  className="site-card site-card-body group grid min-h-60 grid-cols-[auto_1fr] gap-5"
                   href={action.href}
                   key={action.title}
                 >

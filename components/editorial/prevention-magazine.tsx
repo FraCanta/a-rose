@@ -68,12 +68,12 @@ export function PreventionMagazine({ posts, availableCategories }: { posts: Word
           </article>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
             {highlights.map((post) => (
-              <article className="group grid overflow-hidden border border-line bg-paper sm:grid-rows-[190px_1fr]" key={post.id}>
+              <article className="site-card group grid overflow-hidden sm:grid-rows-[190px_1fr]" key={post.id}>
                 <div className="relative min-h-48 overflow-hidden"><ArticleImage post={post} sizes="(max-width: 1023px) 50vw, 30vw" /></div>
-                <div className="flex flex-col p-6 sm:p-7">
+                <div className="site-card-body flex flex-col">
                   <Meta post={post} />
                   <h2 className="mt-4 font-serif text-2xl font-normal leading-tight text-ink">{post.title}</h2>
-                  <Link className="mt-auto inline-flex items-center gap-2 pt-5 text-xs font-bold text-wine" href={`${detailPrefix}/${post.slug}`}>Leggi <Icon className="size-4" name="arrow" /></Link>
+                  <Link className="site-card-action mt-auto" href={`${detailPrefix}/${post.slug}`}>Leggi <Icon className="size-4" name="arrow" /></Link>
                 </div>
               </article>
             ))}
@@ -101,9 +101,9 @@ export function PreventionMagazine({ posts, availableCategories }: { posts: Word
         {latest.length ? (
           <div className="mt-9 grid gap-7 md:grid-cols-2 xl:grid-cols-3">
             {latest.map((post) => (
-              <article className="group flex h-full flex-col overflow-hidden border border-line bg-paper" key={post.id}>
+              <article className="site-card group flex h-full flex-col overflow-hidden" key={post.id}>
                 <div className="relative aspect-[16/10] overflow-hidden"><ArticleImage post={post} sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw" /></div>
-                <div className="flex flex-1 flex-col p-7"><Meta post={post} /><h3 className="mt-4 font-serif text-3xl font-normal leading-tight text-ink">{post.title}</h3><p className="mt-4 line-clamp-3 text-sm leading-7 text-muted">{post.excerpt}</p><Link className="mt-auto inline-flex items-center gap-2 pt-7 text-xs font-bold text-wine" href={`${detailPrefix}/${post.slug}`}>Leggi l’articolo <Icon className="size-4" name="arrow" /></Link></div>
+                <div className="site-card-body flex flex-1 flex-col"><Meta post={post} /><h3 className="mt-4 font-serif text-3xl font-normal leading-tight text-ink">{post.title}</h3><p className="mt-4 line-clamp-3 text-sm leading-7 text-muted">{post.excerpt}</p><Link className="site-card-action mt-auto" href={`${detailPrefix}/${post.slug}`}>Leggi l’articolo <Icon className="size-4" name="arrow" /></Link></div>
               </article>
             ))}
           </div>

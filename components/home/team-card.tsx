@@ -21,7 +21,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
 
   return (
     <motion.article
-      className="group flex h-full overflow-hidden border border-line bg-paper focus-visible:ring-2 focus-visible:ring-wine focus-visible:ring-offset-4"
+      className="site-card group flex h-full overflow-hidden focus-visible:ring-2 focus-visible:ring-wine focus-visible:ring-offset-4"
       initial={reducedMotion ? false : { opacity: 0, y: 32 }}
       viewport={{ amount: 0.2, once: true }}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -88,7 +88,7 @@ export function TeamCard({ member, index }: TeamCardProps) {
           </span>
         </div>
 
-        <div className="flex flex-1 flex-col p-6">
+        <div className="site-card-body flex flex-1 flex-col">
           <h3 className="mb-2 font-serif text-[22px] font-normal leading-tight">{member.name}</h3>
           <p className="m-0 text-xs font-semibold leading-relaxed text-ink">
             {member.qualification}

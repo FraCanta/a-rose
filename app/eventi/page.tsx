@@ -64,7 +64,7 @@ export default async function EventsPage() {
 
                   return (
                     <article
-                      className="group flex h-full flex-col overflow-hidden border border-line bg-white transition hover:-translate-y-2 hover:shadow-soft"
+                      className="site-card group flex h-full flex-col overflow-hidden"
                       key={event.id}
                     >
                       <div className="relative h-[250px] overflow-hidden bg-[linear-gradient(145deg,#d99891,#0f5c63)]">
@@ -87,7 +87,7 @@ export default async function EventsPage() {
                           {date.month}
                         </time>
                       </div>
-                      <div className="flex flex-1 flex-col p-7 sm:p-8">
+                      <div className="site-card-body flex flex-1 flex-col">
                         <div className="flex flex-wrap items-center gap-3">
                           <span className="rounded-full bg-rose-soft px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-wine">
                             {event.category}
@@ -104,7 +104,7 @@ export default async function EventsPage() {
                         </h2>
 
                         <Link
-                          className={`${textLink} mt-auto pt-6 text-xs`}
+                          className={`site-card-action mt-auto`}
                           href={`/partecipa/eventi/${event.slug || event.id}`}
                           aria-label={`Leggi l'evento: ${event.title}`}
                         >

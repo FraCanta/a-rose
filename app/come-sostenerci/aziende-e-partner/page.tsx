@@ -154,7 +154,7 @@ export default function CompaniesAndPartnersPage() {
             <Eyebrow>Perché collaborare</Eyebrow>
             <div className="mt-10 grid gap-px border border-line bg-line lg:grid-cols-3">
               {reasons.map((reason) => (
-                <article className="bg-paper p-8 sm:p-10" key={reason.title}>
+                <article className="site-card site-card-body" key={reason.title}>
                   <span className="grid size-12 place-items-center rounded-full bg-rose-soft text-wine">
                     <Icon className="size-5" name={reason.icon} />
                   </span>
@@ -189,7 +189,7 @@ export default function CompaniesAndPartnersPage() {
           <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
             {supportWays.map((way) => (
               <article
-                className="group overflow-hidden border border-line bg-white transition hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(87,22,41,0.1)]"
+                className="site-card group overflow-hidden"
                 key={way.title}
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-rose-soft">
@@ -201,7 +201,7 @@ export default function CompaniesAndPartnersPage() {
                     sizes="(min-width: 1280px) 30vw, (min-width: 768px) 50vw, 100vw"
                   />
                 </div>
-                <div className="p-7">
+                <div className="site-card-body">
                   <h3 className="font-serif text-3xl font-normal leading-tight text-ink">
                     {way.title}
                   </h3>

@@ -8,20 +8,19 @@ import { Entrance } from "@/components/ui/entrance";
 export function HeroSection() {
   return (
     <section className="overflow-hidden border-b border-line bg-paper">
-      <div className="grid min-h-[calc(100svh-84px)] w-full grid-cols-1 lg:grid-cols-2 max-sm:min-h-[calc(100svh-84px)]">
-        {" "}
+      <div className="grid w-full grid-cols-1 lg:grid-cols-2">
         <Entrance
-          className="flex flex-col justify-center px-6 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-20 2xl:pr-20 2xl:pl-[calc((100vw-1420px)/2+10px)]"
+          className="flex flex-col justify-center px-4 pb-8 pt-10 sm:px-10 sm:py-12 lg:px-12 lg:py-24 2xl:pr-20 2xl:pl-[max(48px,calc((100vw-1420px)/2))]"
           delay={0.08}
           direction="up"
         >
           <Eyebrow>Ricerca, formazione, divulgazione</Eyebrow>
-          <h1 className="m-0 max-w-[760px] font-serif text-[clamp(40px,8vw,40px)] xs:text-[clamp(46px,8vw,46px)] lg:text-[clamp(64px,8vw,46px)] 2xl:text-[clamp(46px,8vw,76px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink">
+          <h1 className="m-0 max-w-[760px] font-serif text-[clamp(36px,6vw,60px)] font-normal leading-[1.05] tracking-[-0.035em] text-ink lg:text-[clamp(48px,4.4vw,76px)]">
             Ci si cura meglio,
             <br />
             dove si fa <em className="font-normal text-rose">buona ricerca.</em>
           </h1>
-          <p className="my-8 max-w-[650px] text-[clamp(15px,1.5vw,16px)] leading-[1.7] text-muted">
+          <p className="my-6 max-w-[650px] text-base leading-[1.7] text-muted sm:my-7">
             A-ROSE ODV sostiene la ricerca oncologica traslazionale, la
             formazione e la prevenzione per costruire un futuro in cui ricerca e
             cura siano sempre più vicine.
@@ -37,7 +36,7 @@ export function HeroSection() {
               Scopri i progetti <Icon className="size-5" name="arrow" />
             </Link>
           </div>
-          <div className="mt-12 flex items-center gap-4 text-[13px] leading-normal text-muted max-sm:mt-9">
+          <div className="mt-7 flex items-center gap-3 text-xs leading-relaxed text-muted sm:mt-8">
             <span className="grid size-[42px] shrink-0 place-items-center rounded-full border border-rose-soft text-rose">
               <Icon className="size-5" name="shield" />
             </span>
@@ -57,7 +56,7 @@ export function HeroSection() {
           </div>
         </Entrance>
         <Entrance
-          className="relative min-h-[440px] w-full overflow-hidden sm:min-h-[520px] lg:min-h-[650px]"
+          className="relative h-[280px] w-full overflow-hidden sm:h-[380px] lg:h-auto lg:min-h-[640px]"
           delay={0.04}
           direction="fade"
           scaleFrom={1.025}
@@ -71,7 +70,7 @@ export function HeroSection() {
             sizes="(max-width: 1023px) 100vw, 50vw"
           />
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#fffdf9_0%,rgba(255,253,249,0.82)_9%,rgba(255,253,249,0.18)_34%,transparent_55%)] max-md:bg-[linear-gradient(180deg,#fffdf9_0%,rgba(255,253,249,0.35)_18%,transparent_42%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#fffdf9_0%,rgba(255,253,249,0.82)_9%,rgba(255,253,249,0.18)_34%,transparent_55%)] max-lg:bg-[linear-gradient(180deg,#fffdf9_0%,rgba(255,253,249,0.35)_18%,transparent_42%)]"
             aria-hidden="true"
           />
         </Entrance>

@@ -3,6 +3,7 @@
 import { Icon as IconifyIcon } from "@iconify/react";
 import Link from "next/link";
 import { useEffect, useState, type MouseEventHandler } from "react";
+import type { User } from "@supabase/supabase-js";
 import {
   createClient,
   isSupabaseConfigured,
@@ -17,7 +18,7 @@ export function AuthProfileLink({
   iconClassName?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -26,13 +27,13 @@ export function AuthProfileLink({
     let active = true;
 
     supabase.auth.getSession().then(({ data }) => {
-      if (active) setIsLoggedIn(Boolean(data.session?.user));
+      if (active) setUserName(getUserName(data.session?.user));
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(Boolean(session?.user));
+      setUserName(getUserName(session?.user));
     });
 
     return () => {
@@ -48,7 +49,16 @@ export function AuthProfileLink({
         className={iconClassName}
         icon="solar:user-rounded-linear"
       />
-      {isLoggedIn ? "Il tuo profilo" : "Accedi / Registrati"}
+      {userName ?? "Accedi / Registrati"}
     </Link>
   );
+}
+
+function getUserName(user?: User): string | null {
+  if (!user) return null;
+
+  const firstName = user.user_metadata?.first_name;
+  if (typeof firstName === "string" && firstName.trim()) return firstName.trim();
+
+  return user.email?.split("@")[0] || "Il tuo profilo";
 }

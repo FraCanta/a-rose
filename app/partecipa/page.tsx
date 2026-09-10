@@ -26,10 +26,10 @@ const participationCards = [
     href: "/partecipa/scuole-e-territorio",
   },
   {
-    title: "Volontariato",
+    title: "Diventa volontario",
     text: "Tempo, competenze e presenza concreta per sostenere eventi e progetti.",
     image: "/images/Arose_PicWebsite_Bambina.webp",
-    href: "/partecipa/volontariato",
+    href: "/partecipa/diventa-volontario",
   },
   {
     title: "Raccolte fondi",
@@ -124,7 +124,7 @@ export default function ParticipationLandingPage() {
 
           <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-2">
             {participationCards.map((card) => (
-              <article className="group" key={card.title}>
+              <article className="site-card group overflow-hidden" key={card.title}>
                 <Link
                   className="block focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-rose"
                   href={card.href}
@@ -138,15 +138,15 @@ export default function ParticipationLandingPage() {
                       sizes="(max-width: 767px) calc(100vw - 32px), 50vw"
                     />
                   </div>
-                  <h3 className="mt-5 font-serif text-3xl font-normal leading-tight text-ink transition group-hover:text-wine">
+                  <div className="site-card-body"><h3 className="mt-0 font-serif text-3xl font-normal leading-tight text-ink transition group-hover:text-wine">
                     {card.title}
                   </h3>
                   <p className="mt-3 max-w-[620px] text-sm leading-7 text-muted">
                     {card.text}
                   </p>
-                  <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-wine px-5 py-3 text-xs font-bold text-white transition group-hover:bg-wine-deep">
+                  <span className="site-card-action mt-5">
                     Scopri di più <Icon className="size-4" name="arrow" />
-                  </span>
+                  </span></div>
                 </Link>
               </article>
             ))}

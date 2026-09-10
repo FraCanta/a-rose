@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/cookie-policy",
     "/ecosostenibilita",
     "/privacy-policy",
+    "/termini-e-condizioni",
     ...allNavigationLinks.map((link) => link.href),
     ...institutionalPages.map((page) => page.path),
   ]);

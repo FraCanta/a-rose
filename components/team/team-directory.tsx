@@ -17,7 +17,7 @@ export function TeamDirectory() {
         </div>
         <div className="mt-16 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {collaborators.map((member) => (
-            <article className="group" key={member.name}>
+            <article className="site-card group overflow-hidden" key={member.name}>
               <div className="relative aspect-square overflow-hidden bg-rose-soft">
                 <Image
                   className="object-cover object-top transition duration-700 group-hover:scale-[1.025]"
@@ -27,7 +27,7 @@ export function TeamDirectory() {
                   sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw"
                 />
               </div>
-              <div className="border-x border-b border-line bg-paper px-5 py-6">
+              <div className="site-card-body">
                 <h3 className="font-serif text-xl font-normal leading-tight text-ink">
                   {member.name}
                 </h3>

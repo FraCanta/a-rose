@@ -41,7 +41,7 @@ export async function NewsSection() {
         <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           {visibleArticles.map((article, index) => (
             <article
-              className={`group flex h-full flex-col bg-paper transition hover:-translate-y-2 hover:shadow-soft ${
+              className={`site-card group flex h-full flex-col overflow-hidden ${
                 index === visibleArticles.length - 1
                   ? "max-md:max-w-[calc(50%-14px)] max-sm:max-w-none md:max-lg:col-span-2"
                   : ""
@@ -60,7 +60,7 @@ export async function NewsSection() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
-              <div className="flex flex-1 flex-col p-8">
+              <div className="site-card-body flex flex-1 flex-col">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                   <span className="text-[9px] font-extrabold uppercase tracking-[0.15em] text-rose">
                     {article.category}
@@ -85,7 +85,7 @@ export async function NewsSection() {
                   {article.text}
                 </p>
                 <Link
-                  className={`${textLink} mt-auto pt-5 text-xs`}
+                  className={`site-card-action mt-auto`}
                   href={typeof article.id === "number" && "slug" in article ? `/prevenzione/guide-e-approfondimenti/${article.slug}` : article.href}
                   aria-label={`Leggi l'articolo: ${article.title}`}
                 >

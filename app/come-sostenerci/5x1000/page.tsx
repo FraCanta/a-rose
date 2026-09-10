@@ -227,7 +227,7 @@ export default function FiveForThousandPage() {
                   ],
                 },
               ].map((item) => (
-                <article className="flex min-h-[530px] flex-col overflow-hidden border border-line bg-white" key={item.title}>
+                <article className="site-card flex min-h-[530px] flex-col overflow-hidden" key={item.title}>
                   <div className="relative h-60 overflow-hidden bg-rose-soft p-7 sm:p-9">
                     <span className={`absolute right-4 font-serif leading-none tracking-[-0.08em] text-white/70 ${item.badge === "730" ? "-bottom-1 text-[96px]" : "-bottom-7 text-[116px]"}`} aria-hidden="true">
                       {item.badge}
@@ -242,7 +242,7 @@ export default function FiveForThousandPage() {
                       {item.audience}
                     </p>
                   </div>
-                  <div className="flex flex-1 flex-col p-7 sm:p-9">
+                  <div className="site-card-body flex flex-1 flex-col">
                     <ol className="grid gap-5 text-sm leading-6 text-muted">
                       {item.steps.map((step, index) => (
                         <li className="grid grid-cols-[28px_1fr] gap-3" key={step}>

@@ -5,8 +5,8 @@ import { Icon as IconifyIcon } from "@iconify/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@/components/home/icons";
 import type { NavigationGroup } from "./navigation-data";
+import { HealthMenu } from "./health-menu";
 
 type DesktopNavigationProps = {
   compact?: boolean;
@@ -69,21 +69,8 @@ export function DesktopNavigation({ compact = false, items }: DesktopNavigationP
                   transition={{ duration: 0.2 }}
                   onMouseLeave={() => setActiveMenu(null)}
                 >
-                  <div className="mx-auto grid w-[min(1420px,calc(100%-72px))] grid-cols-[260px_1fr] gap-14 py-8">
-                    <div className="border-r border-line pr-10">
-                      <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-rose">{item.label}</p>
-                      <p className="mt-4 font-serif text-2xl leading-tight text-ink">{item.description}</p>
-                    </div>
-                    <ul className="grid grid-cols-3 gap-x-5 gap-y-2">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <Link className="group flex min-h-[88px] items-start justify-between gap-4 border-b border-line px-3 py-4 transition hover:border-rose hover:bg-ivory focus-visible:bg-ivory" href={child.href} onClick={() => setActiveMenu(null)}>
-                            <span><span className="block text-sm font-bold tracking-[0.035em] text-ink group-hover:text-wine">{child.label}</span><span className="mt-1.5 block text-xs leading-relaxed tracking-[0.02em] text-muted">{child.description}</span></span>
-                            <Icon className="mt-1 size-3.5 shrink-0 text-rose transition-transform group-hover:translate-x-1" name="arrow" />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className={`mx-auto w-[min(1600px,calc(100%-72px))] overflow-y-auto py-9 ${compact ? "max-h-[calc(100dvh-80px)]" : "max-h-[calc(100dvh-192px)]"}`}>
+                    <HealthMenu group={item} links={item.children} onNavigate={() => setActiveMenu(null)} />
                   </div>
                 </motion.div>
               ) : null}

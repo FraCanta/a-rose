@@ -9,10 +9,10 @@ type RelatedItem = {
 
 export function RelatedGrid({ items }: { items: RelatedItem[] }) {
   return (
-    <div className="grid gap-px overflow-hidden border border-line bg-line md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <Link
-          className="group flex min-h-[190px] flex-col bg-paper p-7 transition hover:bg-white sm:p-8"
+          className="site-card site-card-body group flex min-h-[190px] flex-col"
           href={item.href}
           key={item.href}
         >
@@ -22,7 +22,7 @@ export function RelatedGrid({ items }: { items: RelatedItem[] }) {
           <h3 className="mt-4 font-serif text-2xl font-normal leading-tight text-ink">
             {item.title}
           </h3>
-          <span className="mt-auto flex items-center gap-2 pt-6 text-xs font-bold text-wine">
+          <span className="site-card-action mt-auto">
             Approfondisci
             <Icon className="size-4 transition-transform group-hover:translate-x-1" name="arrow" />
           </span>

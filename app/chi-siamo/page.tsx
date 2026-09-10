@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { AboutHero } from "@/components/about/about-hero";
+import { AreaHero, AreaPaths } from "@/components/content/area-hero";
+import { navigation } from "@/components/layout/navigation-data";
 import { AboutObjective } from "@/components/about/about-objective";
 import { AboutPartners } from "@/components/about/about-partners";
 import { AboutStory } from "@/components/about/about-story";
@@ -20,7 +21,8 @@ export default async function AboutPage() {
 
   return (
     <main id="contenuto">
-      <AboutHero image={content.visionImage} intro={content.intro} />
+      <AreaHero label="Chi siamo" title="La ricerca nasce dalle persone." image={content.visionImage} imageAlt="Nastro rosa, simbolo della prevenzione oncologica" intro={content.intro} note="Associazione Ricerca Oncologica Sperimentale Estense. Scienza, cura e comunità nella stessa direzione. A Ferrara dal 2019." />
+      <AreaPaths title="Conosci A-ROSE" links={navigation[0].children ?? []} />
       <ScrollReveal>
         <AboutStory origins={content.origins} />
       </ScrollReveal>
