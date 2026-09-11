@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { AboutBreadcrumbs } from "@/components/about/about-breadcrumbs";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { FounderProfiles } from "@/components/team/founder-profiles";
 import { TeamDirectory } from "@/components/team/team-directory";
@@ -8,7 +9,7 @@ import { Entrance } from "@/components/ui/entrance";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export const metadata: Metadata = {
-  title: "Team | A-ROSE ODV",
+  title: "Team scientifico | A-ROSE ODV",
   description:
     "Conosci ricercatori, clinici e collaboratori che uniscono scienza, cura e umanità nella missione di A-ROSE ODV.",
 };
@@ -23,6 +24,7 @@ export default function TeamPage() {
             delay={0.08}
             direction="up"
           >
+            <AboutBreadcrumbs current="Team scientifico" />
             <Eyebrow>Il team A-ROSE</Eyebrow>
             <h1 className="font-serif text-[clamp(48px,5.5vw,82px)] font-normal leading-[0.98] tracking-[-0.045em] text-ink">
               Le <em className="font-normal text-rose">menti brillanti</em>{" "}

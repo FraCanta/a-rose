@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AboutBreadcrumbs } from "@/components/about/about-breadcrumbs";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
@@ -24,9 +25,7 @@ export default function TransparencyPage() {
     <main id="contenuto">
       <header className="border-b border-line bg-ivory px-5 py-16 sm:px-8 lg:py-24">
         <div className={container}>
-          <nav aria-label="Breadcrumb" className="mb-9 flex items-center gap-2 text-xs text-muted">
-            <Link href="/">Home</Link><span>/</span><Link href="/chi-siamo/la-nostra-associazione">Chi siamo</Link><span>/</span><span aria-current="page" className="text-ink">Trasparenza</span>
-          </nav>
+          <AboutBreadcrumbs current="Trasparenza" />
           <Eyebrow>Trasparenza</Eyebrow>
           <h1 className="mt-5 max-w-5xl font-serif text-[clamp(46px,6vw,80px)] leading-[0.98] tracking-[-0.045em] text-ink">
             Fiducia, documenti e <em className="font-normal text-rose">responsabilità.</em>

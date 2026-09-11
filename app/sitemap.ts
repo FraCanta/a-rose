@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, events, projects] = await Promise.all([getAllPosts(), getEvents(100), getProjects()]);
   const staticPaths = new Set([
     "/",
+    "/chi-siamo/notizie",
     "/cookie-policy",
     "/ecosostenibilita",
     "/privacy-policy",

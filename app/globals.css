@@ -23,8 +23,48 @@
   @apply border-wine;
 }
 
-/* Keep mobile body copy readable without enlarging uppercase section labels. */
+/* Shared mobile type scale; rem units respect the reader's font settings. */
 @media (width < 640px) {
+  :root {
+    --mobile-title: clamp(2.25rem, 1.5rem + 3.75vw, 2.625rem);
+    --mobile-section-title: clamp(1.875rem, 1.375rem + 2.5vw, 2.125rem);
+    --mobile-subtitle: 1.5rem;
+    --mobile-lead: 1.125rem;
+    --mobile-body: 1rem;
+  }
+
+  main :is(h1, h2, h3, h4):not(.uppercase) {
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  main h1 {
+    font-size: var(--mobile-title);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  main h2:not(.uppercase) {
+    font-size: var(--mobile-section-title);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  main h3:not(.uppercase),
+  main .site-card :is(h2, h3),
+  main .site-card-title {
+    font-size: var(--mobile-subtitle);
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  main h4:not(.uppercase) {
+    font-size: 1.25rem;
+    line-height: 1.35;
+  }
+
+  main :is(ul, ol) > li:not(nav li),
+  main p:not(.uppercase, .font-serif),
   p:is(
     .text-xs,
     .text-sm,
@@ -37,8 +77,20 @@
   ):not(.uppercase),
   article.text-\[15px\] p,
   footer .text-sm > p {
-    font-size: 1rem;
+    font-size: var(--mobile-body);
     line-height: 1.75;
+  }
+
+  main h1 + p:not(.uppercase),
+  main p.text-lg:not(.uppercase, .font-serif) {
+    font-size: var(--mobile-lead);
+    line-height: 1.65;
+  }
+
+  main p.uppercase {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.12em;
   }
 }
 

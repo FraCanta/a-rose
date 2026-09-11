@@ -5,6 +5,7 @@ import { AboutObjective } from "@/components/about/about-objective";
 import { AboutPartners } from "@/components/about/about-partners";
 import { AboutStory } from "@/components/about/about-story";
 import { AboutVision } from "@/components/about/about-vision";
+import { AssociationNews } from "@/components/about/association-news";
 import { FinalCta } from "@/components/home/final-cta";
 import { TeamSection } from "@/components/home/team-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
@@ -40,6 +41,9 @@ export default async function AboutPage() {
       </ScrollReveal>
       <ScrollReveal>
         <AboutPartners partners={content.partners} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <AssociationNews />
       </ScrollReveal>
       <ScrollReveal>
         <FinalCta />

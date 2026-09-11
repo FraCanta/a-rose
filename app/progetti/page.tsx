@@ -86,6 +86,13 @@ export default async function ProjectsPage() {
     <main id="contenuto">
       <header className="border-b border-line bg-paper py-14 sm:py-16 lg:py-20">
         <div className={`${container} text-center`}>
+          <nav aria-label="Breadcrumb" className="mb-8 text-left text-sm leading-relaxed text-muted">
+            <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <li><Link className="underline-offset-4 hover:underline" href="/">Home</Link></li>
+              <li className="flex items-center gap-2"><span aria-hidden="true">/</span><Link className="underline-offset-4 hover:underline" href="/la-ricerca">La ricerca</Link></li>
+              <li className="flex items-center gap-2"><span aria-hidden="true">/</span><span aria-current="page" className="text-ink">Progetti di ricerca</span></li>
+            </ol>
+          </nav>
           <Eyebrow centered>I progetti di ricerca traslazionale</Eyebrow>
           <h1 className="mx-auto mt-6 max-w-[1040px] font-serif text-[clamp(42px,6vw,76px)] font-normal leading-[0.98] tracking-[-0.045em] text-ink">
             Dal laboratorio <em className="font-normal text-rose">alla vita reale.</em>

@@ -7,19 +7,20 @@ const footerColumns = [
   {
     title: "Conosci A-ROSE",
     links: [
+      ["Chi siamo", "/chi-siamo"],
       ["La nostra associazione", "/chi-siamo/la-nostra-associazione"],
       ["Team scientifico", "/chi-siamo/team-scientifico"],
       ["Partner", "/chi-siamo/partner-e-sostenitori"],
       ["Trasparenza", "/trasparenza"],
       ["Come usiamo i fondi", "/come-sostenerci/come-usiamo-i-fondi"],
-      ["Benefici fiscali", "/come-sostenerci/benefici-fiscali"],
+      ["Benefici fiscali", "/chi-siamo/benefici-fiscali"],
     ],
   },
   {
     title: "Ricerca e prevenzione",
     links: [
       ["La ricerca", "/la-ricerca"],
-      ["Progetti", "/la-ricerca/progetti"],
+      ["Progetti", "/la-ricerca/progetti-di-ricerca"],
       ["Formazione", "/la-ricerca/formazione"],
       ["Prevenzione", "/prevenzione-e-salute"],
       ["Guide e FAQ", "/prevenzione/guide-e-approfondimenti"],

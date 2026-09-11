@@ -1,2 +1,5 @@
-export { metadata } from "@/app/progetti/page";
-export { default } from "@/app/progetti/page";
+import { permanentRedirect } from "next/navigation";
+
+export default function LegacyProjectsPage() {
+  permanentRedirect("/la-ricerca/progetti-di-ricerca");
+}

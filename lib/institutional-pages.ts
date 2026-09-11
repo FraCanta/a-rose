@@ -72,7 +72,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Scopri i progetti",
-      href: "/la-ricerca/progetti",
+      href: "/la-ricerca/progetti-di-ricerca",
       text: "Guarda come la missione si traduce in attività concrete.",
     },
     metaTitle: "Missione e valori | A-ROSE ODV",
@@ -170,7 +170,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Esplora i progetti",
-      href: "/la-ricerca/progetti",
+      href: "/la-ricerca/progetti-di-ricerca",
       text: "Scopri le attività di ricerca sostenute da A-ROSE.",
     },
     metaTitle: "La ricerca | A-ROSE ODV",
@@ -203,7 +203,7 @@ export const institutionalPages: InstitutionalPageData[] = [
     ],
     cta: {
       label: "Vedi i progetti",
-      href: "/la-ricerca/progetti",
+      href: "/la-ricerca/progetti-di-ricerca",
       text: "Conosci gli ambiti di ricerca sostenuti dall'associazione.",
     },
     metaTitle: "Cos'è la ricerca traslazionale | A-ROSE ODV",
@@ -673,7 +673,7 @@ export const institutionalPages: InstitutionalPageData[] = [
       "Le risorse sostengono finalità scientifiche, formative e divulgative coerenti con la missione A-ROSE.",
     description:
       "Questa pagina offre un quadro sintetico. La documentazione ufficiale e gli aggiornamenti economici trovano spazio nella sezione Trasparenza.",
-    parent: { label: "Chi siamo", href: "/chi-siamo/la-nostra-associazione" },
+    parent: { label: "Chi siamo", href: "/chi-siamo" },
     points: [
       {
         title: "Ricerca",
@@ -698,7 +698,7 @@ export const institutionalPages: InstitutionalPageData[] = [
       "Le finalità sostenute dalle donazioni ricevute da A-ROSE ODV.",
   },
   {
-    path: "/come-sostenerci/benefici-fiscali",
+    path: "/chi-siamo/benefici-fiscali",
     eyebrow: "Chi siamo",
     title: "Benefici",
     accent: "fiscali.",
@@ -706,7 +706,7 @@ export const institutionalPages: InstitutionalPageData[] = [
       "Le erogazioni liberali tracciabili agli Enti del Terzo Settore possono beneficiare delle agevolazioni previste dalla normativa.",
     description:
       "Le regole dipendono dal soggetto che dona e dalla normativa vigente. Conserva la documentazione e verifica il trattamento applicabile con un professionista fiscale.",
-    parent: { label: "Chi siamo", href: "/chi-siamo/la-nostra-associazione" },
+    parent: { label: "Chi siamo", href: "/chi-siamo" },
     points: [
       {
         title: "Pagamenti tracciabili",

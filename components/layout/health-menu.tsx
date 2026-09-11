@@ -5,7 +5,7 @@ import type { NavigationChild, NavigationGroup } from "./navigation-data";
 export function HealthMenu({ links, onNavigate, group }: { links: readonly NavigationChild[]; onNavigate: () => void; group?: NavigationGroup }) {
   const isHealth = !group || group.href === "/prevenzione-e-salute";
   const groups: Record<string, { title: string; indexes: number[] }[]> = {
-    "/chi-siamo/la-nostra-associazione": [{ title: "L’associazione", indexes: [0] }, { title: "Persone e collaborazioni", indexes: [1, 2] }, { title: "Responsabilità", indexes: [3, 4, 5] }],
+    "/chi-siamo": [{ title: "L’associazione", indexes: [0] }, { title: "Persone e collaborazioni", indexes: [1, 2] }, { title: "Responsabilità", indexes: [3, 4, 5] }],
     "/la-ricerca": [{ title: "Comprendere la ricerca", indexes: [0] }, { title: "Il nostro lavoro", indexes: [1, 3] }, { title: "Crescere nella ricerca", indexes: [2] }],
     "/partecipa": [{ title: "Incontriamoci", indexes: [0] }, { title: "Dona il tuo tempo", indexes: [1] }, { title: "Nella comunità", indexes: [2] }],
     "/come-sostenerci": [{ title: "Il tuo contributo", indexes: [0, 1] }, { title: "Coinvolgi gli altri", indexes: [2, 3] }, { title: "Insieme alle aziende", indexes: [4] }],

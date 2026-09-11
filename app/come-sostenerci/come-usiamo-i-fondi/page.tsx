@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AboutBreadcrumbs } from "@/components/about/about-breadcrumbs";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, heading, section } from "@/components/home/styles";
@@ -73,18 +74,7 @@ export default function FundsUsePage() {
     <main id="contenuto">
       <section className="border-b border-line bg-paper py-14 sm:py-16 lg:py-20">
         <div className={container}>
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted"
-          >
-            <Link href="/">Home</Link>
-            <span>/</span>
-            <Link href="/chi-siamo/la-nostra-associazione">Chi siamo</Link>
-            <span>/</span>
-            <span aria-current="page" className="text-ink">
-              Come usiamo i fondi
-            </span>
-          </nav>
+          <AboutBreadcrumbs current="Come usiamo i fondi" />
           <Eyebrow>Sostegno e trasparenza</Eyebrow>
           <h1 className="mt-5 max-w-5xl font-serif text-[clamp(42px,6vw,78px)] font-normal leading-[0.98] tracking-[-0.045em] text-ink">
             Come usiamo <em className="font-normal text-rose">i fondi.</em>

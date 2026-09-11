@@ -32,7 +32,7 @@ export function HeroSection() {
             >
               Sostieni la ricerca <Icon className="size-[18px]" name="heart" />
             </Link>
-            <Link className={outlineButton} href="/la-ricerca/progetti">
+            <Link className={outlineButton} href="/la-ricerca/progetti-di-ricerca">
               Scopri i progetti <Icon className="size-5" name="arrow" />
             </Link>
           </div>

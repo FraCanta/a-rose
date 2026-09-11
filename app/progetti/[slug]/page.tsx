@@ -53,7 +53,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             Sostieni questo impegno <Icon className="size-4" name="heart" />
           </Link>
         }
-        backHref="/la-ricerca/progetti"
+        backHref="/la-ricerca/progetti-di-ricerca"
         backLabel="Tutti i progetti"
         category={project.kind}
         date={project.date}

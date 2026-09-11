@@ -14,7 +14,7 @@ export type NavigationGroup = {
 export const navigation: readonly NavigationGroup[] = [
   {
     label: "Chi siamo",
-    href: "/chi-siamo/la-nostra-associazione",
+    href: "/chi-siamo",
     description: "Identità, persone e responsabilità dell'associazione.",
     children: [
       {
@@ -44,7 +44,7 @@ export const navigation: readonly NavigationGroup[] = [
       },
       {
         label: "Benefici fiscali",
-        href: "/come-sostenerci/benefici-fiscali",
+        href: "/chi-siamo/benefici-fiscali",
         description: "Indicazioni generali sulle agevolazioni.",
       },
     ],
@@ -61,7 +61,7 @@ export const navigation: readonly NavigationGroup[] = [
       },
       {
         label: "Progetti di ricerca",
-        href: "/la-ricerca/progetti",
+        href: "/la-ricerca/progetti-di-ricerca",
         description: "Gli studi sostenuti da A-ROSE.",
       },
       {

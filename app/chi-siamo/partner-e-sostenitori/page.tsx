@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { AboutBreadcrumbs } from "@/components/about/about-breadcrumbs";
 import { Eyebrow } from "@/components/home/eyebrow";
 import { Icon } from "@/components/home/icons";
 import { container, section } from "@/components/home/styles";
@@ -28,7 +29,7 @@ export default async function PartnersPage() {
     <main id="contenuto">
       <header className="border-b border-line bg-paper py-14 sm:py-20">
         <div className={container}>
-          <nav aria-label="Breadcrumb" className="mb-9 flex items-center gap-2 text-xs text-muted"><Link href="/">Home</Link><span>/</span><Link href="/chi-siamo/la-nostra-associazione">Chi siamo</Link><span>/</span><span aria-current="page" className="text-ink">Partner e sostenitori</span></nav>
+          <AboutBreadcrumbs current="Partner e sostenitori" />
           <Eyebrow>Chi siamo</Eyebrow>
           <h1 className="mt-6 max-w-5xl font-serif text-[clamp(44px,6vw,82px)] font-normal leading-[0.98] tracking-[-0.045em] text-ink">Una rete che sostiene <em className="font-normal text-rose">la ricerca.</em></h1>
           <p className="mt-7 max-w-3xl text-base leading-[1.85] text-muted sm:text-lg">A-ROSE collabora con istituzioni, laboratori, associazioni e imprese. Per alcune realtà è documentata una specifica iniziativa; per le altre indichiamo prudentemente il ruolo di sostegno alla rete associativa.</p>
