@@ -23,6 +23,25 @@
   @apply border-wine;
 }
 
+/* Keep mobile body copy readable without enlarging uppercase section labels. */
+@media (width < 640px) {
+  p:is(
+    .text-xs,
+    .text-sm,
+    .text-\[10px\],
+    .text-\[11px\],
+    .text-\[12px\],
+    .text-\[13px\],
+    .text-\[14px\],
+    .text-\[15px\]
+  ):not(.uppercase),
+  article.text-\[15px\] p,
+  footer .text-sm > p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
+
 @media (hover: hover) {
   .site-card:where(a, .group):hover {
     @apply border-wine/50 bg-paper shadow-none;
