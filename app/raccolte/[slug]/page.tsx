@@ -82,7 +82,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
   const raised = Number(campaign.raised_cents || 0);
   const progress =
     goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
-  const donationHref = `/donazione?tipo=raccolta&campagna=${encodeURIComponent(campaign.title)}#checkout`;
+  const donationHref = `/donazione?tipo=raccolta&campagna=${encodeURIComponent(campaign.title)}&campagnaId=${encodeURIComponent(campaign.id)}#checkout`;
   const campaignUrl = getCampaignUrl(campaign.slug);
   const shareText = `Sostieni questa raccolta fondi A-ROSE ODV: ${campaign.title}`;
 
@@ -320,7 +320,7 @@ function Detail({ label, value }: { label: string; value: string }) {
 async function getCampaign(slug: string) {
   const supabase = await createClient();
   const campaignFields =
-    "slug, title, description, goal_cents, raised_cents, honoree_name, project_label, end_date, region, cover_preset, cover_url";
+    "id, slug, title, description, goal_cents, raised_cents, honoree_name, project_label, end_date, region, cover_preset, cover_url";
   const { data, error } = await supabase
     .from("fundraising_campaigns")
     .select(`${campaignFields}, organizer_name`)

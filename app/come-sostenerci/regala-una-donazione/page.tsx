@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function GiftDonationPage() {
-  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 
   return (
     <main id="contenuto">
@@ -77,7 +76,6 @@ export default function GiftDonationPage() {
           <article className="border border-line bg-paper p-5 shadow-[0_24px_80px_rgba(80,45,35,0.08)] sm:p-8 lg:p-10">
             <DonationCheckout
               donationType="regalo"
-              publishableKey={publishableKey}
             />
           </article>
         </div>

@@ -49,7 +49,6 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
               <p className="mt-4 text-sm leading-[1.8] text-muted">Scegli l’importo, inserisci i dati necessari e completa il pagamento protetto da Stripe.</p>
               <div className="mt-8">
                 <DonationCheckout
-                  publishableKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""}
                   initialAmount={initialAmount}
                 />
               </div>

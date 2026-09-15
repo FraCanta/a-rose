@@ -19,6 +19,7 @@ export type DonationCheckoutInput = {
   donationType: "generale" | "regalo" | "raccolta";
   occasion?: string;
   campaignName?: string;
+  campaignId?: string;
   donationFrequency?: string;
   giftSenderName?: string;
   giftRecipient?: string;
@@ -60,6 +61,7 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
       : "generale";
   const occasion = cleanText(input.occasion, 120);
   const campaignName = cleanText(input.campaignName, 160);
+  const campaignId = cleanText(input.campaignId, 36);
   const donationFrequency = cleanText(input.donationFrequency, 40);
   const giftSenderName = cleanText(input.giftSenderName, 160);
   const giftRecipient = cleanText(input.giftRecipient, 160);
@@ -77,6 +79,9 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
     throw new Error("Inserisci un indirizzo email valido");
   }
   if (input.consent !== true) throw new Error("Devi accettare i termini della donazione");
+  if (donationType === "raccolta" && campaignId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(campaignId)) {
+    throw new Error("Identificativo della raccolta non valido");
+  }
   if (donationType === "regalo") {
     if (!lastName) throw new Error("Il cognome o la ragione sociale sono obbligatori");
     if (!fiscalCode) throw new Error("Il codice fiscale è obbligatorio");
@@ -111,6 +116,7 @@ export function validateDonationInput(value: unknown): DonationCheckoutInput {
     donationType,
     occasion: occasion || undefined,
     campaignName: campaignName || undefined,
+    campaignId: campaignId || undefined,
     donationFrequency: donationFrequency || undefined,
     giftSenderName: giftSenderName || undefined,
     giftRecipient: giftRecipient || undefined,

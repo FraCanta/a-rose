@@ -19,6 +19,7 @@ type DonationPageProps = {
     tipo?: string;
     occasione?: string;
     campagna?: string;
+    campagnaId?: string;
     modifica?: string;
   }>;
 };
@@ -74,6 +75,7 @@ export default async function DonationPage({
   const donationType = normalizeType(params.tipo);
   const occasion = normalizeOccasion(params.occasione);
   const campaignTitle = normalizeCampaignTitle(params.campagna);
+  const campaignId = normalizeCampaignId(params.campagnaId);
   const editCampaignId = normalizeCampaignId(params.modifica);
   const copy = pageCopy[donationType];
   void copy;
@@ -120,12 +122,10 @@ export default async function DonationPage({
               />
             ) : (
               <DonationCheckout
-                publishableKey={
-                  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
-                }
                 donationType={donationType}
                 occasion={occasion}
                 campaignName={campaignTitle}
+                campaignId={campaignId}
               />
             )}
           </article>

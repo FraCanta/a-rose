@@ -7,10 +7,10 @@ import { Icon } from "@/components/home/icons";
 export type DonationCheckoutType = "generale" | "regalo" | "raccolta";
 
 type DonationCheckoutProps = {
-  publishableKey?: string;
   donationType?: DonationCheckoutType;
   occasion?: string;
   campaignName?: string;
+  campaignId?: string;
   initialAmount?: number | "custom";
 };
 
@@ -59,6 +59,7 @@ export function DonationCheckout({
   donationType = "generale",
   occasion,
   campaignName,
+  campaignId,
   initialAmount,
 }: DonationCheckoutProps) {
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(
@@ -84,6 +85,7 @@ export function DonationCheckout({
           donationType,
           occasion: occasion ?? data.get("giftOccasion"),
           campaignName: campaignName ?? data.get("campaignName"),
+          campaignId,
           donationFrequency: data.get("donationFrequency"),
           giftSenderName: data.get("giftSenderName"),
           giftRecipient: data.get("giftRecipient"),

@@ -90,6 +90,7 @@ export async function POST(request: Request) {
         donationType: donation.donationType,
         occasion: donation.occasion ?? "",
         campaignName: donation.campaignName ?? "",
+        campaignId: donation.campaignId ?? "",
         donationFrequency: donation.donationFrequency ?? "",
         giftSenderName: donation.giftSenderName ?? "",
         giftRecipient: donation.giftRecipient ?? "",
